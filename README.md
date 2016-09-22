@@ -1,3 +1,0 @@
-# ProyProg
-ProyectodeProg
-Hola
