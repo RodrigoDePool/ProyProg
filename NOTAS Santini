@@ -15,12 +15,13 @@ propiedades del espacio ( luz /negro, calor intenso imposible de atravesar, ...)
 			 -1 you cannot change the status
 			 -2 the is no door)
 
+		Leer fichero de texto y crear espàcios.
 
 object: id, name, light, int good, int playerhaves, opens,  		spaceid	(donde está), description...
 	funciones como:
 		
 player: properties, space where it is located, name, coordinates in 
-	th map
+	the map
 
 world: array of spaces , int nspaces, array if objects, int nobj, 	player *me, *ia
 
