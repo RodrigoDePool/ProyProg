@@ -1,0 +1,10 @@
+space: estructura de espacios (Ej: en el espacio 15, si camino hacia el norte llego al espacio 17)
+
+object: id, spaceid(donde está), description...
+
+player: properties, space where it is located
+
+world: array of spaces , int nspaces, array if objects, int nobj, player *me
+
+	Algunas funciones:	getId(space *s), neighbor(space*s, int dir), space *neighbor(space **s, int n_spaces, int id, int dir)
+funciones para moverse dentro de un espacio.
