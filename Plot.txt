@@ -1,0 +1,2 @@
+Player goes through a "level 0" where he/she learns how to move, pick stuff up, etc. At the end of the level, player is murdered.
+
