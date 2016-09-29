@@ -1,10 +1,28 @@
-space: estructura de espacios (Ej: en el espacio 15, si camino hacia el norte llego al espacio 17)
+space: estructura de espacios (Ej: en el espacio 15, si camino hacia el norte llego al espacio 17), caminos a los que no puedo moverme,
+propiedades del espacio ( luz /negro, calor intenso imposible de atravesar, ...), descripcion del espacio (quiza una larga y una corta), conexion con otros espacios, map(coordenadas?).
+	funciones como:
+		char *whatisinmap(Space *c, int *s)
+			s serian las coordenadas y la funcion
+			devolveria el caracter ascii en el mapa
+		/*Como implementar el mapa y como interactua*/
+		int canIsee(Space *s)
+		int go(Space *s, int dir) (>0: SPACE_ID
+					   -1: no space
+					   -2: locked)
+		int unlock(Space *s, int dir, int status)
+			where status is either lock or unlock
+			(0 might be done succesfully
+			 -1 you cannot change the status
+			 -2 the is no door)
 
-object: id, spaceid(donde está), description...
 
-player: properties, space where it is located
+object: id, name, light, int good, int playerhaves, opens,  		spaceid	(donde está), description...
+	funciones como:
+		
+player: properties, space where it is located, name, coordinates in 
+	th map
 
-world: array of spaces , int nspaces, array if objects, int nobj, player *me
+world: array of spaces , int nspaces, array if objects, int nobj, 	player *me, *ia
 
-	Algunas funciones:	getId(space *s), neighbor(space*s, int dir), space *neighbor(space **s, int n_spaces, int id, int dir)
-funciones para moverse dentro de un espacio.
+	Algunas funciones:	getId(space *s), neighbor(space*s, int dir), space *neighbor(space **s, int n_spaces, int id, int dir), char *name(space *s)
+funciones para moverse dentro de un espacio. Puedo moverme a una determinada coordenada??
