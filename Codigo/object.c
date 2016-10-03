@@ -81,3 +81,79 @@ Status object_set_desc(Object *o, char *desc){
 	desc(o)=strcpy(desc(o),desc);
 	return OK;
 }
+
+
+
+Status object_set_spaceid(Object *o, int spaceid){
+	assert(o!=NULL);
+	assert(spaceid>-1);
+
+	spaceid(o)=spaceid;
+	return OK;
+}
+
+
+
+Status object_pick(Object *o){
+	assert(o!=NULL);
+	has(o)=TRUE;
+	return OK;
+}
+
+
+
+Status object_drop(Object *o){
+	assert(o!=NULL);
+	has(o)=FALSE;
+	return OK;
+}
+
+
+
+char *object_return_name(Object *o){
+	char *name;
+	assert(o!=NULL);
+	if(name(o)==NULL)
+		return NULL;
+	name=(char *)malloc(sizeof(char)*(1+strlen(name(o))));
+	if(name==NULL)
+		return NULL;
+	name=strcpy(name, name(o));
+	return name;
+}
+
+
+
+
+char *object_return_desc(Object *o){
+	char *desc;
+	assert(o!=NULL);
+	if(desc(o)==NULL)
+		return NULL;
+	desc=(char *)malloc(sizeof(char)*(1+strlen(desc(o))));
+	if(desc==NULL)
+		return NULL;
+	desc=strcpy(desc, desc(o));
+	return desc;
+}
+
+
+
+int object_return_spaceid(Object *o){
+	assert(o!=NULL);
+	return spaceid(o);
+}
+
+
+
+
+int object_return_id(Object *o){
+	assert(o!=NULL);
+	return id(o);
+}
+
+
+Bool object_return_has(Object *o){
+	assert(o!=NULL);
+	return has(o);
+}
