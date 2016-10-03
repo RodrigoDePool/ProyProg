@@ -26,7 +26,7 @@ Object *object_ini(){
 	desc(o)=NULL;
 	spaceid(o)=-1;
 	id(o)=-1;
-	has(o)=0;	
+	has(o)=FALSE;	
 
 	return o;
 }

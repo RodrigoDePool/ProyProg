@@ -1,17 +1,16 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 #include <stdlib.h>
-#include <types.h>
-#define HASIT 1
-#define HASNIT 0
+#include "types.h"
+
 
 
 typedef struct _Object Object;
 
-/*Function: Creates an object with its variables to NULL or -1,
-  except for has whchi is set to HASNIT
-  Parameters: -
-  Returns: Object *                                                  */
+/*Function: Creates an object with its variables to NULL or -1,*/
+/*except for has whchi is set to HASNIT                        */
+/*Parameters: -                                                */
+/*Returns: Object *                                            */
 Object *object_ini();
 
 /*Function: free an object and all its variables    */
