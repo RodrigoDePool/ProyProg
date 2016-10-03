@@ -8,7 +8,7 @@
 #define id(o) (o)->id
 #define has(o) (o)->has
 
-typedef _Object{
+struct _Object{
 	int id;/*All properties could be check from the object id*/
 	char *name;
 	Bool has;

@@ -5,7 +5,7 @@
 #define name(p) (p)->name
 
 
-typedef _Player{
+struct _Player{
 	char *name;
 	int spaceid;
 	int coordx;

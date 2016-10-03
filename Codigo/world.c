@@ -2,7 +2,7 @@
 #define NDEBUG
 #include <assert.h>
 
-typedef _World{
+struct _World{
 	Space **spaces;
 	int numspaces;
 	Object **objects;
