@@ -1,8 +1,11 @@
+#ifndef SPACE_H
+#define SPACE_H
+
 typedef struct space_ Space;
 
 
 /*Creates a new space, allocating memory, NULL in case of error*/
-*Space space_ini();
+Space * space_ini();
 
 /*Frees memory allocated for a space and its members*/
 void space_free(Space *s);
@@ -14,8 +17,18 @@ int space_id(Space *s);
 int space_ neighbour( Space *s, int n);
 
 /*JUAN
-Con la funcion anterior me he dado cuenta de que lo de definir vecinos 1-4 habit 5-8 minijuegos esta muy bien si asumes que siempre estas en habitaciones, pero eso no sirve cuando estas dentro del space de un minijuego: Estas en el minijuego y podrias moverte a su vecino numero 6 que seria un minijuego inside a minijuego¿? 
-Como el unico movimiento que podriamos hacer en un minijuego es salir (volver a la habitacion "padre"), se me ocurre implementar una funcion minig_exit, ¿que opinas?*/
+Con la funcion anterior me he dado cuenta de que lo de definir vecinos 1-4 habit 5-8 minijuegos esta muy bien si 
+asumes que siempre estas en habitaciones, pero eso no sirve cuando estas dentro del space de un minijuego: 
+Estas en el minijuego y podrias moverte a su vecino numero 6 que seria un minijuego inside a minijuego¿? 
+Como el unico movimiento que podriamos hacer en un minijuego es salir (volver a la habitacion "padre"), 
+se me ocurre implementar una funcion minig_exit, ¿que opinas?*/
+
+/*LUCIA
+estoy completamente de acuerdo contigo, los minijuegos no son habitaciones como las otras, de hecho, no se si deberian tener las mismas
+propiedades (light, neighbour como bien has dicho tampoco tiene sentido...) Igual deberiamos crear un nuevo tipo que sea Minigame y que
+ya pensaremos como implementar mas adelante cuando vayamos pensando como van a funcionar los minijuegos (que van a tener una tela...) 
+Si no te gustan los cambios que he hecho volvemos a una version anterior
+*/
 
 /*Takes the player back to the minigame "parent" space, returning parent sId, -1 in case of error*/
 int exit_mgame(Space *s);
@@ -52,3 +65,4 @@ int go(Space *s, int dir);
 int unlock(Space *s, int dir, bool status);
 
 
+#endif
