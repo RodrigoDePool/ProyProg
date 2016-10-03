@@ -10,4 +10,4 @@ struct _Player{
 	int spaceid;
 	int coordx;
 	int coordy;
-}
+};

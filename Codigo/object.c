@@ -14,7 +14,7 @@ struct _Object{
 	Bool has;
 	int spaceid;
 	char *desc;
-}
+};
 
 
 
