@@ -27,7 +27,8 @@ se me ocurre implementar una funcion minig_exit, ¿que opinas?*/
 estoy completamente de acuerdo contigo, los minijuegos no son habitaciones como las otras, de hecho, no se si deberian tener las mismas
 propiedades (light, neighbour como bien has dicho tampoco tiene sentido...) Igual deberiamos crear un nuevo tipo que sea Minigame y que
 ya pensaremos como implementar mas adelante cuando vayamos pensando como van a funcionar los minijuegos (que van a tener una tela...) 
-Si no te gustan los cambios que he hecho volvemos a una version anterior
+El minigame es muy parecido a un space en el sentido de que, al menos por ahora tendría un spaceId igual que un space, pero detrás de éste
+spaceId se encuentra algo distinto a un space normal. ¿Que opinas?
 */
 
 /*Takes the player back to the minigame "parent" space, returning parent sId, -1 in case of error*/
