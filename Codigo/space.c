@@ -73,7 +73,8 @@ char *lDesc(Space * s){
 }
 
 int go(Space *s, int dir){
-	if (!s||sir<0||dir>7) return NULL;
+	if (!s||sir<0||dir>7) return -1;
+	if (isLocked(s, dir)==TRUE) return -2;
 	return s->neighbour[dir];
 }
 
