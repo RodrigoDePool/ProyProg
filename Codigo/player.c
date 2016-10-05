@@ -36,7 +36,7 @@ void player_free(Player *p){
 	free(p);
 }
 
-Status *Player_setName(Player *p, char *name){
+Status Player_setName(Player *p, char *name){
 	assert (p != NULL);
 	assert (name != NULL);
 	
@@ -57,7 +57,7 @@ Char *Player_getName(Player *p){
 	return name(p);
 }
 
-Status *Player_setSpaceid(Player *p, int id){
+Status Player_setSpaceid(Player *p, int id){
 	assert (p != NULL);
 	assert (id > 0); /*Just greater or grater or equal?*/
 	
@@ -72,7 +72,7 @@ int Player_getSpaceid(Player *p){
 	return spaceid(p);
 }
 
-Status *Player_setCoordinateX(Player *p, int x){
+Status Player_setCoordinateX(Player *p, int x){
 	assert (p != NULL);
 	assert (x > 0); /*Just greater or greater or equal?*/
 	
@@ -87,7 +87,7 @@ int Player_getCoordinateX(Player *p){
 	return x(p);
 }
 
-Status *Player_setCoordinateY(Player *p, int y){
+Status Player_setCoordinateY(Player *p, int y){
 	assert (p != NULL);
 	assert (y > 0); /*Just greater or greater or equal?*/
 	
