@@ -36,7 +36,7 @@ void player_free(Player *p){
 	free(p);
 }
 
-Status *set_name(Player *p, char *name){
+Status *Player_setName(Player *p, char *name){
 	assert (p != NULL);
 	assert (name != NULL);
 	
@@ -50,14 +50,14 @@ Status *set_name(Player *p, char *name){
 	return OK;
 }
 
-Char *get_name(Player *p){
+Char *Player_getName(Player *p){
 	assert (p != NULL);
 	assert (name(p) != NULL);
 	
 	return name(p);
 }
 
-Status *set_spaceid(Player *p, int id){
+Status *Player_setSpaceid(Player *p, int id){
 	assert (p != NULL);
 	assert (id > 0); /*Just greater or grater or equal?*/
 	
@@ -66,13 +66,13 @@ Status *set_spaceid(Player *p, int id){
 	return OK;
 }
 
-int get_spaceid(Player *p){
+int Player_getSpaceid(Player *p){
 	assert (p != NULL);
 	
 	return spaceid(p);
 }
 
-Status *set_coordinateX(Player *p, int x){
+Status *Player_setCoordinateX(Player *p, int x){
 	assert (p != NULL);
 	assert (x > 0); /*Just greater or greater or equal?*/
 	
@@ -81,20 +81,20 @@ Status *set_coordinateX(Player *p, int x){
 	return OK;
 }
 
-int get_coordinateX(Player *p){
+int Player_getCoordinateX(Player *p){
 	assert (p != NULL);
 	
 	return x(p);
 }
 
-Status *set_coordinateY(Player *p, int y){
+Status *Player_setCoordinateY(Player *p, int y){
 	assert (p != NULL);
 	assert (y > 0); /*Just greater or greater or equal?*/
 	y(p) = y;
 	return OK;
 }
 
-int get_coordinateY(Player *p){
+int Player_getCoordinateY(Player *p){
 	assert (p != NULL);
 	return y(p);
 }
