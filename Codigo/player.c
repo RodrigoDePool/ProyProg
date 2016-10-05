@@ -96,6 +96,7 @@ Status *Player_setCoordinateY(Player *p, int y){
 
 int Player_getCoordinateY(Player *p){
 	assert (p != NULL);
+	
 	return y(p);
 }
 
