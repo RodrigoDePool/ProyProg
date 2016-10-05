@@ -90,7 +90,9 @@ int Player_getCoordinateX(Player *p){
 Status *Player_setCoordinateY(Player *p, int y){
 	assert (p != NULL);
 	assert (y > 0); /*Just greater or greater or equal?*/
+	
 	y(p) = y;
+	
 	return OK;
 }
 
