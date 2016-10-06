@@ -1,6 +1,16 @@
 #ifndef SPACE_H
 #define SPACE_H
 #include "types.h"
+#define sId(s) (s)->sId
+#define neighbour[(i)](s) (s)->(neigbour[(i]))
+#define shortDesc(s) (s)->shortDesc
+#define longDesc(s) (s)->longDesc
+#define light(s) (s)->light
+#define isLocked(s) (s)->isLocked
+#define map(s) (s)->map
+#define rows(s) (s)->rows
+#define cols(s) (s)->cols
+
 typedef struct space_ Space;
 
 
@@ -40,7 +50,7 @@ char *space_getLDesc(Space * s);
 Status *space_setLDesc(Space * s, char *ldesc);
 
 /*Returns 0 if the chosen s neigbour is unlocked, 1 if its locked*/
-Bool space_isLocked(Space *s, int dir)
+Bool space_isLocked(Space *s, int dir);
 
 /*Returns char map of the specified space, NULL in case of error*/
 char **space_getMap(Space *c);

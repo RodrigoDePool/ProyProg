@@ -2,16 +2,12 @@
 #include <stdlib.h>
 #include "space.h"
 
-#define sId(s) (s)->sId
-#define neighbour[(i)](s) (s)->(neigbour[(i]))
-#define shortDesc(s) (s)->shortDesc
-#define longDesc(s) (s)->longDesc
-#define light(s) (s)->light
-#define isLocked(s) (s)->isLocked
-#define map(s) (s)->map
-#define rows(s) (s)->rows
-#define cols(s) (s)->cols
 
+
+/*NOTAS IMPORTANTES:
+	-Antes de meter un map hay que reservarlo, space_inino reserva espacio para map
+
+	*/
 
 struct space_{
 	int sId;
@@ -78,19 +74,19 @@ int space_getId(Space *s){
 }
 
 Status space_setId(Space *s, int sId){
-	if(!s || sId<0) /*Asumí que tiene que ser no negativo*/
+	if(!s || sId<0) 
 		return ERROR;
 	sId(s) = sId;
 	return OK;
 }
 
-int space_getNeighbour( Space *s, int n);{
+int space_getNeighbour(Space *s, int n);{
 	if(!s || n<0 || n>7)
 		return -1;
 	return neighbour[n](s)
 }
 
-Status space_setNeighbour( Space *s, int n, Space *neighbour){
+Status space_setNeighbour(Space *s, int n, Space *neighbour){
 	if(!s || n<0 || n>7 || !neighbour)
 		return ERROR;
 	neighbour[n](s) = sId(neighbour);
@@ -98,7 +94,9 @@ Status space_setNeighbour( Space *s, int n, Space *neighbour){
 }
 
 char *space_getSDesc(Space * s){
+	char* description=NULL;
 	if (!s) return NULL;
+	description=strdup();
 	return shortDesc(s);
 }
 
