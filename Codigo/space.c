@@ -5,8 +5,8 @@
 
 #define sId(s) (s)->sId
 #define neighbour(s) s->neighbour
-#define shortDesc(s) (s)->shortDesc
-#define longDesc(s) (s)->longDesc
+#define sDesc(s) (s)->shortDesc
+#define lDesc(s) (s)->longDesc
 #define light(s) (s)->light
 #define isLocked(s) (s)->isLocked
 #define map(s) (s)->map
@@ -128,13 +128,13 @@ char *space_getSDesc(Space * s){
 	char* description=NULL;
 	if (!s) return NULL;
 	description=strdup();
-	return shortDesc(s);
+	return sDesc(s);
 }
 
 Status *space_setSDesc(Space * s, char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
-	shortDesc(s) = strdup(sdesc);
+	sDesc(s) = strdup(sdesc);
 	return OK;
 }
 
@@ -146,7 +146,7 @@ char *space_getLDesc(Space * s){
 Status *space_setLDesc(Space * s, char *ldesc){
 	if(!s || !ldesc)
 		return ERROR;
-	longDesc(s) = strdup(ldesc);
+	lDesc(s) = strdup(ldesc);
 	return OK;
 }
 
