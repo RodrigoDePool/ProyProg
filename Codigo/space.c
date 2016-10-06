@@ -3,11 +3,15 @@
 #include "space.h"
 
 
-
-/*NOTAS IMPORTANTES:
-	-Antes de meter un map hay que reservarlo, space_inino reserva espacio para map
-
-	*/
+#define sId(s) (s)->sId
+#define neighbour[(i)](s) ((s)->(neigbour[(i)]))
+#define shortDesc(s) (s)->shortDesc
+#define longDesc(s) (s)->longDesc
+#define light(s) (s)->light
+#define isLocked(s) (s)->isLocked
+#define map(s) (s)->map
+#define rows(s) (s)->rows
+#define cols(s) (s)->col
 
 struct space_{
 	int sId;

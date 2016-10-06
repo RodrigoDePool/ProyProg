@@ -1,15 +1,7 @@
 #ifndef SPACE_H
 #define SPACE_H
 #include "types.h"
-#define sId(s) (s)->sId
-#define neighbour[(i)](s) (s)->(neigbour[(i]))
-#define shortDesc(s) (s)->shortDesc
-#define longDesc(s) (s)->longDesc
-#define light(s) (s)->light
-#define isLocked(s) (s)->isLocked
-#define map(s) (s)->map
-#define rows(s) (s)->rows
-#define cols(s) (s)->cols
+s
 
 typedef struct space_ Space;
 
