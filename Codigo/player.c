@@ -17,7 +17,7 @@ struct _Player{
 Player *player_ini(){
 	Player *p;
 	
-	p = (player*) malloc(sizeof(Player));
+	p = (Player*) malloc(sizeof(Player));
 	if(p == NULL) return NULL;
 	
 	name(p) = NULL;
@@ -45,12 +45,12 @@ Status Player_setName(Player *p, char *name){
 	name(p)=(char *)malloc(sizeof(char)*(1+strlen(name)));
 	if(name(p)==NULL) return ERROR;
 	
-	name(o)=strcpy(name(o),name);
+	name(p)=strcpy(name(p),name);
 	
 	return OK;
 }
 
-Char *Player_getName(Player *p){
+char *Player_getName(Player *p){
 	assert (p != NULL);
 	assert (name(p) != NULL);
 	
