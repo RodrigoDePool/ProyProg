@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <stdlib.h>
+#include "space.h"
 #include "types.h"
 
 typedef struct _Player Player;
