@@ -42,16 +42,7 @@ int space_go(Space *s, int dir){
 }
 
 
-int unlock(Space *s, int dir, Bool status){
-	Space * spaceToUnlock = NULL;
-	if(!s||dir<0||dir>7) return -1;
-	spaceToUnlock = /*funcion que devuelva un puntero al space on Id s->neighbor[dir]*/
-	Eso tb se soluciona si cambiamos el tipo  de space->neighbour
-	if(!spaceToUnlock) return -1
-	if(spaceToUnlock->isLocked==status) return 1;
-	if(/*player no tiene la llave*/) return -2;
-	spaceToUnlock->isLocked;	return 0;
-}
+
 
 
 /*------------------Funciones minigame------------------*/
@@ -150,11 +141,18 @@ Status *space_setLDesc(Space * s, char *ldesc){
 	return OK;
 }
 
+Status space_setLock(Space *s, Bool status){
+	if(!s)
+		return ERROR;
+	if(status != isLocked(s))
+		isLocked(s) = status;
+	return OK;
+}
+
 char **space_getMap(Space *c){
 	if(!c)
 		return NULL;
 	return map(c);
-
 }
 
 Status space_setMap(Space *c, char **map){

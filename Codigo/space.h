@@ -49,9 +49,10 @@ Status *space_setLDesc(Space * s, char *ldesc);
 /*Returns: 0 if s is unlocked, 1 if its locked*/
 Bool space_isLocked(Space *s);
 
-/*Function: lock/unlock (depending on status) door if possible
-  Returns: 0 succesfully (un)locked, -1 in case of no space, -2 no key and 1 if it is already locked/unlocked*/
-int unlock(Space *s, Bool status);
+/*Function: locks/unlocks (depending on status) s if possible.
+  status TRUE for isLocked(s)= TRUE 
+  Returns: OK if succesfully (un)locked/ if it was already (un)locked, ERROR in case of error*/
+Status space_setLock(Space *s, Bool status);
 
 /*Returns: char map of the specified space, NULL in case of error*/
 char **space_getMap(Space *c);
