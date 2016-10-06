@@ -35,12 +35,6 @@ Bool space_isLocked(Space *s, int dir){
 	return spaceToGo->isLocked;
 }
 
-int space_go(Space *s, int dir){
-	if (!s||dir<0||dir>7) return -1;
-	if (isLocked(s, dir)==TRUE) return -2;
-	return s->neighbour[dir];
-}
-
 
 
 
