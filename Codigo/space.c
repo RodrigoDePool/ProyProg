@@ -4,14 +4,14 @@
 
 
 #define sId(s) (s)->sId
-#define neighbour[(i)](s) ((s)->(neigbour[(i)]))
+#define neighbour(s) s->neighbour
 #define shortDesc(s) (s)->shortDesc
 #define longDesc(s) (s)->longDesc
 #define light(s) (s)->light
 #define isLocked(s) (s)->isLocked
 #define map(s) (s)->map
 #define rows(s) (s)->rows
-#define cols(s) (s)->col
+#define cols(s) (s)->cols
 
 struct space_{
 	int sId;
@@ -20,28 +20,18 @@ struct space_{
 	char *longDesc;
 	Bool light;
 	Bool isLocked; 
-	/*Habitacion cerrada desde todas las direcciones, deberiamos consultarlo con el resto
-	Complica un poco, la implementacion de: isLocked y unlock*/
 	char ** map;
 	int rows, cols;
 }Space;
 
 /*-----------------------Funciones sin terminar-----------------------*/
 
-Space * space_ini(){
-
-}
-
-void space_free(Space *s){
-
-}
 
 
 Bool space_isLocked(Space *s, int dir){
 	Space * spaceToGo = NULL;
 	if(!s||dir<0||dir>7) return FALSE;
-	spaceToGo = /*funcion que dado un spaceId devuelva un  puntero a ese space, esta funcion debe de estar en el world creo*/
-	/*Juan, esa funcion no es el get_Neigbour? <-- Si la implementamos para que devuelva un space* en vez de int*/
+	spaceToGo =
 	return spaceToGo->isLocked;
 }
 
@@ -71,6 +61,43 @@ int exitMgame(Space *s){
 }
 
 /*------------------Fuciones terminadas-----------------*/
+
+
+Space * space_ini(){
+	int i;
+	Space *s;
+	s = (Space *) malloc (sizeof(Space));
+	if(!s)
+		return NULL;
+	sId(s) = -1;
+	for(i = 0; i < 7; i++)
+		neighbour(s)[i] = -1;
+	shortDesc(s) = NULL;
+	longDesc(s) = NULL;
+	light(s) = FALSE;
+	isLocked(s) = FALSE;
+	map(s) = NULL;
+	rows(s) = -1;
+	cols(s) = -1;
+	return s;
+
+}
+
+void space_free(Space *s){
+	int i;
+	if(!s)
+		return;
+	if(shortDesc(s))
+		free (shortDesc(s));
+	if(longDesc(s))
+		free (longDesc(s));
+	if(map(s)){
+		for(i = 0; i < rows(s), i++){
+			if(map(s)[i]) free map(s)[i];
+		}
+		free(map(s));
+	}
+}
 
 int space_getId(Space *s){
 	if(!s) return -1;
@@ -107,7 +134,7 @@ char *space_getSDesc(Space * s){
 Status *space_setSDesc(Space * s, char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
-	shortDesc(s) = sdesc;
+	shortDesc(s) = strdup(sdesc);
 	return OK;
 }
 
@@ -119,7 +146,7 @@ char *space_getLDesc(Space * s){
 Status *space_setLDesc(Space * s, char *ldesc){
 	if(!s || !ldesc)
 		return ERROR;
-	longDesc(s) = ldesc;
+	longDesc(s) = strdup(ldesc);
 	return OK;
 }
 
@@ -131,9 +158,23 @@ char **space_getMap(Space *c){
 }
 
 Status space_setMap(Space *c, char **map){
+	int i, j;
+	char **copy;
 	if(!c || !map)
 		return ERROR;
-	map(c) = map;
+	/*Asumo que map tiene las dimensiones especificadas por cols, rows*/
+	copy = (char **)malloc(rows(c) * sizeof(char*));
+	if(!copy)
+		return ERROR;
+	for (i = 0; i<rows(c); i++){
+		copy[i] = strdup(map[i]);
+		if(!copy[i]){
+			for (j = 0; j<i; j++)
+				free(copy[j]);
+			return ERROR;
+		}	
+	}
+	map(c) = copy;
 	return OK;
 }
 
@@ -172,9 +213,6 @@ Status space_setNRows(Space *s, int nrows){
 	rows(s) = nrows;
 	return OK;
 }
-/*He sacado space_go de aqui porque creo que necesitamos player.h y aclarar que ahce exactamente la funcion*/
-
-
 
 
 
