@@ -51,8 +51,16 @@ int space_go(Space *s, int dir){
 	return s->neighbour[dir];
 }
 
-int unlock(Space *s, int dir, Bool status){
 
+int unlock(Space *s, int dir, Bool status){
+	Space * spaceToUnlock = NULL;
+	if(!s||dir<0||dir>7) return -1;
+	spaceToUnlock = /*funcion que devuelva un puntero al space on Id s->neighbor[dir]*/
+	Eso tb se soluciona si cambiamos el tipo  de space->neighbour
+	if(!spaceToUnlock) return -1
+	if(spaceToUnlock->isLocked==status) return 1;
+	if(/*player no tiene la llave*/) return -2;
+	spaceToUnlock->isLocked;	return 0;
 }
 
 
