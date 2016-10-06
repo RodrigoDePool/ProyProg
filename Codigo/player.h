@@ -21,7 +21,7 @@ Status Player_setName(Player*, char*);
 /*Parameters: Pointer to Player and an array of chars   */
 /*Return: OK if it has succeeded ERROR if it hasn't     */
 
-Char *Player_getName(Player*);
+char *Player_getName(Player*);
 /*Function: Gives back the name of the player				    */
 /*Parameters: Pointer to player 		  				          */
 /*Return: An array of chars with the name of the player */
@@ -52,7 +52,7 @@ Status Player_setCoordinateY(Player*, int);
 /*Parameters: Pointer to player and an integer                        */
 /*Return: ERROR or OK                                                 */
 
-int Player_getCoordinateY(Player*, int);
+int Player_getCoordinateY(Player*);
 /*Function: Gives back the coordinate y of the location of the player */
 /*Parameters: Pointer to player 		  		                      		  */
 /*Return: int with the coordinate y of the location of the player     */
