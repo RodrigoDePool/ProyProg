@@ -52,7 +52,7 @@ Status space_setMap(Space *c, char **map);
 Bool space_canISee(Space *s);
 
 /*Sets s->light to TRUE/FALSE depending on "light" value. ERROR in case of error*/
-Status space_setLight(space *s, Bool light);
+Status space_setLight(Space *s, Bool light);
 
 /*Returns number of columns of s map, -1 error*/
 int space_getNCols(Space *s);
