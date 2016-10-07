@@ -53,7 +53,7 @@ void world_free(World *w){
 
 
 
-Space *World_getSpaces(World *w){
+Space **World_getSpaces(World *w){
 	assert(w != NULL);
 	return spaces(w);
 }
@@ -68,7 +68,7 @@ int world_getNumSpaces(World *w){
 
 
 
-Object *World_getObjects(World *w){
+Object **World_getObjects(World *w){
 	assert(w != NULL);
 	return obj(w);
 }

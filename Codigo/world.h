@@ -32,7 +32,7 @@ void world_free(World *);
 /*Parameters: World				      */
 /*Return: The pointer DIRECTLY to the array of spaces */
 /*DO NOT FREE THE SPACE 	  		      */
-Space *World_getSpaces(World *w);
+Space **World_getSpaces(World *w);
 
 
 
@@ -47,7 +47,7 @@ int world_getNumSpaces(World *w);
 /*Parameters: World *					*/
 /*Return: The pointer DIRECTLY to the array of objects  */
 /*DO NOT FREE THE OBJECT			   	*/
-Object *World_getObjects(World *w);
+Object **World_getObjects(World *w);
 
 
 
