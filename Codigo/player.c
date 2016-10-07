@@ -21,9 +21,9 @@ Player *player_ini(){
 	if(p == NULL) return NULL;
 	
 	name(p) = NULL;
-	spaceid(p) = 0;
-	x(p) = 0;
-	y(p) = 0;
+	spaceid(p) = -1;
+	x(p) = -1;
+	y(p) = -1;
 	
 	return p;
 }
@@ -51,10 +51,11 @@ Status Player_setName(Player *p, char *name){
 }
 
 char *Player_getName(Player *p){
+	char *name;
 	assert (p != NULL);
 	assert (name(p) != NULL);
-	
-	return name(p);
+	name=strdup(name(p));
+	return name;
 }
 
 Status Player_setSpaceid(Player *p, int id){
