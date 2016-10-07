@@ -32,6 +32,13 @@ Status object_set_desc(Object *o, char *desc);
 /*Returns: ERROR or OK*/
 Status object_set_spaceid(Object *o, int spaceid);
 
+
+/*Function: sets the objectid                          */
+/*Parameters: Object * and integer>0 id		       */
+/*Returns: ERROR or OK				      */
+Status object_set_id(Object *o, int oid);
+
+
 /*Function: Sets and object as picked by the player*/
 /*Parameters:Pointer to object that is to be picked*/
 /*Return: ERROR or OK                              */
