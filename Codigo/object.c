@@ -46,7 +46,12 @@ void object_free(Object *o){
 	return;
 }
 
-
+Status object_set_id(Object *o, int oid){
+	assert(o!=NULL);
+	assert(oid>0);
+	id(o)=oid;
+	return OK;
+}
 
 Status object_set_name(Object *o, char *name){
 	assert(o!=NULL);
