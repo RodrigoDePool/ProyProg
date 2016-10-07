@@ -94,7 +94,7 @@ int space_getNeighbour(Space *s, int n);{
 	return neighbour(s)[n]
 }
 
-Status space_setNeighbour(Space *s, int n, Space *neighbour){
+Status space_setNeighbour(Space *s, int n, int neighbour){
 	if(!s || n<0 || n>7 || !neighbour)
 		return ERROR;
 	if(neighbour(s)[n] == -1)

@@ -37,7 +37,7 @@ int space_getNeighbour(Space *s, int n);
 /*Function: Sets sId of the chosen s neighbour (minigame case 4:7)
   Returns: OK/ERROR 
   Revision: 7 oct 2016*/
-Status space_setNeighbour( Space *s, int n, Space *neighbour);
+Status space_setNeighbour( Space *s, int n, int neighbour);
 
 /*Returns: short description of s, NULL in case of error
   Revision: 7 oct 2016*/
