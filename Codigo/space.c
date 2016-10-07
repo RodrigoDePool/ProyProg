@@ -116,7 +116,7 @@ char *space_getSDesc(Space * s){
 	return sDesc(s);
 }
 
-Status *space_setSDesc(Space * s, char *sdesc){
+Status space_setSDesc(Space * s, char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
 	sDesc(s) = strdup(sdesc);
@@ -124,11 +124,13 @@ Status *space_setSDesc(Space * s, char *sdesc){
 }
 
 char *space_getLDesc(Space * s){
+	char * c=NULL;
+	c
 	if (!s) return NULL;
 	return lDesc(s);
 }
 
-Status *space_setLDesc(Space * s, char *ldesc){
+Status space_setLDesc(Space * s, char *ldesc){
 	if(!s || !ldesc)
 		return ERROR;
 	lDesc(s) = strdup(ldesc);

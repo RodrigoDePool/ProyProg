@@ -27,3 +27,5 @@ world: array of spaces , int nspaces, array if objects, int nobj, 	player *me, *
 
 	Algunas funciones:	getId(space *s), neighbor(space*s, int dir), space *neighbor(space **s, int n_spaces, int id, int dir), char *name(space *s)
 funciones para moverse dentro de un espacio. Puedo moverme a una determinada coordenada??
+
+while(*b++=*a++); Copia un string
