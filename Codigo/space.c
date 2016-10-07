@@ -109,7 +109,7 @@ char *space_getSDesc(Space * s){
 	return sDesc(s);
 }
 
-Status *space_setSDesc(Space * s, char *sdesc){
+Status space_setSDesc(Space * s, char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
 	if(!sDesc(s))
@@ -119,10 +119,10 @@ Status *space_setSDesc(Space * s, char *sdesc){
 
 char *space_getLDesc(Space * s){
 	if (!s) return NULL;
-	return lDesc(s);
+	return strdup(sDesc(s));
 }
 
-Status *space_setLDesc(Space * s, char *ldesc){
+Status space_setLDesc(Space * s, char *ldesc){
 	if(!s || !ldesc)
 		return ERROR;
 	if(!lDesc(s))
@@ -130,7 +130,7 @@ Status *space_setLDesc(Space * s, char *ldesc){
 	return OK;
 }
 
-Status space_setLock(Space *s, Bool status){
+Status space_unlock(Space *s, Bool status){
 	if(!s)
 		return ERROR;
 	if(status != isLocked(s))
@@ -138,14 +138,14 @@ Status space_setLock(Space *s, Bool status){
 	return OK;
 }
 
-char **space_getMap(Space *c){
-	if(!c)
+char **space_getMap(Space *s){
+	if(!s)
 		return NULL;
-	return map(c);
+	return map(s);
 }
 
 Status space_setMap(Space *s, char **map){
-	if(!c || !map)
+	if(!s || !map)
 		return ERROR;
 	/*Asumo que map tiene las dimensiones especificadas por cols, rows*/
 	map(s) =  map;

@@ -8,7 +8,7 @@
 typedef struct _Object Object;
 
 /*Function: Creates an object with its variables to NULL or -1,*/
-/*except for has whchi is set to HASNIT                        */
+/*except for has which is set to FALSE                         */
 /*Parameters: -                                                */
 /*Returns: Object *                                            */
 Object *object_ini();
@@ -23,7 +23,7 @@ void object_free(Object *o);
 Status object_set_name(Object *,char *);
 
 /*Function: sets the description of an object         */
-/*Parameters: pointer to object and string(description*/
+/*Parameters: pointer to object and string(description)*/
 /*Returns: ERROR or OK                                */
 Status object_set_desc(Object *o, char *desc);
 
@@ -40,7 +40,7 @@ Status object_pick(Object *o);
 
 /*Function: Sets and objects as droped by the player*/
 /*Parameters: Pointer to object that is to be droped*/
-/*Return:ERROR or Ok 								*/
+/*Return:ERROR or Ok	       			    */
 Status object_drop(Object *o);
 
 
