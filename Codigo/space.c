@@ -99,7 +99,7 @@ Status space_setId(Space *s, int sId){
 int space_getNeighbour(Space *s, int n);{
 	if(!s || n<0 || n>7)
 		return -1;
-	return neighbour[n](s)
+	return neighbour[s](n)
 }
 
 Status space_setNeighbour(Space *s, int n, Space *neighbour){
@@ -116,7 +116,7 @@ char *space_getSDesc(Space * s){
 	return sDesc(s);
 }
 
-Status *space_setSDesc(Space * s, char *sdesc){
+Status space_setSDesc(Space * s, char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
 	sDesc(s) = strdup(sdesc);
@@ -125,17 +125,17 @@ Status *space_setSDesc(Space * s, char *sdesc){
 
 char *space_getLDesc(Space * s){
 	if (!s) return NULL;
-	return lDesc(s);
+	return strdup(sDesc(s));
 }
 
-Status *space_setLDesc(Space * s, char *ldesc){
+Status space_setLDesc(Space * s, char *ldesc){
 	if(!s || !ldesc)
 		return ERROR;
 	lDesc(s) = strdup(ldesc);
 	return OK;
 }
 
-Status space_setLock(Space *s, Bool status){
+Status space_unlock(Space *s, Bool status){
 	if(!s)
 		return ERROR;
 	if(status != isLocked(s))
