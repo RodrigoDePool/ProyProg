@@ -37,14 +37,6 @@ Bool space_isLocked(Space *s, int dir){
 
 
 
-
-
-/*------------------Funciones minigame------------------*/
-
-int exitMgame(Space *s){
-	return 0;
-}
-
 /*------------------Fuciones terminadas-----------------*/
 
 
@@ -99,13 +91,14 @@ Status space_setId(Space *s, int sId){
 int space_getNeighbour(Space *s, int n);{
 	if(!s || n<0 || n>7)
 		return -1;
-	return neighbour[n](s)
+	return neighbour(s)[n]
 }
 
 Status space_setNeighbour(Space *s, int n, Space *neighbour){
 	if(!s || n<0 || n>7 || !neighbour)
 		return ERROR;
-	neighbour[n](s) = sId(neighbour);
+	if(neighbour(s)[n] == -1)
+		neighbour(s)[n]	 = sId(neighbour);
 	return OK;
 }
 
@@ -119,7 +112,8 @@ char *space_getSDesc(Space * s){
 Status *space_setSDesc(Space * s, char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
-	sDesc(s) = strdup(sdesc);
+	if(!sDesc(s))
+		 sDesc(s) = strdup(sdesc);
 	return OK;
 }
 
@@ -131,7 +125,8 @@ char *space_getLDesc(Space * s){
 Status *space_setLDesc(Space * s, char *ldesc){
 	if(!s || !ldesc)
 		return ERROR;
-	lDesc(s) = strdup(ldesc);
+	if(!lDesc(s))
+		lDesc(s) = strdup(ldesc);
 	return OK;
 }
 
@@ -149,24 +144,11 @@ char **space_getMap(Space *c){
 	return map(c);
 }
 
-Status space_setMap(Space *c, char **map){
-	int i, j;
-	char **copy;
+Status space_setMap(Space *s, char **map){
 	if(!c || !map)
 		return ERROR;
 	/*Asumo que map tiene las dimensiones especificadas por cols, rows*/
-	copy = (char **)malloc(rows(c) * sizeof(char*));
-	if(!copy)
-		return ERROR;
-	for (i = 0; i<rows(c); i++){
-		copy[i] = strdup(map[i]);
-		if(!copy[i]){
-			for (j = 0; j<i; j++)
-				free(copy[j]);
-			return ERROR;
-		}	
-	}
-	map(c) = copy;
+	map(s) =  map;
 	return OK;
 }
 

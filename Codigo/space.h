@@ -11,7 +11,7 @@ typedef struct space_ Space;
 /**************************************/
 
 
-/*Function: allocates memory for a space: sId=neigh=rows=cols=-1; ldesc=sdesc=map=NULL; light=islocked=FALSE 
+/*Function: allocates memory for a space
   Returns: pointer to the space; NULL in case of error*/
 Space * space_ini();
 
@@ -59,7 +59,7 @@ char **space_getMap(Space *c);
 
 /*Function: Sets char map of c to a COPY of map
   Returns: OK/ERROR */
-Status space_setMap(Space *c, char **map);
+Status space_setMap(Space *s, char **map);
 
 /*Returns: 0 if s is dark, 1 if not*/
 Bool space_canISee(Space *s);
@@ -85,9 +85,6 @@ Status space_setNRows(Space *s, int nrows);
 /**************************************/
 
 
-/*Implementacion 8 vecinos, 4 ultimos minijuegos permite que un minijuego tenga vecinos (incluso minijuegos), que esten encendidos, 
-  Tenemos que ver como tratar a los minijuegos (como structures diferentes, o que)
-	Por ahora: para un minigame no podemos permitirle irse a sus vecinos (go in any directions) sino solo exit minigame*/
 
 
 /*Status tells us whether the user wants to lock or unlock door
