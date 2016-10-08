@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "space.h"
 
 
@@ -22,18 +23,8 @@ struct space_{
 	Bool isLocked; 
 	char ** map;
 	int rows, cols;
-}Space;
+};
 
-/*-----------------------Funciones sin terminar-----------------------*/
-
-
-
-Bool space_isLocked(Space *s, int dir){
-	Space * spaceToGo = NULL;
-	if(!s||dir<0||dir>7) return FALSE;
-	spaceToGo =
-	return spaceToGo->isLocked;
-}
 
 
 
@@ -49,8 +40,8 @@ Space * space_ini(){
 	sId(s) = -1;
 	for(i = 0; i < 7; i++)
 		neighbour(s)[i] = -1;
-	shortDesc(s) = NULL;
-	longDesc(s) = NULL;
+	sDesc(s) = NULL;
+	lDesc(s) = NULL;
 	light(s) = FALSE;
 	isLocked(s) = FALSE;
 	map(s) = NULL;
@@ -64,13 +55,13 @@ void space_free(Space *s){
 	int i;
 	if(!s)
 		return;
-	if(shortDesc(s))
-		free (shortDesc(s));
-	if(longDesc(s))
-		free (longDesc(s));
+	if(sDesc(s))
+		free (sDesc(s));
+	if(lDesc(s))
+		free (lDesc(s));
 	if(map(s)){
-		for(i = 0; i < rows(s), i++){
-			if(map(s)[i]) free map(s)[i];
+		for(i = 0; i < rows(s); i++){
+			if(map(s)[i]) free (map(s)[i]);
 		}
 		free(map(s));
 	}
@@ -88,28 +79,28 @@ Status space_setId(Space *s, int sId){
 	return OK;
 }
 
-int space_getNeighbour(Space *s, int n);{
+int space_getNeighbour(Space *s, int n){
 	if(!s || n<0 || n>7)
 		return -1;
-	return neighbour(s)[n]
+	return neighbour(s)[n];
 }
 
 Status space_setNeighbour(Space *s, int n, int neighbour){
 	if(!s || n<0 || n>7 || !neighbour)
 		return ERROR;
 	if(neighbour(s)[n] == -1)
-		neighbour(s)[n]	 = sId(neighbour);
+		neighbour(s)[n]	 = neighbour;
 	return OK;
 }
 
 char *space_getSDesc(Space * s){
 	char* description=NULL;
 	if (!s) return NULL;
-	description=strdup();
+	description=strdup(sDesc(s));
 	return sDesc(s);
 }
 
-Status space_setSDesc(Space * s, char *sdesc){
+Status space_setSDesc(Space * s,char *sdesc){
 	if(!s || !sdesc)
 		return ERROR;
 	if(!sDesc(s))
@@ -130,7 +121,12 @@ Status space_setLDesc(Space * s, char *ldesc){
 	return OK;
 }
 
-Status space_unlock(Space *s, Bool status){
+Bool space_isLocked(Space *s){
+	if(!s) return FALSE;
+	return isLocked(s);
+}
+
+Status space_setLock(Space *s, Bool status){
 	if(!s)
 		return ERROR;
 	if(status != isLocked(s))
@@ -157,7 +153,7 @@ Bool space_canISee(Space *s){
 	return light(s);
 }
 
-Status space_setLight(space *s, Bool light){
+Status space_setLight(Space *s, Bool light){
 	if(!s)
 		return ERROR;
 	light(s) = light;
