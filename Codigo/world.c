@@ -8,6 +8,7 @@
 #define numobj(w) (w)->numobjects
 #define player(w) (w)->player
 
+
 struct _World{
 	Space **spaces;
 	int numspaces;
@@ -16,64 +17,79 @@ struct _World{
 	Player *player;
 };
 
+
+
 World *world_ini(Object **obj, Player *p, Space **space, int numobj, int numspaces){ 
-	assert(obj != NULL);				   /*Since the player, the objects and the spaces are fixed*/
-	assert(p != NULL);				   /*we can just initialize the values right here          */
+	World *w;
+	assert(obj != NULL);
+	assert(p != NULL);				   
 	assert(space != NULL);
-	World *w;					   
+						   
 	
 	w = (World *) malloc (sizeof(World));
 	if (w == NULL) return NULL;
 	
-	obj(w) = obj;     /*We can just asign the pointers because we wont use the full array of objects or the*/
-	player(w) = p;    /*full array of spaces anywhere else out of the world structure                      */
+	obj(w) = obj;     
+	player(w) = p;    
 	spaces(w) = space;
 	numobj(w) = numobj;
 	numspaces(w) = numspaces;
 	return w;
 }
+
+
 	
+void world_free(World *w){
+	int i;	
+	assert(w!=NULL);
+	for(i=0; i<numobj(w);i++)
+		object_free(obj(w)[i]);
+	for(i=0; i<numspaces(w);i++)
+		space_free(spaces(w)[i]);
+	player_free(player(w));
+	free(w);
+	return;
+}
+
+
+
 Space **World_getSpaces(World *w){
 	assert(w != NULL);
-	
-	Space **s = (Spaces**) malloc(numspaces(w)*sizeof(Space));
-	if (s == NULL) return NULL;
-	
-	s = spaces(w);
-	
-	return s;
+	return spaces(w);
 }
+
+
 
 int world_getNumSpaces(World *w){
 	assert(w != NULL);
-	
 	return numspaces(w);
 }
 
+
+
+
 Object **World_getObjects(World *w){
 	assert(w != NULL);
-	
-	Object **o = (Object**) malloc(numobj(w)*sizeof(Object));
-	if (s == NULL) return NULL;
-	
-	o = obj(w);
-	
-	return o;
+	return obj(w);
 }
+
+
+
 
 int world_getNumObjects(World *w){
 	assert(w != NULL);
-	
 	return numobj(w);
 }
 
+
+
+
 Player *World_getPlayer(World *w){
 	assert(w != NULL);
-	
-	Player *p = (Player*) malloc(sizeof(Player));
-	
-	p = player(w);
-	
-	return p;
+	return player(w);
 }
+
+
+
+
 	

@@ -30,8 +30,9 @@ Status Player_setName(Player*, char*);
 
 char *Player_getName(Player*);
 /*Function: Gives back the name of the player	       */
-/*Parameters: Pointer to player 		       */
+/*Parameters: Pointer to char	 		       */
 /*Return: An array of chars with the name of the player*/
+/*its a COPY YOU MUST FREE IT			        */
 
 
 

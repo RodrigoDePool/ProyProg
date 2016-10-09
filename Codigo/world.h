@@ -28,21 +28,44 @@ void world_free(World *);
 
 
 
-/*Funcitions: Gives back a space given the spaceid*/
-/*Parameters: World and int>0 which is the spaceid*/
-/*Return: The pointer DIRECTLY to the space asked */
-Space *World_getSpace(World *w, int sid);
+/*Funcitions: Gives back an array of spaces 	      */
+/*Parameters: World				      */
+/*Return: The pointer DIRECTLY to the array of spaces */
+/*DO NOT FREE THE SPACE 	  		      */
+Space **World_getSpaces(World *w);
 
 
-/*Function:*/
-/*Parameters:*/
-/*Return: */
+
+/*Function: Gives back the number of spaces of the World*/
+/*Parameters: Pointer to World				*/
+/*Return: integer with the num of spaces  		*/
 int world_getNumSpaces(World *w);
 
+
+
+/*Funcition: Gives back an array of objects of the world*/
+/*Parameters: World *					*/
+/*Return: The pointer DIRECTLY to the array of objects  */
+/*DO NOT FREE THE OBJECT			   	*/
 Object **World_getObjects(World *w);
 
+
+
+/*Function: Gives back the number of objects in the World */
+/*Parameter: Pointer to World				   */
+/*Return: integer with the number of objects		   */
 int world_getNumObjects(World *w);
 
+
+
+/*Function: Gives back a pointer to the player*/
+/*Parameter: Pointer to world                 */
+/*Return: the pointer DIRECTLY to the player  */
+/*DO NOT FREE THIS PLAYER		      */
 Player *World_getPlayer(World *w);
+
+
+
+
 
 #endif

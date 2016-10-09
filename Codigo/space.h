@@ -14,7 +14,6 @@ typedef struct space_ Space;
 /*Function: allocates memory for a space
   Returns: pointer to the space; NULL in case of error
   Revision: 7 oct 2016*/
->>>>>>> 93d489a74e603af00af253bf1f49bb42eef15597
 Space * space_ini();
 
 /*Frees memory allocated for a space (s) and its members
