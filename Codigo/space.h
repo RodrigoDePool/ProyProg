@@ -44,7 +44,7 @@ char *space_getSDesc(Space * s);
 
 /*Function: Sets short description of s
   Returns: OK/ERROR 
-  Revision: 7 oct 2016*/
+  Revision: 10 oct 2016*/
 Status space_setSDesc(Space * s, char *sdesc);
 
 /*Returns: long description of s, NULL in case of error
