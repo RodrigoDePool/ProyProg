@@ -12,7 +12,7 @@ typedef struct space_ Space;
 
 
 /*Function: allocates memory for a space
-  Returns: pointer to the space; NULL in case of error
+  Returns: pointer to the new space; NULL in case of error
   Revision: 7 oct 2016*/
 Space * space_ini();
 
@@ -38,7 +38,7 @@ int space_getNeighbour(Space *s, int n);
   Revision: 7 oct 2016*/
 Status space_setNeighbour( Space *s, int n, int neighbour);
 
-/*Returns: short description of s, NULL in case of error
+/*Returns: COPY ofshort description of s, NULL in case of error
   Revision: 7 oct 2016*/
 char *space_getSDesc(Space * s);
 
@@ -47,7 +47,7 @@ char *space_getSDesc(Space * s);
   Revision: 10 oct 2016*/
 Status space_setSDesc(Space * s, char *sdesc);
 
-/*Returns: long description of s, NULL in case of error
+/*Returns: COPY of long description of s, NULL in case of error
 Revision: 7 oct 2016*/
 char *space_getLDesc(Space * s);
 
@@ -65,7 +65,8 @@ Bool space_isLocked(Space *s);
   Revision 7 oct 2016:*/
 Status space_setLock(Space *s, Bool status);
 
-/*Returns: char map of the specified space, NULL in case of error
+/*Returns: NOT A COPY OF THE MAP, DON'T FREE
+char map of the specified space, NULL in case of error
   Revision: 7 oct 2016*/
 char **space_getMap(Space *s);
 
@@ -108,5 +109,17 @@ Status space_setNRows(Space *s, int nrows);
  Revision: 7 oct 2016*/
 int space_unlock(Space *s, int dir, Bool status);
 
+/*Returns: initializes and sets space from the file
+  
+  Revision: 13 oct 2016
+*/
+
+Space * spacefromfile(FILE * f);
+
+/*Returns: initializes and sets map from the file
+ 
+  Revision: 13 oct 2016
+*/
+char ** mapfromfile(FILE * f, int nrows, int ncols);
 
 #endif

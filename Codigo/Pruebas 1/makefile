@@ -1,3 +1,8 @@
-CLAGS = -Wall -ansi -pedantic -g 
+CC = gcc -ansi -pedantic
+CFLAGS = -Wall -g
 
-gcc -c $CFLAGS : mainPruebasSpace.o mainPruebasSpace.c 
+testSpace.o : testSpace.c space.h space.c
+	$(CC) $(CFLAGS) -c
+
+
+clean : rm -f *.o mainPruebasSpace
