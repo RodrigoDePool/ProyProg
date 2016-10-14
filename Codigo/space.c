@@ -218,6 +218,39 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 	return map;
 }
 
+Space * spacefromfile(FILE * f){
+/*	Bool light;
+	Bool isLocked; 
+	char ** map;
+	int rows, cols;
+};*/
+	char buff[MAX_L_DESC];
+	int aux, i;
+	Bool a;
+	Space *s;
+	s = space_ini();
+	if(!s)
+		return NULL;
+	fscanf(f, "%d\n", aux);
+	space_setId(s, aux);
+	for(i=0; i<7; i++){
+		fscanf(f, "%d ", &aux);
+		space_setNeughbour(s, i, aux);
+	}
+	fscanf(f, "%d\n, aux);
+	space_setNeighbour(s, i, aux);
+	fscanf(f, "%s\n", buff);
+	space_setSDesc(s, buff);
+	fscanf(f, "%s\n", buff);
+	space_setLDesc(s, buff);
+	
+	
+	
+	
+		
+
+}	
+	
 
 
 
