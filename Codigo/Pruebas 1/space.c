@@ -13,6 +13,8 @@
 #define map(s) (s)->map
 #define rows(s) (s)->rows
 #define cols(s) (s)->cols
+#define MAX_L_DESC 1000
+#define MAX_S_DESC 10
 
 struct space_{
 	int sId;
