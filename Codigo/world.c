@@ -90,6 +90,35 @@ Player *World_getPlayer(World *w){
 }
 
 
+World *worldfromfile(char *file){
+	assert(file!=NULL);
+	FILE *f;
+	int i,j;
+	int numspaces;
+	Space **spaces;
+	Player *player;
+		
+	f=fopen(file,"r");
+	if(f==NULL) return NULL;
+	fscanf("%d\n",&numspaces);
+	spaces=(Space **)malloc(sizeof(Space *)*numspaces);
+	if(spaces==NULL) return NULL;
+
+	for(i=0;i<numspaces;i++){
+		spaces[i]=spacefromfile(f);
+		if(spaces[i]==NULL){
+			for(j=i;j>=0;j--){
+				space_free(spaces[j]);			
+			}
+			free(spaces);
+			return NULL;
+		}
+	}
+	
+	player=player_fromFile(f);
+	/*Falta terminarlo!!!*/
+
+}
 
 
 	

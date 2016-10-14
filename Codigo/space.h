@@ -70,7 +70,8 @@ char map of the specified space, NULL in case of error
   Revision: 7 oct 2016*/
 char **space_getMap(Space *s);
 
-/*Function: Sets char map of s to the file map
+/*Function: Sets char map of s to the input map 
+	IT DOES NOT COPY THE MAP DON'T FREE map
   Returns: OK/ERROR 
   Revision: 7 oct 2016*/
 Status space_setMap(Space *s, char **map);
@@ -117,7 +118,10 @@ int space_unlock(Space *s, int dir, Bool status);
 Space * spacefromfile(FILE * f);
 
 /*Returns: initializes and sets map from the file
- 
+  Parameters: Pointer to file must be in the first character of the
+  map.
+  ncols>0
+  nrows>0
   Revision: 13 oct 2016
 */
 char ** mapfromfile(FILE * f, int nrows, int ncols);

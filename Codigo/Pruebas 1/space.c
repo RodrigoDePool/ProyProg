@@ -64,8 +64,10 @@ void space_free(Space *s){
 	if(map(s)){
 		for(i = 0; i < rows(s); i++){
 			if(map(s)[i]) free (map(s)[i]);
+			map(s)[i]=NULL;
 		}
 		free(map(s));
+		map(s)=NULL;
 	}
 }
 

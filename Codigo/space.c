@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "space.h"
+/*#define NDEBUG*/
+#include <assert.h>
 
 
 #define sId(s) (s)->sId
@@ -189,7 +191,32 @@ Status space_setNRows(Space *s, int nrows){
 
 
 
+char ** mapfromfile(FILE * f, int nrows, int ncols){
+	assert(nrows>0);
+	assert(ncols>0);
+	asser(f!=NULL);
+	char **map;
+	int i,j;
 
+	map=(char **)malloc(sizeof(char *)*nrows);
+	if(map==NULL) return NULL;
+	for(i=0;i<nrows;i++){
+		map[i]=(char *)malloc(sizeof(char)*ncols);
+		if(map[i]==NULL){/*lack of memory*/		
+			for(j=i-1;j>=0;j--){
+				free(map[j]);
+			}
+			free(map);
+			return NULL;
+		}
+	}
+	
+	for(i=0;i<nrows;i++){
+		fgets(map[i],ncols+1,f);		
+	}
+
+	return map;
+}
 
 
 
