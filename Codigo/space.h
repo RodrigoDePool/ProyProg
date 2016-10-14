@@ -70,7 +70,8 @@ char map of the specified space, NULL in case of error
   Revision: 7 oct 2016*/
 char **space_getMap(Space *s);
 
-/*Function: Sets char map of s to the file map
+/*Function: Sets char map of s to the input map 
+	IT DOES NOT COPY THE MAP DON'T FREE map
   Returns: OK/ERROR 
   Revision: 7 oct 2016*/
 Status space_setMap(Space *s, char **map);
