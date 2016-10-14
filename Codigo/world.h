@@ -65,7 +65,27 @@ int world_getNumObjects(World *w);
 Player *World_getPlayer(World *w);
 
 
+/*Return: Initializes a World from a file (format)*/
+/*Parameter: path to the file you want to open*/
+World *worldfromfile(char *file);
 
-
+/*
+FORMAT OF THE FILE:
+	NUMBEROFSPACES
+	SPACE1
+	SPACE2
+	SPACE3
+	.
+	.
+	.
+	PLAYER
+	NUMBEROFOBJECTS
+	OBJECT1
+	OBJECT2
+	OBJECT3
+	.
+	.
+	.
+*/
 
 #endif
