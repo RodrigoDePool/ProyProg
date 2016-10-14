@@ -211,7 +211,7 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 		}
 	}
 	
-	for(i=0;i<nrows;i++{
+	for(i=0;i<nrows;i++){
 		fgets(map[i],ncols+1,f);		
 	}
 
