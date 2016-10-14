@@ -117,7 +117,10 @@ int space_unlock(Space *s, int dir, Bool status);
 Space * spacefromfile(FILE * f);
 
 /*Returns: initializes and sets map from the file
- 
+  Parameters: Pointer to file must be in the first character of the
+  map.
+  ncols>0
+  nrows>0
   Revision: 13 oct 2016
 */
 char ** mapfromfile(FILE * f, int nrows, int ncols);
