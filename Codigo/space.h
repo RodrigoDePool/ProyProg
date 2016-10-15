@@ -26,7 +26,7 @@ int space_getId(Space *s);
 
 /*Function: Sets s->sId to sId
   Returns: OK/ERROR
-  Revision: 7 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setId(Space *s, int sId);
 
 /*Returns: sId of the chosen s neighbour (minigame case 4:7). -1 in case of error
@@ -35,16 +35,16 @@ int space_getNeighbour(Space *s, int n);
 
 /*Function: Sets sId of the chosen s neighbour (minigame case 4:7)
   Returns: OK/ERROR 
-  Revision: 7 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setNeighbour( Space *s, int n, int neighbour);
 
 /*Returns: COPY ofshort description of s, NULL in case of error
   Revision: 7 oct 2016*/
 char *space_getSDesc(Space * s);
 
-/*Function: Sets short description of s
+/*Function: Sets short description of s to a COPY of sdesc
   Returns: OK/ERROR 
-  Revision: 10 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setSDesc(Space * s, char *sdesc);
 
 /*Returns: COPY of long description of s, NULL in case of error
@@ -53,7 +53,7 @@ char *space_getLDesc(Space * s);
 
 /*Function: Sets long description of s to a COPY of ldesc
   Returns: OK/ERROR 
-  Revision: 7 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setLDesc(Space * s, char *ldesc);
 
 /*Returns: 0 if s is unlocked, 1 if its locked*/
@@ -62,7 +62,7 @@ Bool space_isLocked(Space *s);
 /*Function: locks/unlocks (depending on status) s if possible.
   status TRUE for isLocked(s)= TRUE 
   Returns: OK succesfully (un)locked/already (un)locked, ERROR in case of error
-  Revision 7 oct 2016:*/
+  Revision 15 oct 2016:*/
 Status space_setLock(Space *s, Bool status);
 
 /*Returns: NOT A COPY OF THE MAP, DON'T FREE
@@ -73,7 +73,7 @@ char **space_getMap(Space *s);
 /*Function: Sets char map of s to the input map 
 	IT DOES NOT COPY THE MAP DON'T FREE map
   Returns: OK/ERROR 
-  Revision: 7 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setMap(Space *s, char **map);
 
 /*Returns: 0 if s is dark, 1 if not*/
@@ -81,14 +81,15 @@ Bool space_canISee(Space *s);
 
 /*Function: Sets light(s) to TRUE/FALSE depending on "light" value
   Returns: OK/ERROR
-  Revision: 7 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setLight(Space *s, Bool light);
 
 /*Returns: number of columns of s map, -1 error*/
 int space_getNCols(Space *s);
 
 /*Function: Sets number of columns of s map
-  Returns: OK/ERROR */
+  Returns: OK/ERROR
+  Revision: 15 oct 2016*/
 Status space_setNCols(Space *s, int ncols);
 
 /*Returns: number of rows of s map, -1 error
@@ -97,7 +98,7 @@ int space_getNRows(Space *s);
 
 /*Function: Sets number of rows of s map
   Returns: OK/ERROR 
-  Revision: 7 oct 2016*/
+  Revision: 15 oct 2016*/
 Status space_setNRows(Space *s, int nrows);
 
 /**************************************/
@@ -112,7 +113,7 @@ int space_unlock(Space *s, int dir, Bool status);
 
 /*Returns: initializes and sets space from the file
   
-  Revision: 13 oct 2016
+  Revision: 15 oct 2016
 */
 
 Space * spacefromfile(FILE * f);
