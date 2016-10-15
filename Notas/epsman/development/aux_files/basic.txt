@@ -1,0 +1,74 @@
+#
+# Configuration file for a simple basic game
+#
+# (C) Simone Santini, 2016
+#
+#
+#
+# General interface data
+#
+32   # rows of the interface (total)
+100  # columns of the interface
+81   # size of the playing field
+#
+#
+# Data about the score board
+#
+Your Score:   # score caption
+1             # caption row inside the window
+2             # caption column inside the window
+2             # score row inside the window
+2             # score column inside the window
+#
+#
+# Data for the game in general
+#
+@             # character that identifies the player
+15            # initial player position -- row number
+02            # initial player position -- column number
+X             # character that identifies the pellets
+04            # number of pellets on screen
+10            # number of points per pellet
+#
+#
+# Data for the game board
+#
+30           # Rows of the game board
+80           # Columns of the game board
+#
+# Game board
+#         1         2         3         4         5         6         7
+#1234567890123456789012345678901234567890123456789012345678901234567890123456789
+================================================================================# 0
+                                                                               |# 1
+     MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM       |# 2
+                         M                                             M       |# 3
+                         M                                             M       |# 4
+               M         M         MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM       |# 5
+               M         M                                             M       |# 6
+               M         M                                             M       |# 7
+               M         MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM      M       |# 8
+               M         M                                             M       |# 9
+               M         M                                             M       |# 10
+               M         M         MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM       |# 11
+               M         M                                             M       |# 12
+               M         M                                             M       |# 13
+               M         M                                                     |# 14
+               M         MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM      |# 15
+               M                                 M                      M      |# 16
+               M                                 M                      M      |# 17
+               MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM            M         M      |# 18
+                                                 M            M         M      |# 19
+                                                 M            M         M      |# 20
+                                                 M            M         M      |# 21
+                                                 M            MMMMMMMMMMM      |# 22
+                     MMMMMMMMMMMMMMMMMMMMMMMMMMMMM                      M      |# 23
+                                                 M                      M      |# 24
+                                                 MMMMMMMMMMMMMMM        M      |# 25
+                                                 M                             |# 26
+                                                                               |# 27
+                                                                               |# 28
+================================================================================# 29
+
+
+
