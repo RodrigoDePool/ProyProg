@@ -1,6 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 #include <stdlib.h>
+#include <stdio.h>
 #include "types.h"
 
 
@@ -81,5 +82,11 @@ int object_return_id(Object *o);
 /*Parameters: Object * 									   */
 /*Return: TRUE if the player has it, FALSE in anyother cas */
 Bool object_return_has(Object *o);
+
+
+/*Returns: An initialized pointer to object given in the file*/
+/*Parameter: opened file with the format of the structure    */
+/*SAME ORDER AND SEPARETED BY \n							 */
+Object *objectfromfile(FILE *f);
 
 #endif
