@@ -43,6 +43,7 @@ Status space_setNeighbour( Space *s, int n, int neighbour);
 char *space_getSDesc(Space * s);
 
 /*Function: Sets short description of s
+	DOES NOT MAKE A COPY OF sdesc DONT FREE sdesc
   Returns: OK/ERROR 
   Revision: 10 oct 2016*/
 Status space_setSDesc(Space * s, char *sdesc);
