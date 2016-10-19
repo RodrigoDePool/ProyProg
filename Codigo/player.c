@@ -103,7 +103,21 @@ int Player_getCoordinateY(Player *p){
 	return y(p);
 }
 
-	
+Player *playerfromfile(FILE* f){
+	char c[20];
+	int spaceid, x, y;
+	Player *p = player_ini();
+	if (p == NULL)
+		return NULL;
+	fscanf("%c", c);
+	fscanf("%d", &spaceid);
+	fscanf("%d %d", &x, &y);
+	Player_setName(p, c);
+	Player_setSpaceid(p, spaceid);
+	Player_setCoordinateX(p, x);
+	Player_setCoordinateY(p,y);
+	return p;
+}
 	
 	
 	

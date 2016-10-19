@@ -70,7 +70,6 @@ void space_free(Space *s){
 		}
 		free(map(s));
 	}
-	free(s);
 }
 
 int space_getId(Space *s){
@@ -203,8 +202,7 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 	}
 	
 	for(i=0;i<nrows;i++){
-		fgets(map[i],ncols+1,f);
-		fscanf(f,"\n");			
+		fgets(map[i],ncols+1,f);		
 	}
 
 	return map;

@@ -1,7 +1,6 @@
 #ifndef SPACE_H
 #define SPACE_H
 #include "types.h"
-#include <stdio.h>
 
 
 typedef struct space_ Space;
@@ -43,12 +42,7 @@ Status space_setNeighbour( Space *s, int n, int neighbour);
   Revision: 7 oct 2016*/
 char *space_getSDesc(Space * s);
 
-/*<<<<<<< HEAD No meheatrevido a borrar esto, no se quien lo ha puesto aqui. Lo he comentado.*/
-/*Function: Sets short description of s
-	DOES NOT MAKE A COPY OF sdesc DONT FREE sdesc
-=======*/
 /*Function: Sets short description of s to a COPY of sdesc
->>>>>>> 57d78abf4b9665029f4e807062d991ed82e20325
   Returns: OK/ERROR 
   Revision: 15 oct 2016*/
 Status space_setSDesc(Space * s, char *sdesc);

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "space.h"
+/*#define NDEBUG*/
+#include <assert.h>
 
 
 #define sId(s) (s)->sId
@@ -14,7 +16,7 @@
 #define rows(s) (s)->rows
 #define cols(s) (s)->cols
 #define MAX_L_DESC 1000
-#define MAX_S_DESC 10
+#define MAX_S_DESC 100
 
 struct space_{
 	int sId;
@@ -23,8 +25,9 @@ struct space_{
 	char *longDesc;
 	Bool light;
 	Bool isLocked; 
-	char ** map;
 	int rows, cols;
+	char ** map;
+	
 };
 
 
@@ -40,7 +43,7 @@ Space * space_ini(){
 	if(!s)
 		return NULL;
 	sId(s) = -1;
-	for(i = 0; i < 7; i++)
+	for(i = 0; i < 8; i++)
 		neighbour(s)[i] = -1;
 	sDesc(s) = NULL;
 	lDesc(s) = NULL;
@@ -64,11 +67,10 @@ void space_free(Space *s){
 	if(map(s)){
 		for(i = 0; i < rows(s); i++){
 			if(map(s)[i]) free (map(s)[i]);
-			map(s)[i]=NULL;
 		}
 		free(map(s));
-		map(s)=NULL;
 	}
+	free(s);
 }
 
 int space_getId(Space *s){
@@ -77,8 +79,7 @@ int space_getId(Space *s){
 }
 
 Status space_setId(Space *s, int sId){
-	if(!s || sId<0) 
-		return ERROR;
+	assert(s && sId>-1);
 	sId(s) = sId;
 	return OK;
 }
@@ -90,8 +91,7 @@ int space_getNeighbour(Space *s, int n){
 }
 
 Status space_setNeighbour(Space *s, int n, int neighbour){
-	if(!s || n<0 || n>7 || !neighbour)
-		return ERROR;
+	assert(s && n>-1 && n<8 && neighbour>-1 );
 	if(neighbour(s)[n] == -1)
 		neighbour(s)[n]	 = neighbour;
 	return OK;
@@ -105,8 +105,7 @@ char *space_getSDesc(Space * s){
 }
 
 Status space_setSDesc(Space * s,char *sdesc){
-	if(!s || !sdesc)
-		return ERROR;
+	assert(s && sdesc);
 	if(!sDesc(s))
 		 sDesc(s) = strdup(sdesc);
 	return OK;
@@ -114,16 +113,28 @@ Status space_setSDesc(Space * s,char *sdesc){
 
 char *space_getLDesc(Space * s){
 	if (!s) return NULL;
-	return strdup(sDesc(s));
+	return strdup(lDesc(s));
 }
 
 Status space_setLDesc(Space * s, char *ldesc){
-	if(!s || !ldesc)
-		return ERROR;
+	assert(s && ldesc);
 	if(!lDesc(s))
+	/*Assume we set lDesc only once*/
 		lDesc(s) = strdup(ldesc);
 	return OK;
 }
+
+Bool space_canISee(Space *s){
+	if(!s) return FALSE;
+	return light(s);
+}
+
+Status space_setLight(Space *s, Bool light){
+	assert(s);
+	light(s) = light;
+	return OK;
+}
+
 
 Bool space_isLocked(Space *s){
 	if(!s) return FALSE;
@@ -131,10 +142,31 @@ Bool space_isLocked(Space *s){
 }
 
 Status space_setLock(Space *s, Bool status){
-	if(!s)
-		return ERROR;
+	assert(s);
 	if(status != isLocked(s))
 		isLocked(s) = status;
+	return OK;
+}
+
+int space_getNRows(Space *s){
+	if(!s) return -1;
+	return rows(s);
+}
+
+Status space_setNRows(Space *s, int nrows){
+	assert(s && nrows>0);
+	rows(s) = nrows;
+	return OK;
+}
+
+int space_getNCols(Space *s){
+	if(!s) return -1;
+	return cols(s);
+}
+
+Status space_setNCols(Space *s, int ncols){
+	assert(s && ncols>0);
+	cols(s) = ncols;
 	return OK;
 }
 
@@ -145,54 +177,114 @@ char **space_getMap(Space *s){
 }
 
 Status space_setMap(Space *s, char **map){
-	if(!s || !map)
-		return ERROR;
-	/*Asumo que map tiene las dimensiones especificadas por cols, rows*/
+	assert(s && map);
+	/*Assume map dimensions are the ones in cols, rows*/
 	map(s) =  map;
 	return OK;
 }
 
-Bool space_canISee(Space *s){
-	if(!s) return FALSE;
-	return light(s);
+char ** mapfromfile(FILE * f, int nrows, int ncols){
+	assert(nrows>0);
+	assert(ncols>0);
+	assert(f!=NULL);
+	char **map;
+	int i,j;
+	map=(char **)malloc(sizeof(char *)*nrows);
+	if(map==NULL) return NULL;
+	for(i=0;i<nrows;i++){
+		map[i]=(char *)malloc(sizeof(char)*ncols);
+		if(map[i]==NULL){/*lack of memory*/		
+			for(j=i-1;j>=0;j--){
+				free(map[j]);
+			}
+			free(map);
+			return NULL;
+		}
+	}
+	
+	for(i=0;i<nrows;i++){
+		fgets(map[i],ncols+1,f);
+		fscanf(f,"\n");			
+	}
+
+	return map;
 }
 
-Status space_setLight(Space *s, Bool light){
+Space * spacefromfile(FILE * f){
+	assert(f!=NULL);
+	char buff[MAX_L_DESC];
+	int aux, i;
+	FILE *file;
+	/*Bool b*/;
+	Space *s;
+	
+	s = space_ini();
 	if(!s)
-		return ERROR;
-	light(s) = light;
-	return OK;
-}
-
-int space_getNCols(Space *s){
-	if(!s) return -1;
-	return cols(s);
-}
-
-Status space_setNCols(Space *s, int ncols){
-	if(!s || ncols<1)
-		return ERROR;
-	cols(s) = ncols;
-	return OK;
-}
-
-int space_getNRows(Space *s){
-	if(!s) return -1;
-	return rows(s);
-}
-
-Status space_setNRows(Space *s, int nrows){
-	if(!s || nrows<1)
-		return ERROR;
-	rows(s) = nrows;
-	return OK;
-}
-
-
-
-
-
-
+		return NULL;
+		
+	fscanf(f, "%d\n", &aux);
+	if(space_setId(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	for(i=0; i<7; i++){
+		fscanf(f, "%d ", &aux);
+		if(space_setNeighbour(s, i, aux) == ERROR){
+			space_free(s);
+			return NULL;
+		}
+	}
+	fscanf(f, "%d\n", &aux);
+	if(space_setNeighbour(s, i, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%1000[^\n]\n", buff);
+	if(space_setSDesc(s, buff) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%[^\n]\n", buff);
+	if(space_setLDesc(s, buff) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%d\n", &aux);
+	if(space_setLight(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%d\n", &aux);
+	if(space_setLock(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%d ", &aux);
+	if(space_setNRows(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%d\n", &aux);
+	if(space_setNCols(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(f, "%s\n", buff);
+	file=fopen(buff, "r");
+	if(!file){
+		space_free(s);
+		return NULL;
+	}
+	if(mapfromfile(file, space_getNRows(s), space_getNCols(s)) == NULL){
+		space_free(s);
+		fclose(file);
+		return NULL;
+	}
+	fclose(file);
+	return s;
+	
+}	
+	
 
 
 

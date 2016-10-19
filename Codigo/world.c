@@ -90,6 +90,95 @@ Player *World_getPlayer(World *w){
 }
 
 
+World *worldfromfile(char *file){
+	assert(file!=NULL);
+	FILE *f;
+	int i,j;
+	int numspaces, numobjects;
+	Space **spaces;
+	Player *player;
+	Object **objects;
+	World *w;
+		
+	f=fopen(file,"r");
+	if(f==NULL) return NULL;
+	fscanf(f,"%d\n",&numspaces);
+	spaces=(Space **)malloc(sizeof(Space *)*numspaces);
+	if(spaces==NULL){
+		fclose(f);
+	 	return NULL;
+	}
+
+	for(i=0;i<numspaces;i++){
+		spaces[i]=spacefromfile(f);
+		if(spaces[i]==NULL){
+			for(j=i;j>=0;j--){
+				space_free(spaces[j]);			
+			}
+			free(spaces);
+			fclose(f);
+			return NULL;
+		}
+	}
+	
+	player=player_fromFile(f);
+ 	if(player==NULL){/*if theres no memory free everything and return NULL*/
+		for(j=0;j<numspaces;j++){
+			space_free(spaces[j]);			
+		}
+		free(spaces);
+		fclose(f);
+		return NULL;
+	}
+	
+
+	fscanf(f,"%d\n",&numobjects);
+	objects=(Object **)malloc(sizeof(Object *)*numobjects);
+	if(objects==NULL){
+		for(j=0;j<numspaces;j++){
+			space_free(spaces[j]);			
+		}
+		free(spaces);
+		player_free(player);
+		fclose(f);
+		return NULL;
+	}
+
+	for(i=0;i<numobjects;i++){
+		objects[i]=objectfromfile(f);
+		if(objects[i]==NULL){
+			for(j=0;j<numspaces;j++){
+				space_free(spaces[j]);			
+			}
+			free(spaces);
+			player_free(player);
+			for(j=i-1;j>=0;j--){
+				object_free(objects[i]);
+			}
+			free(objects);
+			fclose(f);
+			return NULL;
+		}
+	}
+
+	w=world_ini(objects,player,spaces,numobjects,numspaces);
+	if(w==NULL){
+		for(j=0;j<numspaces;j++){
+			space_free(spaces[j]);			
+		}
+		free(spaces);
+		player_free(player);
+		for(j=0;j<numobjects;j++){
+			object_free(objects[i]);
+		}
+		fclose(f);
+		free(objects);
+		return NULL;
+	}
+	fclose(f);
+	return w;	
+
+}
 
 
 	

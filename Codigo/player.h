@@ -2,8 +2,11 @@
 #define PLAYER_H
 #include <stdlib.h>
 #include "types.h"
+#include <stdio.h>
 
 typedef struct _Player Player;
+
+Player *player_fromFile(FILE*);
 
 Player *player_ini();
 /*Function: Initializes the player  	      */

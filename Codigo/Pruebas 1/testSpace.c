@@ -66,11 +66,19 @@ int main(int argc, char ** argv){
 	if(space_getNCols(s)!=3)
 		printf("\nFallo en getNCols");
 	pstring2=(char**)malloc(sizeof(char*)*2);
+	pstring2[0]=NULL;
+	pstring2[1]=NULL;
 	pstring2[0]=(char*)malloc(sizeof(char)*4);
 	pstring2[1]=(char*)malloc(sizeof(char)*4);
 
-	pstring2[0]="abc";
-	pstring2[1]="def";
+	pstring2[0][0]='a';
+	pstring2[0][1]='b';
+	pstring2[0][2]='c';
+	pstring2[0][3]='\0';
+	pstring2[1][0]='d';
+	pstring2[1][1]='e';
+	pstring2[1][2]='f';
+	pstring2[1][3]='\0';
 	if(space_setMap(s, pstring2)==ERROR)
 		printf("\nFallo en setMap");
 
@@ -78,11 +86,16 @@ int main(int argc, char ** argv){
 
 	pstring1=space_getMap(s);
 
-	if(strcmp(pstring1[0], "abc")!=0);
-		printf("\nFallo en getMap");
-	
-	if(strcmp(pstring1[1], "def")!=0);
-		printf("\nFallo en getMap");
+	if(!(pstring1[0][0]=='a'&&
+	pstring1[0][1]=='b'&&
+	pstring1[0][2]=='c' &&
+	pstring1[0][3]=='\0' &&
+	pstring1[1][0]=='d' &&
+	pstring1[1][0]=='d'&&
+	pstring1[1][1]=='e'&&
+	pstring1[1][2]=='f'&&
+	pstring1[1][3]=='\0'))
+		printf("Fallo en getMap");
 
 	if(space_setLight(s, TRUE)==ERROR)
 		printf("\nFallo en setLight");

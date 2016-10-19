@@ -7,6 +7,8 @@
 #define spaceid(o) (o)->spaceid
 #define id(o) (o)->id
 #define has(o) (o)->has
+#define NAME_MAX 30
+#define DESC_MAX 1000
 
 struct _Object{
 	int id;/*All properties could be check from the object id*/
@@ -162,3 +164,33 @@ Bool object_return_has(Object *o){
 	assert(o!=NULL);
 	return has(o);
 }
+
+
+Object *objectfromfile(FILE *f){
+	assert(f!=NULL);
+	Object *o;
+
+	o=object_ini();
+	if(o==NULL) return NULL;
+	name(o)=(char *)malloc(sizeof(char)*NAME_MAX);
+	if(name(o)==NULL){
+		object_free(o);
+		return NULL;
+	}
+	desc(o)=(char *)malloc(sizeof(char)*DESC_MAX);
+	if(desc(o)==NULL){
+		free(name(o));
+		object_free(o);
+		return NULL;
+	}
+
+	/*The reading starts*/
+	fscanf(f,"%d\n",&id(o));
+	fgets(name(o),NAME_MAX,f);
+	fscanf(f,"%d\n",&has(o));
+	fscanf(f,"%d\n",&spaceid(o));
+	fgets(desc(o),DESC_MAX,f);
+
+	return o;
+}
+
