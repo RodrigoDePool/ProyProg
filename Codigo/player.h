@@ -6,7 +6,7 @@
 
 typedef struct _Player Player;
 
-Player *player_fromFile(FILE*);
+Player *playerfromfile(FILE*);
 
 Player *player_ini();
 /*Function: Initializes the player  	      */
