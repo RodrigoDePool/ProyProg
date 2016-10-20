@@ -109,9 +109,9 @@ Player *playerfromfile(FILE* f){
 	Player *p = player_ini();
 	if (p == NULL)
 		return NULL;
-	fscanf("%c", c);
-	fscanf("%d", &spaceid);
-	fscanf("%d %d", &x, &y);
+	fscanf(f, "%c\n", c);
+	fscanf(f, "%d\n", &spaceid);
+	fscanf(f, "%d %d\n", &x, &y);
 	Player_setName(p, c);
 	Player_setSpaceid(p, spaceid);
 	Player_setCoordinateX(p, x);
