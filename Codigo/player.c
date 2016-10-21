@@ -109,7 +109,7 @@ Player *playerfromfile(FILE* f){
 	Player *p = player_ini();
 	if (p == NULL)
 		return NULL;
-	fscanf(f, "%c\n", c);
+	fscanf(f, "%s\n", c);
 	fscanf(f, "%d\n", &spaceid);
 	fscanf(f, "%d %d\n", &x, &y);
 	Player_setName(p, c);
