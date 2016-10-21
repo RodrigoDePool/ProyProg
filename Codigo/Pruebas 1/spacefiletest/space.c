@@ -189,6 +189,7 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 	assert(f!=NULL);
 	char **map;
 	int i,j;
+
 	map=(char **)malloc(sizeof(char *)*nrows);
 	if(map==NULL) return NULL;
 	for(i=0;i<nrows;i++){
@@ -204,9 +205,9 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 	
 	for(i=0;i<nrows;i++){
 		fgets(map[i],ncols+1,f);
-		fscanf(f,"\n");			
+		fscanf(f,"\n");		
 	}
-
+	
 	return map;
 }
 
@@ -215,7 +216,6 @@ Space * spacefromfile(FILE * f){
 	char buff[MAX_L_DESC];
 	int aux, i;
 	FILE *file;
-	/*Bool b*/;
 	Space *s;
 	
 	s = space_ini();
@@ -259,23 +259,23 @@ Space * spacefromfile(FILE * f){
 		space_free(s);
 		return NULL;
 	}
-	fscanf(f, "%d ", &aux);
-	if(space_setNRows(s, aux) == ERROR){
-		space_free(s);
-		return NULL;
-	}
-	fscanf(f, "%d\n", &aux);
-	if(space_setNCols(s, aux) == ERROR){
-		space_free(s);
-		return NULL;
-	}
 	fscanf(f, "%s\n", buff);
 	file=fopen(buff, "r");
 	if(!file){
 		space_free(s);
 		return NULL;
 	}
-	if(map(s) = mapfromfile(file, space_getNRows(s), space_getNCols(s)) == NULL){
+	fscanf(file, "%d ", &aux);
+	if(space_setNRows(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	fscanf(file, "%d\n", &aux);
+	if(space_setNCols(s, aux) == ERROR){
+		space_free(s);
+		return NULL;
+	}
+	if(space_setMap(s, mapfromfile(file, space_getNRows(s), space_getNCols(s))) == ERROR){
 		space_free(s);
 		fclose(file);
 		return NULL;
