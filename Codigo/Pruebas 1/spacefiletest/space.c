@@ -193,7 +193,7 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 	map=(char **)malloc(sizeof(char *)*nrows);
 	if(map==NULL) return NULL;
 	for(i=0;i<nrows;i++){
-		map[i]=(char *)malloc(sizeof(char)*ncols);
+		map[i]=(char *)malloc(sizeof(char)*ncols+1);
 		if(map[i]==NULL){/*lack of memory*/		
 			for(j=i-1;j>=0;j--){
 				free(map[j]);
