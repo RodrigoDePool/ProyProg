@@ -15,9 +15,7 @@ int main(){
 		}
 		printf("\n");
 	}
-	fscanf(f,"%c",&b);
-	printf("%c",b);
-
+	
 	fclose(f);
 
 	for(i=0;i<rows;i++){
