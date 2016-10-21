@@ -1,6 +1,7 @@
 #ifndef SPACE_H
 #define SPACE_H
 #include "types.h"
+#include <stdio.h>
 
 
 typedef struct space_ Space;
