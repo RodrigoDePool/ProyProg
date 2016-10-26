@@ -29,3 +29,9 @@ world: array of spaces , int nspaces, array if objects, int nobj, 	player *me, *
 funciones para moverse dentro de un espacio. Puedo moverme a una determinada coordenada??
 
 while(*b++=*a++); Copia un string
+
+INTERFACE
+ ESC[2]J    (could use 0/1/2)
+printf("%c[2J", 27);
+printf("%c[3;20f", 27); moves cursor to (30,20));
+Maś info: https://en.wikipedia.org/wiki/ANSI_escape_code

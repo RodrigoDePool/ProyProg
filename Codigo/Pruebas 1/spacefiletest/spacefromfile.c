@@ -9,7 +9,6 @@ void main(){
 	char *buff1, *buff2;
 	
 	f = fopen("spacetest.txt", "r");
-printf("\n\n\n\n\nVOY A PRINTEAR EL SPACE UNO CHAVALES\n\n\n");
 	s = spacefromfile(f);
 	if(!s)
 		printf("Algo salió mal");
@@ -29,7 +28,6 @@ printf("\n\n\n\n\nVOY A PRINTEAR EL SPACE UNO CHAVALES\n\n\n");
 		free(buff2);
 		space_free(s);
 	}
-printf("\n\n\n\n\nVAMOS A POR EL SPACE 2 :D\n\n\n");
 
 	s = spacefromfile(f);
 	if(!s)

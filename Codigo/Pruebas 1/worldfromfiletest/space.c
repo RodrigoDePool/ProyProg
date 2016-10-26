@@ -184,13 +184,16 @@ Status space_setMap(Space *s, char **map){
 }
 
 char ** mapfromfile(FILE * f, int nrows, int ncols){
-	
+	assert(nrows>0);
+	assert(ncols>0);
+	assert(f!=NULL);
 	char **map;
 	int i,j;
+
 	map=(char **)malloc(sizeof(char *)*nrows);
 	if(map==NULL) return NULL;
 	for(i=0;i<nrows;i++){
-		map[i]=(char *)malloc(sizeof(char)*(ncols+1));
+		map[i]=(char *)malloc(sizeof(char)*ncols+1);
 		if(map[i]==NULL){/*lack of memory*/		
 			for(j=i-1;j>=0;j--){
 				free(map[j]);
@@ -204,7 +207,7 @@ char ** mapfromfile(FILE * f, int nrows, int ncols){
 		fgets(map[i],ncols+1,f);
 		fscanf(f,"\n");		
 	}
-
+	
 	return map;
 }
 
