@@ -44,10 +44,13 @@ void world_free(World *w){
 	assert(w!=NULL);
 	for(i=0; i<numobj(w);i++)
 		object_free(obj(w)[i]);
+	free(obj(w));
 	for(i=0; i<numspaces(w);i++)
 		space_free(spaces(w)[i]);
 	player_free(player(w));
+	free(spaces(w));
 	free(w);
+
 	return;
 }
 
