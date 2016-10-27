@@ -6,6 +6,7 @@ void main(){
 	World *w;
 	Space **s;
 	Player *p;
+	Object **o;
 	int i,j;
 	int numobj, numspaces;
 	char **buff1, **buff2;
@@ -40,15 +41,25 @@ void main(){
 		
 		/*Ya están impresos spaces, voy a por el player*/
 		p = World_getPlayer(w);
-		buff1 = Player_getName(p);
-		printf("%s\n%d\n%d %d\n", buff1,
+		printf("%s\n%d\n%d %d\n", buff1 = Player_getName(p),
 					  Player_getSpaceid(p),
 					  Player_getCoordinateX(p),
 					  Player_getCoordinateY(p));
 		free(buff1);
 		
 		/*Ahora los objects*/
-		
+		numobj = world_getNumObjects(w);
+		printf("%d\n", numobj);
+		o = World_getObjects(w);
+		for(i = 0; i < numobj; i++){
+			printf("%d\n", object_return_id(o[i]));
+			printf("%s\n", buff1 = object_return_name(o[i]));
+			printf("%d\n", object_return_has(o[i]));
+			printf("%d\n", object_return_spaceid(o[i]));
+			printf("%s\n", buff2 = object_return_desc(o[i]));
+			free(buff1);
+			free(buff2);
+		}
 		
 	}
 	
