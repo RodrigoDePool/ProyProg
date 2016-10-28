@@ -13,7 +13,8 @@ typedef struct _Interface Interface;
 				cr rows of ...
 	return: Pointer to Interface initialized
 */
-Interface *i_create(int bc, int br, int dc, int dr, int cc, int cr);
+Interface *i_create(int bc, int br, int dc, int dr, int cc, int cr
+					, char cplayer);
 
 
 #endif

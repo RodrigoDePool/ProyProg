@@ -17,8 +17,5 @@ struct _Interface{
 
 
 };
-
-Interface *i_create(){
-	int 
-
-}
+Interface *i_create(int bc, int br, int dc, int dr, int cc, int cr
+					, char cplayer);
