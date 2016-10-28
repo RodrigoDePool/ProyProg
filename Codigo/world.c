@@ -44,10 +44,13 @@ void world_free(World *w){
 	assert(w!=NULL);
 	for(i=0; i<numobj(w);i++)
 		object_free(obj(w)[i]);
+	free(obj(w));
 	for(i=0; i<numspaces(w);i++)
 		space_free(spaces(w)[i]);
 	player_free(player(w));
+	free(spaces(w));
 	free(w);
+
 	return;
 }
 
@@ -121,7 +124,7 @@ World *worldfromfile(char *file){
 		}
 	}
 	
-	player=player_fromFile(f);
+	player=playerfromfile(f);
  	if(player==NULL){/*if theres no memory free everything and return NULL*/
 		for(j=0;j<numspaces;j++){
 			space_free(spaces[j]);			
