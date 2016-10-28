@@ -48,14 +48,14 @@ void object_free(Object *o){
 	return;
 }
 
-Status object_set_id(Object *o, int oid){
+Status object_setId(Object *o, int oid){
 	assert(o!=NULL);
 	assert(oid>0);
 	id(o)=oid;
 	return OK;
 }
 
-Status object_set_name(Object *o, char *name){
+Status object_setName(Object *o, char *name){
 	assert(o!=NULL);
 	assert(name!=NULL);
 
@@ -73,7 +73,7 @@ Status object_set_name(Object *o, char *name){
 
 
 
-Status object_set_desc(Object *o, char *desc){
+Status object_setDesc(Object *o, char *desc){
 	assert(o!=NULL);
 	assert(desc!=NULL);
 
@@ -91,7 +91,7 @@ Status object_set_desc(Object *o, char *desc){
 
 
 
-Status object_set_spaceid(Object *o, int spaceid){
+Status object_setSpaceid(Object *o, int spaceid){
 	assert(o!=NULL);
 	assert(spaceid>-1);
 
@@ -101,7 +101,7 @@ Status object_set_spaceid(Object *o, int spaceid){
 
 
 
-Status object_pick(Object *o){
+Status object_Pick(Object *o){
 	assert(o!=NULL);
 	has(o)=TRUE;
 	return OK;
@@ -109,7 +109,7 @@ Status object_pick(Object *o){
 
 
 
-Status object_drop(Object *o){
+Status object_Drop(Object *o){
 	assert(o!=NULL);
 	has(o)=FALSE;
 	return OK;
@@ -117,7 +117,7 @@ Status object_drop(Object *o){
 
 
 
-char *object_return_name(Object *o){
+char *object_getName(Object *o){
 	char *name;
 	assert(o!=NULL);
 	if(name(o)==NULL)
@@ -132,7 +132,7 @@ char *object_return_name(Object *o){
 
 
 
-char *object_return_desc(Object *o){
+char *object_getDesc(Object *o){
 	char *desc;
 	assert(o!=NULL);
 	if(desc(o)==NULL)
@@ -146,7 +146,7 @@ char *object_return_desc(Object *o){
 
 
 
-int object_return_spaceid(Object *o){
+int object_getSpaceid(Object *o){
 	assert(o!=NULL);
 	return spaceid(o);
 }
@@ -154,13 +154,13 @@ int object_return_spaceid(Object *o){
 
 
 
-int object_return_id(Object *o){
+int object_getId(Object *o){
 	assert(o!=NULL);
 	return id(o);
 }
 
 
-Bool object_return_has(Object *o){
+Bool object_getHas(Object *o){
 	assert(o!=NULL);
 	return has(o);
 }
