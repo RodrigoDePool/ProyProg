@@ -32,7 +32,7 @@ void world_free(World *);
 /*Parameters: World				      */
 /*Return: The pointer DIRECTLY to the array of spaces */
 /*DO NOT FREE THE SPACES 	  		      */
-Space **World_getSpaces(World *w);
+Space **world_getSpaces(World *w);
 
 
 
@@ -47,7 +47,7 @@ int world_getNumSpaces(World *w);
 /*Parameters: World *					*/
 /*Return: The pointer DIRECTLY to the array of objects  */
 /*DO NOT FREE THE OBJECTS			   	*/
-Object **World_getObjects(World *w);
+Object **world_getObjects(World *w);
 
 
 
@@ -62,7 +62,7 @@ int world_getNumObjects(World *w);
 /*Parameter: Pointer to world                 */
 /*Return: the pointer DIRECTLY to the player  */
 /*DO NOT FREE THIS PLAYER		      */
-Player *World_getPlayer(World *w);
+Player *world_getPlayer(World *w);
 
 
 /*Return: Initializes a World from a file (format)*/
