@@ -40,7 +40,7 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 	i->dc=dc;
 	i->cr=cr;
 	i->cplayer=cplayer;
-	i->pr=-1;/*You need to initialized the position of the player in another*/
+	i->pr=-1;/*You need to initialize the position of the player in another*/
 	i->pc=-1;/*function																											*/
 	i->bbkcl=bbkcl;
 	i->bfgcl=bfgcl;
@@ -74,13 +74,18 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 
 void i_drawAll(Interface *i){
 	char aux1[]="-------------------------------------------------------------------------------------------------------------------------";
-	int j;
+	int j, k;
 	if(i==NULL)
 		return;
 
 
 	/*First we markdown the board, the first row of it and the first column*/
 	win_write_char_at(i->board,0,0,'+');
+	
+	/*for(j=1;j<i->bc;j++){
+		win_write_char_at(i->board,0,j,'-')
+	}*/
+
 	win_write_line_at(i->board,0,1,aux1);
 	for(j=1;j<i->br;j++){
 		win_write_char_at(i->board,j,0,'|');
@@ -90,6 +95,11 @@ void i_drawAll(Interface *i){
 	/*Second lets markdown the display*/
 	/*the first row*/
 	win_write_char_at(i->display,0,0,'+');
+	
+	/*for(j=1;j<(i->dc);j++){
+		win_write_char_at(i->display,0,j,'-')
+	}*/
+
 	win_write_line_at(i->display,0,1,aux1);
 	win_write_char_at(i->display,0,i->dc-1,'+');
 	/*the first and last column*/
@@ -101,8 +111,18 @@ void i_drawAll(Interface *i){
 
 	/*Lets markdown the command*/
 	/*first row*/
+
+	/*for(j=1;j<(i->bc+i->dc);j++){
+		win_write_char_at(i->display,0,j,'-')
+	}*/
+
 	win_write_line_at(i->command,0,0,aux1);
 	/*last row*/
+
+	/*for(j=1;j<(i->bc+i->dc);j++){
+		win_write_char_at(i->display, i->cr-1, j, '-')
+	}*/
+	
 	win_write_line_at(i->command,i->cr-1,0,aux1);
 	for(j=0;j<i->cr;j++){
 		win_write_char_at(i->display,j,0,'|');
@@ -148,4 +168,11 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
 		default:
 			return;
 	}
+}
+
+void i_drawPl(Interface *i,int br, int bc){
+	if(!i||br<0||bc<0||bc>=i->bc||br>=i->br) return; /*Si hay errores que no se sabe de donde vienen, revisar esta línea*/
+	i->pr=br;
+	i->pc=bc;
+
 }
