@@ -73,6 +73,9 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 
 
 void i_drawAll(Interface *i){
+	/*
+
+	*/
 	char aux1[]="-------------------------------------------------------------------------------------------------------------------------";
 	int j, k;
 	if(i==NULL)
@@ -122,7 +125,7 @@ void i_drawAll(Interface *i){
 	/*for(j=1;j<(i->bc+i->dc);j++){
 		win_write_char_at(i->display, i->cr-1, j, '-')
 	}*/
-	
+
 	win_write_line_at(i->command,i->cr-1,0,aux1);
 	for(j=0;j<i->cr;j++){
 		win_write_char_at(i->display,j,0,'|');
@@ -171,8 +174,78 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
 }
 
 void i_drawPl(Interface *i,int br, int bc){
-	if(!i||br<0||bc<0||bc>=i->bc||br>=i->br) return; /*Si hay errores que no se sabe de donde vienen, revisar esta línea*/
+	if(!i||br<1||bc<1||bc>=i->bc||br>=i->br) return; /*Si hay errores que no se sabe de donde vienen, revisar esta línea*/
+	/*We check if the player poition hasalready been initialized, so that we don't write a space where we can not*/
+	if(i->pr>0 && i->pc>0){
+		win_write_char_at(i->board, i->pr, i->pc, ' ');
+	}
+	
+	win_write_char_at(i->board, br, bc, PLAYER);
 	i->pr=br;
 	i->pc=bc;
+	return;
 
+}
+
+void move(Interface *i, int dir){
+	/*We check that there is not a wall where we want to move, the rest of the checks are made in teh drawPl*/
+
+
+
+	/*We draw the player*/
+	switch (dir):
+
+	case 1:
+		i_drawPl(i, i->pr, i->pl+1);
+		return;
+
+	case 2:
+		i_drawPl(i, i->pr, i->pl-1);
+		return;
+	
+	case 3:
+		i_drawPl(i, i->pr+1, i->pl);
+		return;
+
+	case 4:
+		i_drawPl(i, i->pr-1, i->pl-1);
+		return;
+
+	default:
+		return;
+}
+
+void i_free(Interface *i){
+	if(!i) return;
+
+	win_delete(i->board);
+	win_delete(i->display);
+	win_delete(i->command);
+
+	free(i);
+	return;
+}
+
+int i_setBackgroundColor(Interface *i, int bbkcl){
+	if(!i) return;
+	i->bbkcl=bbkcl;
+
+	/*If the color doesen't appear, add this line:
+	i_drawAll(i);
+	after the win_bgcol...
+	*/
+	
+	return (0-(win_bgcol(i->board, bbkcl) && win_bgcol(i->display, bbkcl) && win_bgcol(i->command, bbkcl)));
+}
+
+int i_setForegroundColor(Interface *i, int bfgcl){
+	if(!i) return;
+	i->bfgcl=bfgcl;
+
+	/*If the color doesen't appear, add this line:
+	i_drawAll(i);
+	after the win_fgcol...
+	*/
+	
+	return (0-(win_fgcol(i->board, bfgcl) && win_fgcol(i->display, bfgcl) && win_fgcol(i->command, bfgcl)));
 }

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "rectangles.h"
 
+#define PLAYER 'p'
 
 typedef struct _Interface Interface;
 
@@ -49,9 +50,9 @@ void i_drawAll(Interface *i);
 	Draws a string in the board/display/command.
 	Parameters:
 		i Pointer to interface
-		s character thats gonna be written
-		r row in the board/display/command you wanna start to write the string
-		c column in the board/display/command you wanna start to write the string
+		s character that's gonna be written
+		r row in the board/display/command in which you wanna start to write the string
+		c column in the board/display/command in which you wanna start to write the string
 		bdc :
 			1 draws in board
 			2 draws in display
@@ -75,12 +76,13 @@ void i_drawPl(Interface *i,int br, int bc);
 
 
 /*
-	Moves the player in the map to the direction introduced
+	Moves the player in the map to the direction introduced.The order of the directions is: 0 stay, 1 north,
+	2 sout, 3 east, 4 west
 	Parameter:
 		i pointer to interface
 		dir integer with the direction to which you ll move
 	ATTENTION THE PLAYER MUST HAVE BEEN INITIALIZED FIRST.
-	The player wont move if the place it want to moves to is not a space
+	The player wont move if the place it want to move to is not a space
 */
 void move(Interface *i,int dir);
 
@@ -98,22 +100,22 @@ void i_free(Interface *i);
 
 
 /*
-	Sets the background color of the board and draws the board again
+	Sets the background color of the board and draws the board again, for now the background color is for everything
 	Parameters:
 		i Pointer to interface
 		bbkcl integer of the backgroundcolor
 */
-void i_setBackgroundColor(Interface *i,int bbkcl);
+int i_setBackgroundColor(Interface *i,int bbkcl);
 
 
 
 /*
-	Sets the foreground color of the board and draws the board again
+	Sets the foreground color of the board and draws the board again, for now the foreground color is for everything
 	Parameters:
 		i Pointer to interface
 		bbkcl integer of the foregroundcolor
 */
-void  i_setForegroundColor(Interface *i,int bfgcl);
+int  i_setForegroundColor(Interface *i,int bfgcl);
 
 
 
