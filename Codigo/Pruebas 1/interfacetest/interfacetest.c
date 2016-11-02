@@ -1,4 +1,9 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+#include <time.h>
+#include <termios.h>
 #include "interface.h"
 
 /*
@@ -85,13 +90,15 @@ int main(){
         i_free(i);
         return 0;
       }
+	
       move(i,c);
   }
-  
+
   i_free(i);
   return 0;
 
 }
+
 /*CODIGO UTIL
 int c = _read_key();
 if (c == 'q') {
