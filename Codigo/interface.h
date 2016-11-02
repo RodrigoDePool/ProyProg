@@ -9,16 +9,23 @@
 #include <stdio.h>
 #include "rectangles.h"
 
+
 typedef struct _Interface Interface;
 
 
 
 /*	Creates an interface.
-	Parameters: bc colums of the board (usable bc -2)
-					The other two are used for margins
-				br rows of the board (usuable br -2)
-				dc colums of display...
-				cr rows of command
+	Parameters:
+	 			bc colums of the board (the first one is not usable, left limit)
+				br rows of the board (the first one is not usable, top limit)
+
+				dc colums of display (the fist one and last one are not usable)
+														 (limit between board and display, and right limit)
+			  the rows of the display are the same as the board, with the same limitation
+
+				cr rows of command (The first and last row are not usable, they are limits)
+				the colums are equal to dc+bc , being the first and last one limitations
+
 				bkcl background colour of the board
 				bfgkl foreground colour of the board
 				the same with display and commands
@@ -33,22 +40,27 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 /*
 	Draws the Interface in the terminal
 	Parameter: i Pointer to Interface
-	returns: OK or ERR
 */
-Status i_drawAll(Interface *i);
+void i_drawAll(Interface *i);
 
 
 
 /*
-	Draws a characrer in the board.
+	Draws a string in the board/display/command.
 	Parameters:
 		i Pointer to interface
-		c character thats gonna be written
-		br row in the board you wanna write the character in
-		bc column in the board you wanna write the character in
-	returns: OK or ERR
+		s character thats gonna be written
+		r row in the board/display/command you wanna start to write the string
+		c column in the board/display/command you wanna start to write the string
+		bdc :
+			1 draws in board
+			2 draws in display
+			3 draws in command
+	 if the string exceeds the rectangle it cuts it down
+	 if the r or c exceeds the limits usable of the board/display/command
+	 it wont do anything
 */
-Status i_drawChar(Interface *i, char c, int br, int bc);
+void i_drawStr(Interface *i, char *s, int r, int c,int bdc);
 
 
 
@@ -58,9 +70,8 @@ Status i_drawChar(Interface *i, char c, int br, int bc);
 		i Pointer to interface
 		br row in the board the player is in
 		bc column in the board the player is in
-	returns: OK or ERR
 */
-Status i_drawPl(Interface *i,int br, int bc);
+void i_drawPl(Interface *i,int br, int bc);
 
 
 /*
@@ -68,10 +79,10 @@ Status i_drawPl(Interface *i,int br, int bc);
 	Parameter:
 		i pointer to interface
 		dir integer with the direction to which you ll move
-	returns: OK if it moved or ERR if its not possible to move
-	ATTENTION THE PLAYER MUST HAVE BEEN INITIALIZED FIRST
+	ATTENTION THE PLAYER MUST HAVE BEEN INITIALIZED FIRST.
+	The player wont move if the place it want to moves to is not a space
 */
-Status move(Interface *i,int dir);
+void move(Interface *i,int dir);
 
 
 /*
@@ -83,6 +94,27 @@ Status move(Interface *i,int dir);
 
 */
 void i_free(Interface *i);
+
+
+
+/*
+	Sets the background color of the board and draws the board again
+	Parameters:
+		i Pointer to interface
+		bbkcl integer of the backgroundcolor
+*/
+void i_setBackgroundColor(Interface *i,int bbkcl);
+
+
+
+/*
+	Sets the foreground color of the board and draws the board again
+	Parameters:
+		i Pointer to interface
+		bbkcl integer of the foregroundcolor
+*/
+void  i_setForegroundColor(Interface *i,int bfgcl);
+
 
 
 #endif

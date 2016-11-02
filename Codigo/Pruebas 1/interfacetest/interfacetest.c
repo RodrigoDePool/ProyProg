@@ -77,24 +77,30 @@ int main(){
   Interface *i;
   int c;
   _term_init();/*Initializes the terminal for the interface*/
-  i=i_create(/*PONER PARAMETROS*/);
-
-  i_drawPl(i,2,2);
-
+  i=i_create(10,7,5,6,'@',40,32,40,32,40,32);
+  i_drawAll(i);
+	while(1){
+		c=_read_key();
+		if(c=='q'){
+				tcsetattr(fileno(stdin), TCSANOW, &initial);
+				return 0;
+		}
+	}
+	/*
   while(1){
       c= _read_key();
       if (c == 'q') {
         tcsetattr(fileno(stdin), TCSANOW, &initial);	/*We now restore the settings we back-up'd
                                                       so that the termial behaves normally when
                                                       the program ends */
-        i_free(i);
+      /*  i_free(i);
         return 0;
       }
-	
+
       move(i,c);
   }
 
-  i_free(i);
+  i_free(i);*/
   return 0;
 
 }
