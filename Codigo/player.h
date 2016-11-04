@@ -23,7 +23,7 @@ void player_free(Player*);
 
 
 
-Status Player_setName(Player*, char*);
+Status player_setName(Player*, char*);
 /*Function: Sets the name of the player    	      */
 /*Parameters: Pointer to Player and an array of chars   */
 /*Return: OK if it has succeeded ERROR if it hasn't     */
@@ -31,7 +31,7 @@ Status Player_setName(Player*, char*);
 
 
 
-char *Player_getName(Player*);
+char *player_getName(Player*);
 /*Function: Gives back the name of the player	       */
 /*Parameters: Pointer to char	 		       */
 /*Return: An array of chars with the name of the player*/
@@ -40,7 +40,7 @@ char *Player_getName(Player*);
 
 
 
-Status Player_setSpaceid(Player*, int);
+Status player_setSpaceid(Player*, int);
 /*Function: Sets the space where the player is 		*/
 /*Parameters: Pointer to player and an integer   	*/
 /*Returns: ERROR or OK                                  */
@@ -48,14 +48,14 @@ Status Player_setSpaceid(Player*, int);
 
 
 
-int Player_getSpaceid(Player*);
+int player_getSpaceid(Player*);
 /*Function: Gives back the id of the space where the player is */
 /*Parameters: Pointer to player                                */
 /*Return: int with the id of the space                         */
 
 
 
-Status Player_setCoordinateX(Player*, int);
+Status player_setCoordinateX(Player*, int);
 /*Function: Sets the coordinate x of the location of the player */
 /*Parameters: Pointer to player and an integer                  */
 /*Return: ERROR or OK                                           */
@@ -63,7 +63,7 @@ Status Player_setCoordinateX(Player*, int);
 
 
 
-int Player_getCoordinateX(Player*);
+int player_getCoordinateX(Player*);
 /*Function: Gives back the coordinate x of the location of the   */
 /*player					 	         */
 /*Parameters: Pointer to player 		  	         */
@@ -72,7 +72,7 @@ int Player_getCoordinateX(Player*);
 
 
 
-Status Player_setCoordinateY(Player*, int);
+Status player_setCoordinateY(Player*, int);
 /*Function: Sets the coordinate y of the location of the player	*/
 /*Parameters: Pointer to player and an integer                  */
 /*Return: ERROR or OK                                           */
@@ -80,7 +80,7 @@ Status Player_setCoordinateY(Player*, int);
 
 
 
-int Player_getCoordinateY(Player*);
+int player_getCoordinateY(Player*);
 /*Function: Gives back the coordinate y of the location of the   */
 /*player  							 */
 /*Parameters: Pointer to player 		  	         */
