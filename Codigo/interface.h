@@ -63,15 +63,32 @@ void i_drawAll(Interface *i);
 void i_drawStr(Interface *i, char *s, int r, int c,int bdc);
 
 
+/*
+	Sets the map in the board. If the map does not have br-1 rows and bc-1 colums
+	the behaviour of this function is unexpected
+	Parameters:
+		i Pointer to interface
+		map matrix with the ascii characters of the map in order
+	ATTENTION: it creates a COPY of the map, this copy will be freed in i_free
+	THE MAP IS SET SO THE POINT IN THE BOARD (1,1) IS (0,0) IN THE MAP
+*/
+void i_setMap(Interface *i,char **map);
+
 
 /*
-	Initilizes the position of the player in the board and draw it
+	Initilizes the position of the player in the board and draws it
+	only if its possible. You must have initialized the board first
+	THE COORDS PASSED ARE MAP COORDS NOT BOARD ONES
 	Paramters:
 		i Pointer to interface
-		br row in the board the player is in
-		bc column in the board the player is in
+		br row in the map the player is in (DIFFERENT FROM THE BOARD COORDS)
+		bc column in the map the player is in (DIFFERNT FROM THE BOARD COORDS)
+	returns:
+		1 if it was possible to place the player
+		0 if it was not possible
+
 */
-void i_drawPl(Interface *i,int br, int bc);
+int i_drawPl(Interface *i,int br, int bc);
 
 
 /*
@@ -114,6 +131,9 @@ void i_setBackgroundColor(Interface *i,int bbkcl);
 		bbkcl integer of the foregroundcolor
 */
 void  i_setForegroundColor(Interface *i,int bfgcl);
+
+
+
 
 
 

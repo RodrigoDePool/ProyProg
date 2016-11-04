@@ -1,5 +1,6 @@
 #include "interface.h"
-
+#include <string.h>
+#include <assert.h>
 struct _Interface{
 
 	sc_rectangle *board;/*Rectangle where the map is shown*/
@@ -19,10 +20,11 @@ struct _Interface{
 	int bbkcl;/*background color of the board*/
 	int bfgcl;/*foreground color of the board*/
 
+	char **map;/*Map as it is in the board*/
 
 	char  cplayer;/*character of the player*/
-	int pr;/*row in the board the player is in*/
-	int pc;/*column in the board the player is in*/
+	int pr;/*row in the MAP the player is in DIFFERENT FROM BOARD COORDS*/
+	int pc;/*column in the MAP the player is in DIFFERENT FROM BOARD COORDS*/
 
 
 };
@@ -44,6 +46,7 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 	i->pc=-1;/*function																											*/
 	i->bbkcl=bbkcl;
 	i->bfgcl=bfgcl;
+	i->map=NULL; /*The board map must be initialized in another function*/
 
 
 
@@ -80,8 +83,10 @@ void i_drawAll(Interface *i){
 
 
 	/*First we markdown the board, the first row of it and the first column*/
+	win_write_line_at(i->board,0,0,aux1);
 	win_write_char_at(i->board,0,0,'+');
-	win_write_line_at(i->board,0,1,aux1);
+	win_write_char_at(i->board,0,i->bc-1,'-');/*Esta linea corrige un error de la funcion*/
+																						/*win_write_char_at*/
 	for(j=1;j<i->br;j++){
 		win_write_char_at(i->board,j,0,'|');
 	}
@@ -89,14 +94,14 @@ void i_drawAll(Interface *i){
 
 	/*Second lets markdown the display*/
 	/*the first row*/
-	win_write_char_at(i->display,0,0,'+');
 	win_write_line_at(i->display,0,1,aux1);
-	win_write_char_at(i->display,0,i->dc-1,'+');
 	/*the first and last column*/
-	for(j=1;j<i->br;j++){
+	for(j=0;j<i->br;j++){
 		win_write_char_at(i->display,j,0,'|');
 		win_write_char_at(i->display,j,i->dc-1,'|');
 	}
+	win_write_char_at(i->display,0,0,'+');
+	win_write_char_at(i->display,0,i->dc-1,'+');
 
 
 	/*Lets markdown the command*/
@@ -105,8 +110,8 @@ void i_drawAll(Interface *i){
 	/*last row*/
 	win_write_line_at(i->command,i->cr-1,0,aux1);
 	for(j=0;j<i->cr;j++){
-		win_write_char_at(i->display,j,0,'|');
-		win_write_char_at(i->display,j,i->dc+i->bc-1,'|');
+		win_write_char_at(i->command,j,0,'|');
+		win_write_char_at(i->command,j,i->dc+i->bc-1,'|');
 	}
 	win_write_char_at(i->command,0,0,'+');
 	win_write_char_at(i->command,0,i->bc,'+');
@@ -145,6 +150,94 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
 			win_write_line_at(i->command,r,  c, s);
 			return;
 
+		default:
+			return;
+	}
+}
+
+
+
+void i_setMap(Interface *i,char **map){
+	int j,k;
+	if(i==NULL || map==NULL)
+		return;
+	i->map=(char **)malloc(sizeof(char *)*(i->br-1));
+	if(i->map==NULL)
+		return;
+
+	for(j=0;j<i->br;j++){
+		i->map[j]=(char *)malloc(sizeof(char *)*(i->bc-1));
+		if(i->map[j]==NULL){
+				for(k=0;k<j;k++)
+					free(i->map[k]);
+				free(i->map);
+				return;
+		}
+	}
+	for(j=0;j<i->br-1;j++)
+		strcpy(i->map[j],map[j]);
+
+
+	for(j=0;j<i->br-1;j++){
+		i_drawStr(i,map[j],j+1,1,1);
+	}
+	return;
+}
+
+
+int i_drawPl(Interface *i,int br,int bc){
+	if(i==NULL || br<0 || bc<0 || br>(i->br-2) || bc>(i->bc-2) || i->map==NULL)
+		return 0;
+
+
+	if(i->map[br][bc]!=' ')
+		return 0;
+
+
+	i->pr=br;
+	i->pc=bc;
+	i->map[br][bc]=i->cplayer;
+	win_write_char_at(i->board,br+1,bc+1,i->cplayer);/*we must pass from map coords*/
+																									 /*to board coords 						 */
+
+	return 1;
+}
+
+
+
+void move(Interface *i,int dir){
+	int aux;
+	if(i==NULL)
+		return;
+	switch (dir) {
+		case NORTH:
+			aux=i_drawPl(i,i->pr-1,i->pc);/*writes it*/
+			if(aux==1){/*if you were able to move delete the previous player postion*/
+				win_write_char_at(i->board,i->pr+2,i->pc+1,' ');/*Previous position in board coords*/
+				i->map[i->pr+1][i->pc]=' ';/*Setting a space in previous pposition*/
+			}
+			return;
+		case WEST:
+			aux=i_drawPl(i,i->pr,i->pc-1);
+			if(aux==1){/*if you were able to move delete the previous player postion*/
+				win_write_char_at(i->board,i->pr+1,i->pc+2,' ');/*Previous position in board coords*/
+				i->map[i->pr][i->pc+1]=' ';/*Setting a space in previous pposition*/
+			}
+			return;
+		case SOUTH:
+			aux=i_drawPl(i,i->pr+1,i->pc);
+			if(aux==1){/*if you were able to move delete the previous player postion*/
+				win_write_char_at(i->board,i->pr,i->pc+1,' ');/*Previous position in board coords*/
+				i->map[i->pr-1][i->pc]=' ';/*Setting a space in previous pposition*/
+			}
+			return;
+		case EAST:
+			aux=i_drawPl(i,i->pr,i->pc+1);
+			if(aux==1){/*if you were able to move delete the previous player postion*/
+				win_write_char_at(i->board,i->pr+1,i->pc,' ');/*Previous position in board coords*/
+				i->map[i->pr][i->pc-1]=' ';/*Setting a space in previous pposition*/
+			}
+			return;
 		default:
 			return;
 	}

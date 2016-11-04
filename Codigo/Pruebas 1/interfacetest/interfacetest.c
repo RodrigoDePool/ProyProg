@@ -75,32 +75,33 @@ int _read_key() {
 
 int main(){
   Interface *i;
-  int c;
-  _term_init();/*Initializes the terminal for the interface*/
-  i=i_create(10,7,5,6,'@',40,32,40,32,40,32);
-  i_drawAll(i);
+  int c,k;
+	char **s;
+	/*Inicializamos un mapa vacio*/
+	s=(char **)malloc(sizeof(char *)*19);
+	for(c=0;c<61;c++)
+		s[c]=(char *)malloc(sizeof(char)*60);
+	for(c=0;c<19;c++)
+		strcpy(s[c],"                                                           ");
+
+	i=i_create(60,20,20,6,'@',40,32,40,32,40,32);
+  i_drawAll(i);/*Draws limits*/
+	_term_init();/*Initializes the terminal for the interface*/
+
+	i_setMap(i,s);/*sets and draws the board*/
+	i_drawPl(i,1,1);
+
 	while(1){
 		c=_read_key();
 		if(c=='q'){
 				tcsetattr(fileno(stdin), TCSANOW, &initial);
 				return 0;
 		}
+		move(i,c);
 	}
-	/*
-  while(1){
-      c= _read_key();
-      if (c == 'q') {
-        tcsetattr(fileno(stdin), TCSANOW, &initial);	/*We now restore the settings we back-up'd
-                                                      so that the termial behaves normally when
-                                                      the program ends */
-      /*  i_free(i);
-        return 0;
-      }
 
-      move(i,c);
-  }
 
-  i_free(i);*/
+/*  i_free(i);*/
   return 0;
 
 }
