@@ -23,7 +23,7 @@ typedef struct _Interface Interface;
 														 (limit between board and display, and right limit)
 			  the rows of the display are the same as the board, with the same limitation
 
-				cr rows of command (The first and last row are not usable, they are limits)
+				cr rows of command (The first and last row are not usable, they are limits) 
 				the colums are equal to dc+bc , being the first and last one limitations
 
 				bkcl background colour of the board
