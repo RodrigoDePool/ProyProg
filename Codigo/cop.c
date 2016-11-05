@@ -37,26 +37,129 @@ typedef struct _Ext{
 /*Stores an array of assocs, as well as an array of exts an the number of
  elements in each array*/
 typedef struct _CoP {
-	int numassocs;
-	Assoc **assocs;
 	int numexts;
-	int maxexts; /*Ask Santini why this is necessary*/
 	Ext **exts;
+	int numassocs;
+	int maxassocs; 
+	Assoc **assocs;
 };
 
 
 
 
-/******* LOCAL FUNCTIONS *******/
+/******* LOCAL FUNCTIONS DECLARATION*******/
+
+/*Function: creates ext from an open file      */
+/*Parameter: file                              */
+/*Returns:  pointer to the Ext/NULL when error */
+/*Revision: 5/11/2016                  	       */
+Ext *ext_ini( FILE *f)
+
+/*Function: frees given Ext and all its members*/
+/*Parameter: pointer to Ext                    */
+/*Returns:            			       */
+/*Revision: 5/11/16    			       */
+void ext_free( Ext *e);
+
+/*Function: creates assoc setting members to COPY of int_name and to f*/
+/*Parameter: string with the internal name, function pointer          */
+/*Returns:  pointer to the Assoc/NULL when error      		      */
+/*Revision: 5/11/2016   			              	      */
+Assoc *assoc_ini(char *int_name, pfun f);
+
+/*Function: frees given Assoc and all its members        */
+/*Parameter: pointer to Assoc                   	 */
+/*Returns: TRUE if int_name was in CoP assocs, else FALSE*/
+/*Revision: 5/11/16    			 	         */
+void assoc_free(Assoc *a);
+
+/*Function: checks if int_name is añready associated in c*/
+/*Parameter: pointer to CoP, string with int_name        */
+/*Returns:TRUE if int_name was in CoP assocs, else FALSE */
+/*Revision: 5/11/16    			         */
+Bool assoc_search(char *int_name, CoP *c);
 
 
 /******* FUNCTIONS ********/
+
+CoP *cop_ini(FILE *f){
+	assert(f);
+	
+	int n_exts, i, j;
+	Ext **e= NULL;
+	Assoc **a = NULL;
+	CoP *c = NULL;
+	c = (CoP*)malloc(sizeof (CoP));
+	if(c == NULL) return NULL;
+	
+	/*Start reading file*/
+	
+	/*FIRST: array of Exts*/
+	fscanf(f, "%d\n", &n_exts);
+	e = (Ext **)malloc(n_exts * sizeof(Ext *);
+	if(e == NULL){
+		free(c);
+		return NULL;
+	}
+	for(i = 0; i < n_exts; i++){
+		e[i] = ext_ini(f);
+		if(e[i]) == NULL{
+			for(j = 0; j<i; j++)
+				ext_free(e[j]);
+			free(e);
+			free(c);
+			return NULL;			
+		}	
+	}
+	
+	/*SECOND: array of Assocs*/
+	
+	/*Initial array size: the minimum we'll use (the number of ext cmds)*/
+	a = (Assoc **)malloc(n_exts * sizeof(Assoc *));
+	if(a == NULL){
+		for(i = 0; i<n_exts; i++)
+			ext_free(e[i]);
+		free(e);
+		free(c);
+	}
+	
+	/*THIRD: set info to the alloc'd CoP*/
+	a->numexts = n_exts;
+	a->exts = e;
+	a->numassocs = 0;
+	a->maxassocs = n_exts;
+	a->assocs = a;
+	return c;
+}
+
+int assoc_add(CoP *c, char *int_name, pfun f){
+	assert(c && int_name && f);
+	
+	Assoc *a = NULL;
+	/*Make sure int_name isnt already associated*/
+	if(assoc_search (int_name, c) == TRUE)
+		return -1;
+	/*Make sure there is enough room for the new assoc*/
+	if(c->numassocs >= c->maxassocs){
+		c->maxassocs+=10;
+		c->assocs=(Assoc**)realloc(c->assocs,(c->maxassocs)*sizeof(Assoc*));
+		if(c->assocs == NULL)
+			return -1;
+	}
+	a = assoc_ini(int_name, f);
+	if(a == NULL)
+		return -1;
+	c->assocs[c->numassocs++] = a;
+	return c->numassocs;	
+}
+
+/********LOCAL FUNCTIONS IMPLEMENTATION ********/
 Ext *ext_ini(FILE *f){
 	assert(f);
 	char *extname, *intname, **answers;
 	int numans, i, j;
 	Ext *e = (Ext*)malloc(sizeof(Ext));
-	if(!e) return NULL;
+	if(e == NULL) return NULL;
 	
 	/*Read ext from file (format is after #defines*/
 	/*This strange way of reading strings will read EVERYTHING it reads till
@@ -66,15 +169,15 @@ Ext *ext_ini(FILE *f){
 	fscanf(f, "%m[\n]\n", &intname);
 	fscanf(f, "%d\n", &numans);
 	answers = (char **)malloc(numans * sizeof(char*));
-	if(!answers){
+	if(answers == NULL){
 		free(extname);
 		free(intname);
 		free(e);
 		return NULL;
 	}
 	for(i = 0; i<numans; i++){
-		fscanf(f, "%m[^\n]\n", &(answers[i]));
-		if(!answers[i]){
+		fscanf(f, "%m[^\n]\n", answers+i);
+		if(answers[i] == NULL){
 			for (j = 0; j<i; j++)
 				free(answers[j]);
 			free(answers);
@@ -84,63 +187,57 @@ Ext *ext_ini(FILE *f){
 			return NULL;
 		}		
 	}
-	
-	
+	/*Set all the info to the Ext alloc'd before*/
+	e->ext_name = extname;
+	e->int_name = intname;
+	e->n_ans = numans;
+	e->ans = answers;
+	return e;	
 }
 
 void ext_free( Ext *e){
-
-}
-
-CoP *cop_ini(FILE *f){
-	assert(f);
-	
-	int n_assocs n_exts, i, j;
-	char *bu
-	Ext **e;
-	CoP *c = NULL;
-	c = (CoP*)malloc(sizeof (CoP));
-	if(!c) return NULL;
-	
-	/*Start reading file*/
-	fscanf(f, "%d\n", &n_exts);
-	CoP->numexts = n_exts;
-	e = (Ext **)malloc(n_exts * sizeof(Ext *);
-	if(!e){
-		free(c);
-		return NULL;
-	}
-	for(i = 0; i < n_exts; i++){
-		e[i] = ext_ini(f);
-		if(!e[i])}
-			for(j = 0; j<i; j++)
-				ext_free(e[j]);
-			free(e);
-			free(CoP);
-			return NULL;			
+	int i;
+	if(e == NULL) return;
+	if(e->ext_name != NULL) free (e->ext_name);
+	if(e->int_name != NULL) free (e->int_name);
+	if(e->ans){
+		for(i = 0; i < e->n_ans; i++){
+			if (e->ans[i] != NULL) free(e->ans[i]);
 		}
-		
-	
+		free(e->ans);
 	}
+	free(e);
+	return;
+}
+
+
+Assoc *assoc_ini(char *int_name, pfun f){
+	assert(int_name && f);
 	
+	Assoc *a = (Assoc *)malloc(sizeof(Assoc));
+	if(a == NULL) return NULL;
+	a->int_name = strdup(int_name);
+	a->f = f;
+	return a;
+}
+
+void assoc_free(Assoc *a){
+	if(a == NULL) return;
+	if(a->int_name != NULL) free (a->int_name);
+	free(a);
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Bool assoc_search(char *int_name, CoP *c){
+	assert(int_name && c);
+	int i;
+	for(i = 0; i<c->numassocs; i++){
+			if(strcmp (c->assocs[i]->int_name, int_name) == 0)
+				return TRUE;
+		}
+	return FALSE;
+}
 
 
 

@@ -10,25 +10,11 @@ typedef struct _Ext Ext;
 typedef struct _CoP CoP;
 
 
-
-
-/*Function: creates ext from an open file       */
-/*Parameter: file                              */
-/*Returns:  pointer to the Ext/NULL when error */
-/*Revision: 5/11/2016                  	       */
-Ext *ext_ini( FILE *f)
-
-/*Function: frees given Ext */
-/*Parameter: pointer to Ext */
-/*Returns:                  */
-/*Revision: 5/11/16         */
-void ext_free( Ext *e);
-
-/*Function: creates assoc between a string and a function */
-/*Parameter: String and pointer to the function           */
-/*Returns:  Ya veré */
-/*Revision:                            	      */
-CoP assoc_ini (CoP *c, char *int_name, pfun f);
+/*Function: adds assoc between a COPY of a string and a function to CoP       */
+/*Parameter: string and pointer to the function, CoP where assoc will be added*/
+/*Returns:  number of assocs in CoP after execution/ -1 in case of error      */
+/*Revision: 5/11/16                                             	      */
+int assoc_add(CoP *c, char *int_name, pfun f);
 
 /*Function: creates CoP from file                             */
 /*Parameter: Pointer to a OPEN file that will be rerurned OPEN*/
