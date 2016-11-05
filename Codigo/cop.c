@@ -15,8 +15,8 @@
 	2
 	I wont paint *
 	Ive already painted *
-
 */
+
 /*Stores an internal string which we associate to a function*/
 typedef struct _Assoc {
 	char *int_name;
@@ -37,11 +37,67 @@ typedef struct _Ext{
  elements in each array*/
 typedef struct _CoP {
 	int numassocs;
-	Assoc *assocs;
+	Assoc **assocs;
 	int numexts;
 	int maxexts; /*Ask Santini why this is necessary*/
-	Ext *exts;
+	Ext **exts;
 };
+
+
+
+
+/******* LOCAL FUNCTIONS *******/
+
+
+/******* FUNCTIONS ********/
+CoP *CoP_ini(FILE *f){
+	assert(f);
+	
+	int nassocs nexts;
+	Ext **e;
+	CoP *c = NULL;
+	c = (CoP*)malloc(sizeof (CoP));
+	if(!c) return NULL;
+	
+	fscanf(f, "%d\n", &nexts);
+	e = (Ext **)malloc(nexts * sizeof(Ext *);
+	if(!e){
+		free(c);
+		return NULL;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
