@@ -81,13 +81,11 @@ void i_drawAll(Interface *i){
 		return;
 
 
+	/*First we markdown the board, the first row of it and the first column*/
 	for(j=1;j<i->bc;j++){
-		win_write_char_at(i->board,0,j,'-')
+		win_write_line_at(i->board,0,j,"-");
 	}
-
-	win_write_char_at(i->board,0,0,'+');
-	win_write_char_at(i->board,0,i->bc-1,'-');/*Esta linea corrige un error de la funcion*/
-																						/*win_write_char_at*/
+	
 	for(j=1;j<i->br;j++){
 		win_write_char_at(i->board,j,0,'|');
 	}
@@ -95,40 +93,44 @@ void i_drawAll(Interface *i){
 
 	/*Second lets markdown the display*/
 	/*the first row*/
-	for(j=1;j<(i->dc);j++){
-		win_write_char_at(i->display,0,j,'-')
+	for(j=1;j<i->bc;j++){
+		win_write_line_at(i->display,0,j,"-");
 	}
+
 	/*the first and last column*/
 	for(j=0;j<i->br;j++){
 		win_write_char_at(i->display,j,0,'|');
 		win_write_char_at(i->display,j,i->dc-1,'|');
 	}
-	win_write_char_at(i->display,0,0,'+');
-	win_write_char_at(i->display,0,i->dc-1,'+');
-
+	
 
 	/*Lets markdown the command*/
 	/*first row*/
-	for(j=1;j<(i->bc+i->dc);j++){
-		win_write_char_at(i->display,0,j,'-')
+	for(j=0;j<i->bc+i->dc;j++){
+		win_write_line_at(i->command,0,j,"-");
 	}
-		/*last row*/
-	for(j=1;j<(i->bc+i->dc);j++){
-		win_write_char_at(i->display, i->cr-1, j, '-')
+
+	/*last row*/
+	for(j=0;j<i->bc+i->dc;j++){
+		win_write_line_at(i->command,i->cr-1,j,"-");
 	}
 	for(j=0;j<i->cr;j++){
 		win_write_char_at(i->command,j,0,'|');
 		win_write_char_at(i->command,j,i->dc+i->bc-1,'|');
 	}
+
+
+	/*We finally draw the edges*/
+	win_write_char_at(i->board,0,0,'+');
+	win_write_char_at(i->command,i->cr-1,i->bc+i->dc-1,'+');
 	win_write_char_at(i->command,0,0,'+');
 	win_write_char_at(i->command,0,i->bc,'+');
 	win_write_char_at(i->command,0,i->bc+i->dc-1,'+');
 	win_write_char_at(i->command,i->cr-1,0,'+');
-	win_write_char_at(i->command,i->cr-1,i->bc+i->dc-1,'+');
+	win_write_char_at(i->display,0,0,'+');
+	win_write_char_at(i->display,0,i->dc-1,'+');
 
-
-
-
+	
 	return;
 }
 
@@ -181,7 +183,6 @@ void i_setMap(Interface *i,char **map){
 				return;
 		}
 	}
-
 	for(j=0;j<i->br-1;j++)
 		strcpy(i->map[j],map[j]);
 
@@ -206,7 +207,7 @@ int i_drawPl(Interface *i,int br,int bc){
 	i->pc=bc;
 	i->map[br][bc]=i->cplayer;
 	win_write_char_at(i->board,br+1,bc+1,i->cplayer);/*we must pass from map coords*/
-													/*to board coords 						 */
+																									 /*to board coords 						 */
 
 	return 1;
 }
@@ -251,8 +252,10 @@ void move(Interface *i,int dir){
 	}
 }
 
-void i_free(Interface *i){
 
+
+void i_free(Interface *i){
+	int j;
 	win_delete(i->board);
 	win_delete(i->display);
 	win_delete(i->command);
@@ -267,7 +270,7 @@ void i_free(Interface *i){
 }
 
 int i_setBackgroundColor(Interface *i, int bbkcl){
-	if(!i) return;
+	if(!i) return -1;
 	i->bbkcl=bbkcl;
 
 	/*If the color doesen't appear, add this line:
@@ -279,7 +282,7 @@ int i_setBackgroundColor(Interface *i, int bbkcl){
 }
 
 int i_setForegroundColor(Interface *i, int bfgcl){
-	if(!i) return;
+	if(!i) return -1;
 	i->bfgcl=bfgcl;
 
 	/*If the color doesen't appear, add this line:

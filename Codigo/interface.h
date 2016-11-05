@@ -120,7 +120,7 @@ void i_free(Interface *i);
 		i Pointer to interface
 		bbkcl integer of the backgroundcolor
 */
-void i_setBackgroundColor(Interface *i,int bbkcl);
+int i_setBackgroundColor(Interface *i,int bbkcl);
 
 
 
@@ -130,7 +130,7 @@ void i_setBackgroundColor(Interface *i,int bbkcl);
 		i Pointer to interface
 		bbkcl integer of the foregroundcolor
 */
-void  i_setForegroundColor(Interface *i,int bfgcl);
+int  i_setForegroundColor(Interface *i,int bfgcl);
 
 
 
