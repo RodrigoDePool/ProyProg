@@ -4,7 +4,7 @@
 #include <malloc.h>
 #include <time.h>
 #include <termios.h>
-#include "interface.h"
+#include "../../interface.h"
 
 /*
   Initializes the terminal in such a way that we can read the input

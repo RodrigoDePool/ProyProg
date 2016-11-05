@@ -76,17 +76,16 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 
 
 void i_drawAll(Interface *i){
-	char aux1[]="-------------------------------------------------------------------------------------------------------------------------";
 	int j;
 	if(i==NULL)
 		return;
 
 
 	/*First we markdown the board, the first row of it and the first column*/
-	win_write_line_at(i->board,0,0,aux1);
-	win_write_char_at(i->board,0,0,'+');
-	win_write_char_at(i->board,0,i->bc-1,'-');/*Esta linea corrige un error de la funcion*/
-																						/*win_write_char_at*/
+	for(j=1;j<i->bc;j++){
+		win_write_line_at(i->board,0,j,"-");
+	}
+	
 	for(j=1;j<i->br;j++){
 		win_write_char_at(i->board,j,0,'|');
 	}
@@ -94,34 +93,44 @@ void i_drawAll(Interface *i){
 
 	/*Second lets markdown the display*/
 	/*the first row*/
-	win_write_line_at(i->display,0,1,aux1);
+	for(j=1;j<i->bc;j++){
+		win_write_line_at(i->display,0,j,"-");
+	}
+
 	/*the first and last column*/
 	for(j=0;j<i->br;j++){
 		win_write_char_at(i->display,j,0,'|');
 		win_write_char_at(i->display,j,i->dc-1,'|');
 	}
-	win_write_char_at(i->display,0,0,'+');
-	win_write_char_at(i->display,0,i->dc-1,'+');
-
+	
 
 	/*Lets markdown the command*/
 	/*first row*/
-	win_write_line_at(i->command,0,0,aux1);
+	for(j=0;j<i->bc+i->dc;j++){
+		win_write_line_at(i->command,0,j,"-");
+	}
+
 	/*last row*/
-	win_write_line_at(i->command,i->cr-1,0,aux1);
+	for(j=0;j<i->bc+i->dc;j++){
+		win_write_line_at(i->command,i->cr-1,j,"-");
+	}
 	for(j=0;j<i->cr;j++){
 		win_write_char_at(i->command,j,0,'|');
 		win_write_char_at(i->command,j,i->dc+i->bc-1,'|');
 	}
+
+
+	/*We finally draw the edges*/
+	win_write_char_at(i->board,0,0,'+');
+	win_write_char_at(i->command,i->cr-1,i->bc+i->dc-1,'+');
 	win_write_char_at(i->command,0,0,'+');
 	win_write_char_at(i->command,0,i->bc,'+');
 	win_write_char_at(i->command,0,i->bc+i->dc-1,'+');
 	win_write_char_at(i->command,i->cr-1,0,'+');
-	win_write_char_at(i->command,i->cr-1,i->bc+i->dc-1,'+');
+	win_write_char_at(i->display,0,0,'+');
+	win_write_char_at(i->display,0,i->dc-1,'+');
 
-
-
-
+	
 	return;
 }
 
@@ -241,4 +250,45 @@ void move(Interface *i,int dir){
 		default:
 			return;
 	}
+}
+
+
+
+void i_free(Interface *i){
+	int j;
+	win_delete(i->board);
+	win_delete(i->display);
+	win_delete(i->command);
+	for(j=0;j<i->br;j++){
+		if(i->map[j])
+			i->map[j]=(char *)malloc(sizeof(char *)*(i->bc-1));
+	}
+	if(i->map)
+		free(i->map);
+
+	free(i);
+}
+
+int i_setBackgroundColor(Interface *i, int bbkcl){
+	if(!i) return -1;
+	i->bbkcl=bbkcl;
+
+	/*If the color doesen't appear, add this line:
+	i_drawAll(i);
+	after the win_bgcol...
+	*/
+	
+	return (0-(win_bgcol(i->board, bbkcl) && win_bgcol(i->display, bbkcl) && win_bgcol(i->command, bbkcl)));
+}
+
+int i_setForegroundColor(Interface *i, int bfgcl){
+	if(!i) return -1;
+	i->bfgcl=bfgcl;
+
+	/*If the color doesen't appear, add this line:
+	i_drawAll(i);
+	after the win_fgcol...
+	*/
+	
+	return (0-(win_fgcol(i->board, bfgcl) && win_fgcol(i->display, bfgcl) && win_fgcol(i->command, bfgcl)));
 }

@@ -23,7 +23,7 @@ typedef struct _Interface Interface;
 														 (limit between board and display, and right limit)
 			  the rows of the display are the same as the board, with the same limitation
 
-				cr rows of command (The first and last row are not usable, they are limits)
+				cr rows of command (The first and last row are not usable, they are limits) 
 				the colums are equal to dc+bc , being the first and last one limitations
 
 				bkcl background colour of the board
@@ -120,7 +120,7 @@ void i_free(Interface *i);
 		i Pointer to interface
 		bbkcl integer of the backgroundcolor
 */
-void i_setBackgroundColor(Interface *i,int bbkcl);
+int i_setBackgroundColor(Interface *i,int bbkcl);
 
 
 
@@ -130,7 +130,7 @@ void i_setBackgroundColor(Interface *i,int bbkcl);
 		i Pointer to interface
 		bbkcl integer of the foregroundcolor
 */
-void  i_setForegroundColor(Interface *i,int bfgcl);
+int  i_setForegroundColor(Interface *i,int bfgcl);
 
 
 
