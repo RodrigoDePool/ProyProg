@@ -49,7 +49,7 @@ void i_drawAll(Interface *i);
 	Draws a string in the board/display/command.
 	Parameters:
 		i Pointer to interface
-		s character thats gonna be written
+		s the string thats gonna be written
 		r row in the board/display/command you wanna start to write the string
 		c column in the board/display/command you wanna start to write the string
 		bdc :
@@ -134,6 +134,36 @@ int  i_setForegroundColor(Interface *i,int bfgcl);
 
 
 
+/*
+	Function that draws a character in Board/Display/Command with NORMAL COORDS
+	NOT MAP COORDS. THE CHARACTER MUST NOT BE WRITTEN IN THE MAP, FOR THAT THERE
+	IS ANOTHER FUNCTION.
+	Paramters:
+		i pointer to the interface.
+		c character thats gonna be written
+		r row in the board/display/command you wanna start to write the character
+		col column in the board/display/command you wanna start to write the character
+		bdc :
+			1 draws in board
+			2 draws in display
+			3 draws in command
+	returns: constant 1
+*/
+int i_writeChar(Interface *i,char c,int r, int col, int bdc);
+
+
+
+/*
+	Function that writes a character in the map with MAP COORDS and draws it on 
+	the board. THE CHARACTER MUST  BE WRITTEN IN THE MAP.
+	Paramters:
+		i pointer to the interface.
+		c character thats gonna be written
+		r row in the map you wanna start to write the character
+		col column in the map you wanna start to write the character
+	returns: constant 1
+*/
+int i_writeCharMap(Interface *i,char c,int r, int col);
 
 
 
