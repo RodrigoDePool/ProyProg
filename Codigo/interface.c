@@ -80,12 +80,18 @@ void i_drawAll(Interface *i){
 	if(i==NULL)
 		return;
 
+/*FALTA REFRESCAR LOS RECTANGULOS PERO POR ALGUNA RAZON PETA
+	win_cls(i->command);
+	win_cls(i->board);
+	win_cls(i->display);
+*/
+
 
 	/*First we markdown the board, the first row of it and the first column*/
 	for(j=1;j<i->bc;j++){
 		win_write_line_at(i->board,0,j,"-");
 	}
-	
+
 	for(j=1;j<i->br;j++){
 		win_write_char_at(i->board,j,0,'|');
 	}
@@ -102,7 +108,7 @@ void i_drawAll(Interface *i){
 		win_write_char_at(i->display,j,0,'|');
 		win_write_char_at(i->display,j,i->dc-1,'|');
 	}
-	
+
 
 	/*Lets markdown the command*/
 	/*first row*/
@@ -130,7 +136,7 @@ void i_drawAll(Interface *i){
 	win_write_char_at(i->display,0,0,'+');
 	win_write_char_at(i->display,0,i->dc-1,'+');
 
-	
+
 	return;
 }
 
@@ -277,7 +283,7 @@ int i_setBackgroundColor(Interface *i, int bbkcl){
 	i_drawAll(i);
 	after the win_bgcol...
 	*/
-	
+
 	return (0-(win_bgcol(i->board, bbkcl) && win_bgcol(i->display, bbkcl) && win_bgcol(i->command, bbkcl)));
 }
 
@@ -289,6 +295,6 @@ int i_setForegroundColor(Interface *i, int bfgcl){
 	i_drawAll(i);
 	after the win_fgcol...
 	*/
-	
+
 	return (0-(win_fgcol(i->board, bfgcl) && win_fgcol(i->display, bfgcl) && win_fgcol(i->command, bfgcl)));
 }
