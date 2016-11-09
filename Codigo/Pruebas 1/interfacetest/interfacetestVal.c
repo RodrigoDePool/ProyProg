@@ -78,13 +78,13 @@ int main(){
   int c,k;
 	char **s;
 	/*Inicializamos un mapa vacio*/
-	s=(char **)malloc(sizeof(char *)*3);
-	for(c=0;c<3;c++)
-		s[c]=(char *)malloc(sizeof(char)*3);
-	for(c=0;c<3;c++)
-		strcpy(s[c]," ");
+	s=(char **)malloc(sizeof(char *)*20);
+	for(c=0;c<20;c++)
+		s[c]=(char *)malloc(sizeof(char)*20);
+	for(c=0;c<20;c++)
+		strcpy(s[c],"aaaaaaaaaaaaaaaaaa");
 
-	i=i_create(6,6,6,6,'@',40,32,40,32,40,32);
+	i=i_create(4,4,4,4,'x',39,28,39,28,39,28);
   	i_drawAll(i);/*Draws limits*/
 	_term_init();/*Initializes the terminal for theinterface*/
 
@@ -100,7 +100,9 @@ int main(){
 		move(i,c);
 	}
 
-
+	/*for(c=0;c<3;c++)
+		free(s[c]);
+	free(s);*/
   i_free(i);
   return 0;
 
