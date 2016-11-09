@@ -78,15 +78,15 @@ int main(){
   int c,k;
 	char **s;
 	/*Inicializamos un mapa vacio*/
-	s=(char **)malloc(sizeof(char *)*19);
-	for(c=0;c<61;c++)
-		s[c]=(char *)malloc(sizeof(char)*60);
-	for(c=0;c<19;c++)
+	s=(char **)malloc(sizeof(char *)*3);
+	for(c=0;c<3;c++)
+		s[c]=(char *)malloc(sizeof(char)*3);
+	for(c=0;c<3;c++)
 		strcpy(s[c]," ");
 
-	i=i_create(2,2,2,2,'@',40,32,40,32,40,32);
+	i=i_create(6,6,6,6,'@',40,32,40,32,40,32);
   	i_drawAll(i);/*Draws limits*/
-	_term_init();/*Initializes the terminal for the interface*/
+	_term_init();/*Initializes the terminal for theinterface*/
 
 	i_setMap(i,s);/*sets and draws the board*/
 	i_drawPl(i,1,1);
