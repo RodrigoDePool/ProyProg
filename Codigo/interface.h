@@ -106,8 +106,7 @@ void move(Interface *i,int dir);
 	frees an interface
 	Parameters:
 		Pointer to interface
-	Does not clear the interface, it leaves it as it was before calling the
-	function, you must clear it in the main, see : interfacetest.c
+	It clears the interface and it also, and this is very important, free's the map.
 
 */
 void i_free(Interface *i);

@@ -262,12 +262,19 @@ void move(Interface *i,int dir){
 
 void i_free(Interface *i){
 	int j;
+	/*we clear the windows*/
+	win_cls(i->board);
+	win_cls(i->display);
+	win_cls(i->command);
+	/*we free the windows*/
 	win_delete(i->board);
 	win_delete(i->display);
 	win_delete(i->command);
+
+	/*we free the map*/
 	for(j=0;j<i->br;j++){
 		if(i->map[j])
-			i->map[j]=(char *)malloc(sizeof(char *)*(i->bc-1));
+			free(i->map[j]);
 	}
 	if(i->map)
 		free(i->map);

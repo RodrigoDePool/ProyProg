@@ -82,10 +82,10 @@ int main(){
 	for(c=0;c<61;c++)
 		s[c]=(char *)malloc(sizeof(char)*60);
 	for(c=0;c<19;c++)
-		strcpy(s[c],"                                                           ");
+		strcpy(s[c]," ");
 
-	i=i_create(60,20,20,6,'@',40,32,40,32,40,32);
-  i_drawAll(i);/*Draws limits*/
+	i=i_create(2,2,2,2,'@',40,32,40,32,40,32);
+  	i_drawAll(i);/*Draws limits*/
 	_term_init();/*Initializes the terminal for the interface*/
 
 	i_setMap(i,s);/*sets and draws the board*/
