@@ -102,7 +102,7 @@ CoP *cop_ini(FILE *f){
 	
 	/*FIRST: array of Exts*/
 	fscanf(f, "%d\n", &n_exts);
-	e = (Ext **)malloc(n_exts * sizeof(Ext *));
+	e = (Ext **)malloc(n_exts * sizeof(Ext *);
 	if(e == NULL){
 		free(c);
 		return NULL;
@@ -165,7 +165,6 @@ int cop_execute(CoP *c, char *cmd, void *pt){
 	char *verb, *object;
 	Ext* e;
 	pfun *f;
-	char **answers=NULL;
 	/*Separate action and object from cmd*/
 	object = strchr(cmd, ' ');
 	*object = '\0';
@@ -178,12 +177,9 @@ int cop_execute(CoP *c, char *cmd, void *pt){
 	f = assoc_search(e->int_name, c);)
 	
 	/*generate the proper strings for verb and object*/
-	answers = (char**)malloc(e->n_ans * sizeof(char*));
-	if(answers == NULL) return -1;
 	
 	
 	/*returns (a call to the function? ASK SANTINI*/
-	/*bad thingsd of error in array*/
 
 
 }

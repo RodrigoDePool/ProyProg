@@ -3,9 +3,7 @@
 #include <string.h>
 #include "types.h"
 
-/*Parameters of pfun are a world, the object, the possible answers and the 
-number of possible answers, what about the  verb?*/
-typedef Status (*pfun)(void*, char*, char**, int);
+typedef Status (*pfun)(void*, char*);
 
 typedef struct _Assoc Assoc;
 typedef struct _Ext Ext; 
