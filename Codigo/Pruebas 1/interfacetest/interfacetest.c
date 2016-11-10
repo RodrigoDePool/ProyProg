@@ -79,14 +79,14 @@ int main(){
 	char **s;
 	/*Inicializamos un mapa vacio*/
 	s=(char **)malloc(sizeof(char *)*19);
-	for(c=0;c<61;c++)
+	for(c=0;c<19;c++)
 		s[c]=(char *)malloc(sizeof(char)*60);
 	for(c=0;c<19;c++)
 		strcpy(s[c],"                                                           ");
-
+	_term_init();/*Initializes the terminal for the interface*/
 	i=i_create(60,20,20,6,'@',40,32,40,32,40,32);
   i_drawAll(i);/*Draws limits*/
-	_term_init();/*Initializes the terminal for the interface*/
+
 
 	i_setMap(i,s);/*sets and draws the board*/
 	i_drawPl(i,1,1);
@@ -94,14 +94,18 @@ int main(){
 	while(1){
 		c=_read_key();
 		if(c=='q'){
-				tcsetattr(fileno(stdin), TCSANOW, &initial);
-				return 0;
+				
+				break;
 		}
 		move(i,c);
 	}
 
+	for(c=0;c<19;c++)
+		free(s[c]);
+	free(s);
 
   i_free(i);
+  tcsetattr(fileno(stdin), TCSANOW, &initial);
   return 0;
 
 }
