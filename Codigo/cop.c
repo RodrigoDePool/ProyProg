@@ -5,9 +5,10 @@
 
 
 /*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
+/*First command will be the error one	   */
 /*
 	2 ##Num of commands to read
-	draw * ##typed command, could change
+	draw ##typed command, could change
 	internal_draw ##wont change
 	1 ##num of possible answers
 	I'll draw * when I find my pencils
@@ -73,14 +74,19 @@ Assoc *assoc_ini(char *int_name, pfun f);
 /*Revision: 5/11/16    			 	         */
 void assoc_free(Assoc *a);
 
-/*Function: checks if int_name is añready associated in c*/
-/*Parameter: pointer to CoP, string with int_name        */
-/*Returns:TRUE if int_name was in CoP assocs, else FALSE */
-/*Revision: 5/11/16    			         */
-Bool assoc_search(char *int_name, CoP *c);
+/*Function: checks if int_name is añready associated in c 	    */
+/*Parameter: pointer to CoP(NOT COPY), string with int_name         */
+/*Returns: pointer to the func associated, NULL if func not found   */
+/*Revision: 10/11/16    			         		    */
+pfun assoc_search(char *int_name, CoP *c);
 
+/*Function: checks if verb is in an Ext in c 		  */
+/*Parameter: pointer to CoP, string with verb (ext_name)  */
+/*Returns:pointer to the _Ext(NOT COPY); NULL if not found*/
+/*Revision: 10/11/16    			          */
+Ext *ext_search(char *verb, CoP *c);
 
-/******* FUNCTIONS ********/
+/******* PUBLIC  FUNCTIONS ********/
 
 CoP *cop_ini(FILE *f){
 	assert(f);
@@ -137,7 +143,7 @@ int assoc_add(CoP *c, char *int_name, pfun f){
 	
 	Assoc *a = NULL;
 	/*Make sure int_name isnt already associated*/
-	if(assoc_search (int_name, c) == TRUE)
+	if(assoc_search (int_name, c) != NULL)
 		return -1;
 	/*Make sure there is enough room for the new assoc*/
 	if(c->numassocs >= c->maxassocs){
@@ -151,6 +157,31 @@ int assoc_add(CoP *c, char *int_name, pfun f){
 		return -1;
 	c->assocs[c->numassocs++] = a;
 	return c->numassocs;	
+}
+
+int cop_execute(CoP *c, char *cmd, void *pt){
+	assert(c && cmd && pt);
+	
+	char *verb, *object;
+	Ext* e;
+	pfun *f;
+	/*Separate action and object from cmd*/
+	object = strchr(cmd, ' ');
+	*object = '\0';
+	object++;
+	verb = cmd;
+	
+	/*Lets see if the verb is actually a command*/
+	e = ext_search(verb, c);
+	/*And what func the command is associated to*/
+	f = assoc_search(e->int_name, c);)
+	
+	/*generate the proper strings for verb and object*/
+	
+	
+	/*returns (a call to the function? ASK SANTINI*/
+
+
 }
 
 /********LOCAL FUNCTIONS IMPLEMENTATION ********/
@@ -229,19 +260,28 @@ void assoc_free(Assoc *a){
 
 
 
-Bool assoc_search(char *int_name, CoP *c){
+pfun assoc_search(char *int_name, CoP *c){
 	assert(int_name && c);
 	int i;
 	for(i = 0; i<c->numassocs; i++){
-			if(strcmp (c->assocs[i]->int_name, int_name) == 0)
-				return TRUE;
-		}
-	return FALSE;
+		if(strcmp (c->assocs[i]->int_name, int_name) == 0)
+			return c->assocs[i]->f;
+	}
+	return NULL;
 }
 
 
-
-
+Ext *ext_search(char *verb, CoP *c){
+	assert(verb && c);
+	int i;
+	/*i=1 bc exts[0] = error function*/
+	for(i = 1; i< c->numexts; i++){
+		if(strcmp(c->exts[i]->ext_name, verb) == 0)
+			return c->exts[i];
+	}
+	/*verb is not an external command in the CoP, return error*/
+	return c->exts[0]
+}
 
 
 
