@@ -176,7 +176,7 @@ void i_setMap(Interface *i,char **map){
 	int j,k;
 	if(i==NULL || map==NULL)
 		return;
-	i->map=(char **)malloc(sizeof(char *)*(i->br-1));
+	i->map=(char **)malloc(sizeof(char *)*(i->br));
 	if(i->map==NULL)
 		return;
 
@@ -224,7 +224,9 @@ void move(Interface *i,int dir){
 	int aux;
 	if(i==NULL)
 		return;
-	switch (dir) {
+	if(i->pr==-1)
+			return;
+		switch (dir) {
 		case NORTH:
 			aux=i_drawPl(i,i->pr-1,i->pc);/*writes it*/
 			if(aux==1){/*if you were able to move delete the previous player postion*/

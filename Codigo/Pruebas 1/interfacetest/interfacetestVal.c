@@ -82,7 +82,7 @@ int main(){
 	for(c=0;c<20;c++)
 		s[c]=(char *)malloc(sizeof(char)*20);
 	for(c=0;c<20;c++)
-		strcpy(s[c],"aaaaaaaaaaaaaaaaaa");
+		strcpy(s[c],"             ");
 
 	i=i_create(4,4,4,4,'x',39,28,39,28,39,28);
   	i_drawAll(i);/*Draws limits*/
@@ -95,15 +95,15 @@ int main(){
 		c=_read_key();
 		if(c=='q'){
 				tcsetattr(fileno(stdin), TCSANOW, &initial);
-				return 0;
+				break;
 		}
 		move(i,c);
 	}
 
-	/*for(c=0;c<3;c++)
+	for(c=0;c<20;c++)
 		free(s[c]);
-	free(s);*/
-  i_free(i);
+	free(s);
+  	i_free(i);
   return 0;
 
 }
