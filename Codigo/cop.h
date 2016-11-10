@@ -10,7 +10,7 @@ typedef struct _Ext Ext;
 typedef struct _CoP CoP;
 
 
-/*Function: adds assoc between a COPY of a string and a function to CoP       */
+/*Function: adds assoc between a COPY of a string and a function to the CoP   */
 /*Parameter: string and pointer to the function, CoP where assoc will be added*/
 /*Returns:  number of assocs in CoP after execution/ -1 in case of error      */
 /*Revision: 5/11/16                                             	      */
