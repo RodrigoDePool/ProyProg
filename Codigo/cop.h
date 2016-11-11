@@ -4,7 +4,7 @@
 #include "types.h"
 
 /*Parameters of pfun are a world, the object, the possible answers and the 
-number of possible answers, what about the  verb?*/
+number of possible answers*/
 typedef Status (*pfun)(void*, char*, char**, int);
 
 typedef struct _Assoc Assoc;
@@ -31,4 +31,4 @@ CoP *cop_ini(FILE *f);
 /*Parameter:                 */
 /*Return:   */
 /*Revision		      */
-int cop_execute(CoP *c, char *cmd, void *pt);
+int cop_execute(CoP *c, char *cmd, void *world);

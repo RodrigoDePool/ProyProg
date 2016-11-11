@@ -86,6 +86,18 @@ pfun assoc_search(char *int_name, CoP *c);
 /*Revision: 10/11/16    			          */
 Ext *ext_search(char *verb, CoP *c);
 
+/*Function: MALLOCS an array of possible answers to a cmd,replacing * with obj*/
+/*Parameter: pointer to Ext and string with the object of the verb	      */
+/*Returns:pointer to the alloc'd array of strings with the answers/ NULL      */
+/*Revision: 10/11/16    			  		              */
+char **unpack_answers(Ext *e, char *object);
+
+/*Function: MALLOCS a string for an answer to a cmd, replacing * with obj*/
+/*Parameter: pointer to Ext and string with the object of the verb       */
+/*Returns:pointer to the alloc'd string with the answers/ NULL           */
+/*Revision: 10/11/16    			  		         */
+char *unpack_answer(char *ans, object);
+
 /******* PUBLIC  FUNCTIONS ********/
 
 CoP *cop_ini(FILE *f){
@@ -159,13 +171,13 @@ int assoc_add(CoP *c, char *int_name, pfun f){
 	return c->numassocs;	
 }
 
-int cop_execute(CoP *c, char *cmd, void *pt){
-	assert(c && cmd && pt);
+int cop_execute(CoP *c, char *cmd, void *world){
+	assert(c && cmd && world);
 	
 	char *verb, *object;
 	Ext* e;
 	pfun *f;
-	char **answers=NULL;
+	char **answers;
 	/*Separate action and object from cmd*/
 	object = strchr(cmd, ' ');
 	*object = '\0';
@@ -178,14 +190,12 @@ int cop_execute(CoP *c, char *cmd, void *pt){
 	f = assoc_search(e->int_name, c);)
 	
 	/*generate the proper strings for verb and object*/
-	answers = (char**)malloc(e->n_ans * sizeof(char*));
+	answers = unpack_answers(e, object);
 	if(answers == NULL) return -1;
-	
-	
-	/*returns (a call to the function? ASK SANTINI*/
-	/*bad thingsd of error in array*/
-
-
+		
+	/*calls f with proper arguments and return its value*/
+	return (*f)(world, object, answers, e->n_ans);
+	/*When will all these strings be freed? ASK*/
 }
 
 /********LOCAL FUNCTIONS IMPLEMENTATION ********/
@@ -287,10 +297,49 @@ Ext *ext_search(char *verb, CoP *c){
 	return c->exts[0]
 }
 
+Ext *unpack_answers(Ext *e, char *object){
+	assert(e != NULL && object != NULL);
+	char **answers = (char**)malloc(e->n_ans * sizeof(char*));
+	if(answers == NULL) return NULL;
+	for(int i = 0; i< e->n_ans; i++){
+		answers[i]=unpack_answer(e->ans[i], object);
+		if(answers[i] == NULL){
+			for(int j=0; j<i; i++){
+				free(answers[j]);
+			}
+			free(answers);
+			return NULL;
+		}
+	}
+	return answers;
+}
 
-
-
-
+char *unpack_answer(char *ans, object){
+	assert(ans && object);
+	char *answer = NULL, *pc1, *pc2;
+	int obj_len= strlen(object)
+	int n_stars = 0;
+	
+	/*Initializes answ with enough space*/
+	for(pc1 = ans; *pc1!= '\0'; pc1++){
+		if(*pc1 == '*') n_stars++;
+	}
+	answer= (char*)malloc(sizeof(ans)+((n_stars * obj_len)+1)*sizeof(char));
+	if(!answer) return NULL;
+	
+	/*Copy ans in answer replacing * with object*/
+	for(pc1 = ans, pc2 = answer; *pc1 != '\0'; pc1++){
+		if(*pc1 != '*'){
+			*pc2 = *pc1;
+			pc2 ++;
+		}else{
+			for(int i=0; i< obj_len; i++) *pc2 = object[i];
+			pc2 += obj_len;
+		}		
+	}
+	*pc2 = '\0';
+	return answer;
+}
 
 
 
