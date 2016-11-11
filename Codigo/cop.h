@@ -24,11 +24,8 @@ int assoc_add(CoP *c, char *int_name, pfun f);
 /*Revision: 5/11/16		                              */
 CoP *cop_ini(FILE *f);
 
-
-
-
-/*Function: */
-/*Parameter:                 */
-/*Return:   */
-/*Revision		      */
+/*Function: executes a typed command */
+/*Parameter: CoP, command to execute, world where the cmd will be executed*/
+/*Return: value of the executed function/ -1 when memory error 		  */
+/*Revision: 11/11/16							  */
 int cop_execute(CoP *c, char *cmd, void *world);
