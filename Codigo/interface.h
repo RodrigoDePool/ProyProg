@@ -117,9 +117,12 @@ void i_free(Interface *i);
 	Sets the background color of the board and draws the board again
 	Parameters:
 		i Pointer to interface
-		bbkcl integer of the backgroundcolor
+		bbkcl: integer of the backgroundcolor
+		bdc: 1 in the board 2 in display 3 command
+
+	Returns: 0 OK -1 Error
 */
-int i_setBackgroundColor(Interface *i,int bbkcl);
+int i_setBackgroundColor(Interface *i,int bbkcl, int bdc);
 
 
 
@@ -128,8 +131,11 @@ int i_setBackgroundColor(Interface *i,int bbkcl);
 	Parameters:
 		i Pointer to interface
 		bbkcl integer of the foregroundcolor
+		bdc: 1 in the board 2 in display 3 command
+
+	Returns: 0 OK -1 Error
 */
-int  i_setForegroundColor(Interface *i,int bfgcl);
+int  i_setForegroundColor(Interface *i,int bfgcl, int bdc);
 
 
 
@@ -146,9 +152,9 @@ int  i_setForegroundColor(Interface *i,int bfgcl);
 			1 draws in board
 			2 draws in display
 			3 draws in command
-	returns: constant 1
+	returns:  0 OK -1 Error
 */
-int i_writeChar(Interface *i,char c,int r, int col, int bdc);
+int i_writeChar(Interface *i,char c,int row, int col, int bdc);
 
 
 
@@ -160,9 +166,9 @@ int i_writeChar(Interface *i,char c,int r, int col, int bdc);
 		c character thats gonna be written
 		r row in the map you wanna start to write the character
 		col column in the map you wanna start to write the character
-	returns: constant 1
+	returns: 0 OK -1 Error
 */
-int i_writeCharMap(Interface *i,char c,int r, int col);
+int i_writeCharMap(Interface *i,char c,int row, int col);
 
 
 

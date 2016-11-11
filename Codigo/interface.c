@@ -80,11 +80,10 @@ void i_drawAll(Interface *i){
 	if(i==NULL)
 		return;
 
-/*FALTA REFRESCAR LOS RECTANGULOS PERO POR ALGUNA RAZON PETA
 	win_cls(i->command);
 	win_cls(i->board);
 	win_cls(i->display);
-*/
+
 
 
 	/*First we markdown the board, the first row of it and the first column*/
@@ -137,6 +136,12 @@ void i_drawAll(Interface *i){
 	win_write_char_at(i->display,0,i->dc-1,'+');
 
 
+	/*Now we write the map if it is there*/
+	if(i->map!=NULL){
+		for(j=0;j<i->br-1;j++){
+			i_drawStr(i,i->map[j],j+1,1,1);
+		}
+	}
 	return;
 }
 
@@ -284,26 +289,94 @@ void i_free(Interface *i){
 	free(i);
 }
 
-int i_setBackgroundColor(Interface *i, int bbkcl){
+int i_setBackgroundColor(Interface *i, int bbkcl, int bdc){
+	int ret;
 	if(!i) return -1;
 	i->bbkcl=bbkcl;
 
-	/*If the color doesen't appear, add this line:
-	i_drawAll(i);
-	after the win_bgcol...
-	*/
+	switch(bdc){
+	case 1:
+		if((win_bgcol(i->board, bbkcl))==1)
+			return -1;
+		break;
+		
+	case 2:
+		if(bdc==1){
+			if((win_bgcol(i->display, bbkcl))==1)
+				return -1;
+			}
+		break;
 
-	return (0-(win_bgcol(i->board, bbkcl) && win_bgcol(i->display, bbkcl) && win_bgcol(i->command, bbkcl)));
+	case 3:
+		if(bdc==1){
+			if((win_bgcol(i->command, bbkcl))==1)
+				return -1;
+			}
+			break;
+	default:
+		break;
+	}
+	i_drawAll(i);
+	return 0;
 }
 
-int i_setForegroundColor(Interface *i, int bfgcl){
+int i_setForegroundColor(Interface *i, int bfgcl, int bdc){
 	if(!i) return -1;
 	i->bfgcl=bfgcl;
 
-	/*If the color doesen't appear, add this line:
-	i_drawAll(i);
-	after the win_fgcol...
-	*/
+		switch(bdc){
+	case 1:
+		if((win_fgcol(i->board, bbkcl))==1)
+			return -1;
+		break;
+		
+	case 2:
+		if(bdc==1){
+			if((win_fgcol(i->display, bbkcl))==1)
+				return -1;
+			}
+		break;
 
-	return (0-(win_fgcol(i->board, bfgcl) && win_fgcol(i->display, bfgcl) && win_fgcol(i->command, bfgcl)));
+	case 3:
+		if(bdc==1){
+			if((win_fgcol(i->command, bbkcl))==1)
+				return -1;
+			}
+			break;
+	default:
+		break;
+	}
+	i_drawAll(i);
+	return 0;
+}
+
+int i_writeChar(Interface *i,char c,int row, int col, int bdc){
+	if(!i)
+		return -1;
+	switch(bdc){
+		case 1:
+			if(row>i->br||col>i->bc) return -1;
+			win_write_char_at(i->board, row, col, c);
+			return 0;
+		case 2:
+			if(row>i->br||col>i->dc) return -1;
+			win_write_char_at(i->display, row, col, c);
+			return 0;
+		case 3:
+			if(row>i->cr||col>(i->bc+i->dc)) return -1;
+			win_write_char_at(i->command, row, col, c);
+			return 0;
+		default:
+			return -1;
+	}
+}
+
+int i_writeCharMap(Interface *i,char c,int row, int col){
+	if(!i||row>i->br-1||col>i->bc-1||i->map==NULL)
+		return -1;
+
+	i->map[row][col]=c;
+
+	i_drawAll(i);
+	return 0;
 }
