@@ -3,9 +3,7 @@
 #include <string.h>
 #include "types.h"
 
-/*Parameters of pfun are a world, the object, the possible answers and the 
-number of possible answers*/
-typedef Status (*pfun)(void*, char*, char**, int);
+typedef Status (*pfun)(void*, char*);
 
 typedef struct _Assoc Assoc;
 typedef struct _Ext Ext; 
@@ -24,8 +22,11 @@ int assoc_add(CoP *c, char *int_name, pfun f);
 /*Revision: 5/11/16		                              */
 CoP *cop_ini(FILE *f);
 
-/*Function: executes a typed command */
-/*Parameter: CoP, command to execute, world where the cmd will be executed*/
-/*Return: value of the executed function/ -1 when memory error 		  */
-/*Revision: 11/11/16							  */
-int cop_execute(CoP *c, char *cmd, void *world);
+
+
+
+/*Function: */
+/*Parameter:                 */
+/*Return:   */
+/*Revision		      */
+int cop_execute(CoP *c, char *cmd, void *pt);
