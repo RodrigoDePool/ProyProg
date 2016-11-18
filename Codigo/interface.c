@@ -1,3 +1,4 @@
+
 #include "interface.h"
 #include <string.h>
 #include <assert.h>
@@ -19,6 +20,10 @@ struct _Interface{
 	*/
 	int bbkcl;/*background color of the board*/
 	int bfgcl;/*foreground color of the board*/
+	int dbkcl;/*background color of the display*/
+	int dfgcl;/*foreground color of the display*/
+	int cbkcl;/*background color of the command*/
+	int cfgcl;/*foreground color of the command*/
 
 	char **map;/*Map as it is in the board*/
 
@@ -46,6 +51,10 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 	i->pc=-1;/*function																											*/
 	i->bbkcl=bbkcl;
 	i->bfgcl=bfgcl;
+	i->dbkcl=dbkcl;
+	i->dfgcl=dfgcl;
+	i->cbkcl=cbkcl;
+	i->cfgcl=cfgcl;
 	i->map=NULL; /*The board map must be initialized in another function*/
 
 
@@ -73,7 +82,14 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 	return i;
 }
 
+/*
+Cosas que hacer
+char ** mapdipsplay y map command con coord raras 
+con sus funciones de escritura
+con los write string y write char at lo escribimos aqui para dejarlo regstrado
+drwaw all pinta mapas y pinta limites
 
+*/
 
 void i_drawAll(Interface *i){
 	int j;
@@ -142,6 +158,7 @@ void i_drawAll(Interface *i){
 			i_drawStr(i,i->map[j],j+1,1,1);
 		}
 	}
+	fflush( stdin );
 	return;
 }
 
@@ -289,59 +306,57 @@ void i_free(Interface *i){
 	free(i);
 }
 
-int i_setBackgroundColor(Interface *i, int bbkcl, int bdc){
+int i_setBackgroundColor(Interface *i, int bkcl, int bdc){
 	int ret;
 	if(!i) return -1;
-	i->bbkcl=bbkcl;
 
 	switch(bdc){
 	case 1:
-		if((win_bgcol(i->board, bbkcl))==1)
+		if((win_bgcol(i->board, bkcl))==1)
 			return -1;
+		i->bbkcl=bkcl;
 		break;
 		
 	case 2:
-		if(bdc==1){
-			if((win_bgcol(i->display, bbkcl))==1)
+		if((win_bgcol(i->display, bkcl))==1)
 				return -1;
-			}
+		
+		i->dbkcl=bkcl;
 		break;
 
 	case 3:
-		if(bdc==1){
-			if((win_bgcol(i->command, bbkcl))==1)
-				return -1;
-			}
+		if((win_bgcol(i->command, bkcl))==1)
+			return -1;
+		i->cbkcl=bkcl;
 			break;
 	default:
 		break;
 	}
+	
 	i_drawAll(i);
 	return 0;
 }
 
-int i_setForegroundColor(Interface *i, int bfgcl, int bdc){
+int i_setForegroundColor(Interface *i, int fgcl, int bdc){
 	if(!i) return -1;
-	i->bfgcl=bfgcl;
 
 		switch(bdc){
 	case 1:
-		if((win_fgcol(i->board, bbkcl))==1)
+		if((win_fgcol(i->board, fgcl))==1)
 			return -1;
+		i->bfgcl=fgcl;
 		break;
 		
 	case 2:
-		if(bdc==1){
-			if((win_fgcol(i->display, bbkcl))==1)
-				return -1;
-			}
+		if((win_fgcol(i->display, fgcl))==1)
+			return -1;
+		i->dfgcl=fgcl;
 		break;
 
 	case 3:
-		if(bdc==1){
-			if((win_fgcol(i->command, bbkcl))==1)
-				return -1;
-			}
+		if((win_fgcol(i->command, fgcl))==1)
+			return -1;
+		i->cfgcl=fgcl;
 			break;
 	default:
 		break;

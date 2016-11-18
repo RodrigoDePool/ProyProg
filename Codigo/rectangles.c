@@ -238,7 +238,7 @@ int win_write_char_at(sc_rectangle *sc, int r, int c, char ch) {
   
     if (!_is_visible(sc)) return 0;
     if (r >= sc->nr || c >= sc->nc) return 0;
-  
+    _prepare_font(sc);
     _move_to(sc, r, c);
     printf("%c", ch);
     fflush(stdout);
