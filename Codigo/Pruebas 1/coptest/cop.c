@@ -150,6 +150,19 @@ CoP *cop_ini(FILE *f){
 	return c;
 }
 
+void cop_free(CoP *c){
+	int i;
+	if(c){
+		for(i = 0; i<c->numexts; i++){
+			if(c->exts[i]) ext_free(c->exts[i]);
+		}
+		for(i = 0; i< c->maxassocs; i++){
+			if(c->assocs[i]) assoc_free(c->assocs[i]);
+		}
+		free(c);
+	}
+}
+
 int assoc_add(CoP *c, char *int_name, pfun f){
 	assert(c && int_name && f);
 	
@@ -202,6 +215,7 @@ int cop_execute(CoP *c, char *cmd, void *world){
 	free(answers);
 	return ret;	
 }
+
 
 /********LOCAL FUNCTIONS IMPLEMENTATION ********/
 Ext *ext_ini(FILE *f){
