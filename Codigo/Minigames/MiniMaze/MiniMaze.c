@@ -3,31 +3,28 @@
 #include <time.h>
 
 
-/*First we need to make a maze generator*/
+/*MAZE GEN FUNCTIONS*/
 
 /*
-  random generator of integers.
+  Random generator of integers.
   Parameters:
     min is the smallest number you want it to generate
     max i the biggest number you want it to generate
-    no is one number in this range that you do not want to be generated
   Returns:
     -1 in case of error
     the number generated if its succesfull
 */
 
-int generator(int min, int max, int no){
+int generator(int min, int max){
   int r;
-  if(max<min){
+  if(max<min)
     return -1;
-  }
   if(max==min)
     return min;
 
-  do{
-    r=rand()%(max-min+1);
-    r=r+min;
-  }while(r==no);
+  r=rand()%(max-min+1);
+  r=r+min;
+
   return r;
 }
 
@@ -41,20 +38,20 @@ int generator(int min, int max, int no){
     icol the initial col of the maze
     frow the last row of the maze
     fcol the last col of the maze
-    norow a row in which you cannot draw a wall
-    nocol a col i which you cannot draw a wall
+  This generator of mazes can, in some cases, leave the spaces unnaccessiable
+  will modified that with another function.
 */
-void mazegen_rec(char **map,int irow,int icol,int frow,int fcol,int norow,int nocol){
+void mazegen_rec(char **map,int irow,int icol,int frow,int fcol){
   int i,r,c;/*i for loops, r is random row for wall, c random col for wall*/
   int h1,h2,h3;/*hi random numbers in which the holes in the wall gonna be*/
   if(map==NULL)
     return;
-  if(frow-irow+1<3 || fcol-icol+1<3)/*caso base*/
+  if(frow-irow+1<4 || fcol-icol+1<4)/*caso base*/
     return;
 
   /*We generate a random number to draw walls*/
-  r=generator(irow+1,frow-1,norow);
-  c=generator(icol+1,fcol-1,nocol);
+  r=generator(irow+1,frow-1);
+  c=generator(icol+1,fcol-1);
   /*writing the walls*/
   for(i=irow;i<=frow;i++){
     map[i][c]='|';
@@ -74,7 +71,7 @@ void mazegen_rec(char **map,int irow,int icol,int frow,int fcol,int norow,int no
             |
             |
   */
-  h1=generator(icol,c-1,-1);
+  h1=generator(icol,c-1);
   map[r][h1]=' ';
 
   /*Second hole in the wall:
@@ -84,7 +81,7 @@ void mazegen_rec(char **map,int irow,int icol,int frow,int fcol,int norow,int no
 
               |
   */
-  h2=generator(r+1,frow,-1);
+  h2=generator(r+1,frow);
   map[h2][c]=' ';
 
   /*Third hole in the wall:
@@ -94,20 +91,61 @@ void mazegen_rec(char **map,int irow,int icol,int frow,int fcol,int norow,int no
                 |
                 |
   */
-  h3=generator(c+1,fcol,-1);
+  h3=generator(c+1,fcol);
   map[r][h3]=' ';
 
   /*recursive call*/
   /*top left rectangle*/
-  mazegen_rec(map,irow,icol,r-1,c-1,-1,h1);
+  mazegen_rec(map,irow,icol,r-1,c-1);
   /*bot left rectangle*/
-  mazegen_rec(map,r+1,icol,frow,c-1,h2,h1);
+  mazegen_rec(map,r+1,icol,frow,c-1);
   /*top right rectangle*/
-  mazegen_rec(map,irow,c+1,r-1,fcol,-1,h3);
+  mazegen_rec(map,irow,c+1,r-1,fcol);
   /*bot left rectangle*/
-  mazegen_rec(map,r+1,c+1,frow,fcol,h2,h3);
+  mazegen_rec(map,r+1,c+1,frow,fcol);
   return;
 }
+
+
+
+
+/*
+  Its a function that opens spaces in places that could be blocked by the
+  previous function and that could make the maze unsolvable.
+  Parameters:
+    -map an initialized map with the given format by mazegen_rec
+    -rows number of rows of the map
+    -cols number of cols of the map
+*/
+void fix_map(char **map, int rows, int cols){
+  int i,j;
+  /*
+    No need to check parameters because we only call this function
+    in mazegen and we make sure we use it right:)
+  */
+
+  for(i=1;i<rows-1;i++){
+    for(j=1;j<cols-1;j++){
+      if(map[i][j-1]!=' ' && map[i][j]==' ' && map[i][j+1]!=' '){
+        map[i-1][j]=' ';
+        map[i+1][j]=' ';
+      }
+    }
+  }
+
+  for(j=1;j<cols-1;j++){
+    for(i=1;i<rows-1;i++){
+      if(map[i-1][j]!=' ' && map[i+1][j]!=' ' && map[i][j]==' '){
+        map[i][j+1]=' ';
+        map[i][j-1]=' ';
+      }
+    }
+  }
+
+  return;
+
+}
+
 
 
 /*
@@ -133,13 +171,25 @@ char **mazegen(int rows, int cols){
       for(j=0;j<i;j++)
         free(map[j]);
       free(map);
-      return;
+      return NULL;
     }
     /*We use this loop to initialize all the map to spaces*/
     for(j=0;j<cols;j++)
       map[i][j]=' ';
   }
 
-  mazegen_rec(map,0,0,rows-1,cols-1,-1,-1);
+
+  /*
+    generates the maze in map
+  */
+  mazegen_rec(map,0,0,rows-1,cols-1);
+  /*
+    Makes sure that the map is solvable opening spaces that could be blocked
+    by the previous function.
+  */
+  fix_map(map,rows,cols);
+
   return  map;
 }
+
+/*END OF MAZE GEN*/
