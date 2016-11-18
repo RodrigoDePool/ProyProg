@@ -24,6 +24,12 @@ int assoc_add(CoP *c, char *int_name, pfun f);
 /*Revision: 5/11/16		                              */
 CoP *cop_ini(FILE *f);
 
+/*Function: frees CoP and all its members*/
+/*Parameter: CoP to free		 */
+/*Returns:                 		 */
+/*Revision: 18/11/16			 */
+void cop_free(CoP *c);
+
 /*Function: executes a typed command */
 /*Parameter: CoP, command to execute, world where the cmd will be executed*/
 /*Return: value of the executed function/ -1 when memory error 		  */

@@ -1,0 +1,12 @@
+3
+draw
+internal_draw
+2
+I'll draw * when I find my pencils
+I won ever draw *
+paint
+internal_paint
+3
+I wont paint *
+Ive already painted *
+I dont like painting *
