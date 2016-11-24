@@ -21,7 +21,7 @@ typedef struct _Interface Interface;
 
 				dc colums of display (the fist one and last one are not usable)
 														 (limit between board and display, and right limit)
-			  the rows of the display are the same as the board, with the same limitation
+			  	the rows of the display are the same as the board, with the same limitation
 
 				cr rows of command (The first and last row are not usable, they are limits) 
 				the colums are equal to dc+bc , being the first and last one limitations
@@ -38,7 +38,8 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 
 
 /*
-	Draws the Interface in the terminal
+	Draws the Interface in the terminal: first it clears the whole interface,
+	then it draws the map, mapDiplay and mapCommand and finally, it draws the limits
 	Parameter: i Pointer to Interface
 */
 void i_drawAll(Interface *i);
@@ -59,10 +60,30 @@ void i_drawAll(Interface *i);
 	 if the string exceeds the rectangle it cuts it down
 	 if the r or c exceeds the limits usable of the board/display/command
 	 it wont do anything
+	 it prints in the rectangle BUT NOT in the maps
 */
 void i_drawStr(Interface *i, char *s, int r, int c,int bdc);
 
-
+/*
+	Draws a string in the board/display/command.
+	Parameters:
+		i Pointer to interface
+		s the string thats gonna be written
+		r row in the board/display/command you wanna start to write the string
+		c column in the board/display/command you wanna start to write the string
+		bdc :
+			1 draws in board
+			2 draws in display
+			3 draws in command
+	 If the string exceeds the rectangle it cuts it down
+	 If the r or c exceeds the limits usable of the board/display/command
+	 it wont do anything
+	 It prints a copy of s in the maps and executes i_drawALl(i), it does not, 
+	 however, allocate any memory, nor use the memory in s. 
+	 You may free s with no fear in case it is dynamic. 
+	 Also, the coords should be in MAP coords, NOT rectangle coords
+*/
+void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc);
 /*
 	Sets the map in the board. If the map does not have br-1 rows and bc-1 colums
 	the behaviour of this function is unexpected
@@ -74,6 +95,13 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc);
 */
 void i_setMap(Interface *i,char **map);
 
+/*
+	Frees the map in the interface.
+	Paramters:
+		i: the interface with the map we want to free
+*/
+
+void i_freeMap(Interface * i);
 
 /*
 	Initilizes the position of the player in the board and draws it
@@ -106,7 +134,7 @@ void move(Interface *i,int dir);
 	frees an interface
 	Parameters:
 		Pointer to interface
-	It clears the interface and it also, and this is very important, free's the map.
+	It clears the interface and it also, and this is very important, free's the maps.
 
 */
 void i_free(Interface *i);
@@ -114,7 +142,7 @@ void i_free(Interface *i);
 
 
 /*
-	Sets the background color of the board and draws the board again
+	Sets the background color of the bcd and executes i_drawAll again
 	Parameters:
 		i Pointer to interface
 		bbkcl: integer of the backgroundcolor
@@ -127,11 +155,11 @@ int i_setBackgroundColor(Interface *i,int bbkcl, int bdc);
 
 
 /*
-	Sets the foreground color of the board and draws the board again
-	Parameters:
-		i Pointer to interface
-		bbkcl integer of the foregroundcolor
-		bdc: 1 in the board 2 in display 3 command
+	Sets the foreground color of the bcd and runs i_drawAll(
+		Parameters:
+			i Pointer to interface
+			bbkcl integer of the foregroundcolor)
+			bdc: 1 in the board 2 in display 3 command
 
 	Returns: 0 OK -1 Error
 */
@@ -156,20 +184,83 @@ int  i_setForegroundColor(Interface *i,int bfgcl, int bdc);
 */
 int i_writeChar(Interface *i,char c,int row, int col, int bdc);
 
-
+/*
+	Gets the Row where the player is.
+	Parameters: i: pointer to the interface.
+	Returns: -1 Error, anything else OK. 
+*/
+int i_wherePlayerBeRow(Interface * i);
 
 /*
-	Function that writes a character in the map with MAP COORDS and draws it on 
-	the board. THE CHARACTER MUST  BE WRITTEN IN THE MAP.
-	Paramters:
-		i pointer to the interface.
-		c character thats gonna be written
-		r row in the map you wanna start to write the character
-		col column in the map you wanna start to write the character
-	returns: 0 OK -1 Error
+	Gets the Col where the player is.
+	Parameters: i: pointer to the interface.
+	Returns: -1 Error, anything else OK. 
 */
-int i_writeCharMap(Interface *i,char c,int row, int col);
+int i_wherePlayerBeCol(Interface * i);
 
+/*
+	Gets the char in the given position of the map in the board.
+	Parameters: i: pointer to the interface.
+				r: row of the char we want
+				c: column of the char we want
+	Returns: '0' Error, anything else OK. 
+*/
+char i_whatCaractHere(Interface * i, int r, int c);
+
+/*
+	Gets bc from interface
+	Parameters: i: inteface to get from
+	Returns: the requested number or -1 if ERROR or not initialized.
+	NOTE: BOARD COORDS
+*/
+int i_getbc(Interface * i);
+
+/*
+	Gets dc from interface
+	Parameters: i: inteface to get from
+	Returns: the requested number or -1 if ERROR or not initialized.
+	NOTE: BOARD COORDS
+*/
+int i_getdc(Interface * i);
+
+/*
+	Gets br from interface
+	Parameters: i: inteface to get from
+	Returns: the requested number or -1 if ERROR or not initialized.
+	NOTE: BOARD COORDS
+*/
+int i_getbr(Interface * i);
+
+/*
+	Gets cr from interface
+	Parameters: i: inteface to get from
+	Returns: the requested number or -1 if ERROR or not initialized.
+	NOTE: BOARD COORDS
+*/
+int i_getcr(Interface * i);
+
+/*
+	Gets pc from interface
+	Parameters: i: inteface to get from
+	Returns: the requested number or -1 if ERROR or not initialized.
+	NOTE: MAP COORDS
+*/
+int i_getpc(Interface * i);
+
+/*
+	Gets pr from interface
+	Parameters: i: inteface to get from
+	Returns: the requested number or -1 if ERROR or not initialized.
+	NOTE: MAP COORDS
+*/
+int i_getpr(Interface * i);
+
+/*
+	Gets cplayer from interface
+	Parameters: i: inteface to get from
+	Returns: the requested char or 0 if ERROR or not initialized.
+*/
+char i_getCPlayer(Interface * i);
 
 
 #endif

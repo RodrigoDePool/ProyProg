@@ -1,4 +1,4 @@
-all: interfacetest
+all: interfacetest interfacetestVal
 
 interfacetest: interfacetest.o interface.o rectangles.o
 	gcc -o interfacetest interfacetest.o interface.o rectangles.o

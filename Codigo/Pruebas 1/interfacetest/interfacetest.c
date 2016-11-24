@@ -159,6 +159,16 @@ int main(){
 		if(c=='h'){
 			i_writeChar(i,'h',2, 3, 3);
 		}
+		if(c=='j'){
+			i_drawStrMap(i,"hellow",2, 3, 1);
+			i_drawStrMap(i,"hellow",2, 3, 2);
+			i_drawStrMap(i,"hellow",2, 3, 3);
+		}
+		if(c=='k'){
+			i_drawStrMap(i,"It's me",2, 3, 1);
+			i_drawStrMap(i,"It's me",2, 3, 2);
+			i_drawStrMap(i,"It's me",2, 3, 3);
+		}
 		move(i,c);
 	}
 

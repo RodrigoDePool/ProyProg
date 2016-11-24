@@ -15,9 +15,6 @@ struct _Interface{
 	/*columns in command are bc+dc*/
 	int cr;/*rows in command*/
 
-	/*
-		Once initialized you can only change the color of the board
-	*/
 	int bbkcl;/*background color of the board*/
 	int bfgcl;/*foreground color of the board*/
 	int dbkcl;/*background color of the display*/
@@ -25,7 +22,9 @@ struct _Interface{
 	int cbkcl;/*background color of the command*/
 	int cfgcl;/*foreground color of the command*/
 
-	char **map;/*Map as it is in the board*/
+	char **map;/*Maps*/
+	char **mapDisplay;
+	char **mapCommand;
 
 	char  cplayer;/*character of the player*/
 	int pr;/*row in the MAP the player is in DIFFERENT FROM BOARD COORDS*/
@@ -39,6 +38,7 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 					int cbkcl, int cfgcl){
 
 	Interface * i;
+	int j, k;
 	i=(Interface*)malloc(sizeof(Interface));
 	if(i==NULL)
 		return NULL;
@@ -57,22 +57,93 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 	i->cfgcl=cfgcl;
 	i->map=NULL; /*The board map must be initialized in another function*/
 
-
-
-
-	i->board=win_new(0,0,br,bc,bbkcl,bfgcl);
-	if(i->board==NULL){
+	i->mapDisplay=(char**)malloc(sizeof(char*)*i->br-1);
+	if(!i->mapDisplay){
 		free(i);
 		return NULL;
 	}
+
+	i->mapCommand=(char**)malloc(sizeof(char*)*(i->cr-2));
+	if(!i->mapCommand){
+		free(i->mapDisplay);
+		free(i);
+		return NULL;
+	}
+
+	for(j=0;j<i->br-1;j++){
+		i->mapDisplay[j]=(char*)malloc(sizeof(char)*(i->dc-2));
+		if(!i->mapDisplay[j]){
+			while(j>0){
+				free(i->mapDisplay[--j]);
+			}
+			free(i->mapDisplay);
+			free(i->mapCommand);
+			free(i);
+			return NULL;
+		}
+		for(k=0;k<i->dc-2;k++){
+			i->mapDisplay[j][k]=' ';
+		}
+	}
+
+	for(j=0;j<i->cr-2;j++){
+		i->mapCommand[j]=(char*)malloc(sizeof(char)*(i->dc+i->bc-2));
+		if(!i->mapCommand[j]){
+			while(j>0){
+				free(i->mapCommand[--j]);
+			}
+			for(k=0;k<i->dc;k++){
+				free(i->mapDisplay[k]);
+			}
+			free(i->mapDisplay);
+			free(i->mapCommand);
+			free(i);
+			return NULL;
+		}
+		for(k=0;k<i->dc+i->bc-2;k++){
+			i->mapCommand[j][k]=' ';
+		}
+	}
+
+	i->board=win_new(0,0,br,bc,bbkcl,bfgcl);
+	if(i->board==NULL){
+		for(j=0;j<i->br-2;j++){
+			free(i->mapDisplay[j]);
+		}
+		for(j=0;j<i->cr-2;j++){
+			free(i->mapCommand[j]);
+		}
+		free(i->mapDisplay);
+		free(i->mapCommand);
+		free(i);
+		return NULL;
+	}
+
 	i->display=win_new(0,bc,br,dc,dbkcl,dfgcl);
 	if(i->display==NULL){
+		for(j=0;j<i->dc;j++){
+			free(i->mapDisplay[j]);
+		}
+		for(j=0;j<i->dc;j++){
+			free(i->mapCommand[j]);
+		}
+		free(i->mapDisplay);
+		free(i->mapCommand);
 		win_delete(i->board);
 		free(i);
 		return NULL;
 	}
+	
 	i->command=win_new(br,0,cr,bc+dc,cbkcl,cfgcl);
 	if(i->command==NULL){
+		for(j=0;j<i->dc;j++){
+			free(i->mapDisplay[j]);
+		}
+		for(j=0;j<i->dc;j++){
+			free(i->mapCommand[j]);
+		}
+		free(i->mapDisplay);
+		free(i->mapCommand);
 		win_delete(i->board);
 		win_delete(i->display);
 		free(i);
@@ -82,14 +153,6 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 	return i;
 }
 
-/*
-Cosas que hacer
-char ** mapdipsplay y map command con coord raras 
-con sus funciones de escritura
-con los write string y write char at lo escribimos aqui para dejarlo regstrado
-drwaw all pinta mapas y pinta limites
-
-*/
 
 void i_drawAll(Interface *i){
 	int j;
@@ -100,7 +163,21 @@ void i_drawAll(Interface *i){
 	win_cls(i->board);
 	win_cls(i->display);
 
+	/*Now we write the map if it is there*/
+	if(i->map!=NULL){
+		for(j=0;j<i->br-1;j++){
+			i_drawStr(i,i->map[j],j+1,1,1);
+		}
+	}
 
+	/*Now we write the command line and the display*/
+		for(j=0;j<i->br-1;j++){
+			i_drawStr(i,i->mapDisplay[j],j+1,1,2);
+		}
+
+		for(j=0;j<i->cr-2;j++){
+			i_drawStr(i,i->mapCommand[j],j+1,1,3);
+		}
 
 	/*First we markdown the board, the first row of it and the first column*/
 	for(j=1;j<i->bc;j++){
@@ -152,19 +229,15 @@ void i_drawAll(Interface *i){
 	win_write_char_at(i->display,0,i->dc-1,'+');
 
 
-	/*Now we write the map if it is there*/
-	if(i->map!=NULL){
-		for(j=0;j<i->br-1;j++){
-			i_drawStr(i,i->map[j],j+1,1,1);
-		}
-	}
-	fflush( stdin );
+	
+	fflush(stdout);
 	return;
 }
 
 
 
 void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
+	
 	if(i==NULL)
 		return;
 
@@ -192,17 +265,62 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
 	}
 }
 
+void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
+	int j;
+	FILE * f;
+		if(i==NULL)
+		return;
+
+	switch (bdc) {
+		case 1:
+			if(r<0 || c<0)
+				return;/*The row and colum 0 are not usable*/
+
+			for(j=c;j<i->bc-1&&j-c<strlen(s);j++){
+				i->map[r][j]=s[j-c];
+			}
+
+			break;
+
+		case 2:
+			if(r<0 || c<0 || c>i->dc-2)
+				return;/*The first row, the first column and the last column are not usable*/
+			
+			for(j=c;j<i->dc-c-1&&j-strlen(s);j++){
+				i->mapDisplay[r][j]=s[j-c];
+			}
+
+			break;
+
+		case 3:
+			if(r<0 || c<0 || r>i->cr-2 || c>i->bc+i->dc-2)
+				return;/*The limitations are not usable*/
+
+			for(j=c;j<i->bc+i->dc-c-1&&j-c<strlen(s);j++){
+					i->mapCommand[r][j]=s[j-c];
+
+			}
+			
+			break;
+
+		default:
+			return;
+	}
+	i_drawAll(i);
+	return;
+}
+
 
 
 void i_setMap(Interface *i,char **map){
 	int j,k;
 	if(i==NULL || map==NULL)
 		return;
-	i->map=(char **)malloc(sizeof(char *)*(i->br));
+	i->map=(char **)malloc(sizeof(char *)*(i->br-1));
 	if(i->map==NULL)
 		return;
 
-	for(j=0;j<i->br;j++){
+	for(j=0;j<i->br-1;j++){
 		i->map[j]=(char *)malloc(sizeof(char *)*(i->bc-1));
 		if(i->map[j]==NULL){
 				for(k=0;k<j;k++)
@@ -211,14 +329,33 @@ void i_setMap(Interface *i,char **map){
 				return;
 		}
 	}
-	for(j=0;j<i->br-1;j++)
-		strcpy(i->map[j],map[j]);
+	for(j=0;j<i->br-1;j++){
+		for(k=0;k<i->bc-1;k++){
+			if(map[j][k]==0)
+				break;
+			i->map[j][k]=map[j][k];
+		}
+	}
 
 
 	for(j=0;j<i->br-1;j++){
 		i_drawStr(i,map[j],j+1,1,1);
 	}
 	return;
+}
+
+void i_freeMap(Interface * i){
+	int j;
+	if(!i) return;
+	if(!i->map) return;
+	for(j=0;j<i->br-1;j++){
+		if(i->map[j]){
+			free(i->map[j]);
+			i->map[j]=NULL;
+		}
+	}
+	free(i->map);
+	i->map=NULL;
 }
 
 
@@ -282,8 +419,6 @@ void move(Interface *i,int dir){
 	}
 }
 
-
-
 void i_free(Interface *i){
 	int j;
 	/*we clear the windows*/
@@ -295,14 +430,17 @@ void i_free(Interface *i){
 	win_delete(i->display);
 	win_delete(i->command);
 
-	/*we free the map*/
-	for(j=0;j<i->br;j++){
-		if(i->map[j])
-			free(i->map[j]);
-	}
-	if(i->map)
-		free(i->map);
+	/*we free the maps*/
+	i_freeMap(i);
 
+	for(j=0;j<i->br-2;j++){
+		free(i->mapDisplay[j]);
+	}
+	for(j=0;j<i->cr-2;j++){
+		free(i->mapCommand[j]);
+	}
+	free(i->mapDisplay);
+	free(i->mapCommand);
 	free(i);
 }
 
@@ -386,12 +524,57 @@ int i_writeChar(Interface *i,char c,int row, int col, int bdc){
 	}
 }
 
-int i_writeCharMap(Interface *i,char c,int row, int col){
-	if(!i||row>i->br-1||col>i->bc-1||i->map==NULL)
-		return -1;
+int i_wherePlayerBeRow(Interface * i){
+	if(!i) return -1;
+	
+	return i->pr;
+}
 
-	i->map[row][col]=c;
+int i_wherePlayerBeCol(Interface * i){
+	if(!i) return -1;
+	
+	return i->pc;
+}
 
-	i_drawAll(i);
-	return 0;
+char i_whatCaractHere(Interface * i, int r, int c){
+	if(!i||r>i->br-1||c>i->bc-1){
+		return 0;
+	}
+	
+	return i->map[r][c];
+}
+
+int i_getbc(Interface * i){
+	if(!i) return -1;
+	return i->bc;
+}
+
+int i_getdc(Interface * i){
+	if(!i) return -1;
+	return i->dc;
+}
+
+int i_getbr(Interface * i){
+	if(!i) return -1;
+	return i->br;
+}
+
+int i_getcr(Interface * i){
+	if(!i) return -1;
+	return i->cr;
+}
+
+int i_getpc(Interface * i){
+	if(!i) return -1;
+	return i->pc;
+}
+
+int i_getpr(Interface * i){
+	if(!i) return -1;
+	return i->pr;
+}
+
+char i_getCPlayer(Interface * i){
+	if(!i) return 0;
+	return i->cplayer;
 }
