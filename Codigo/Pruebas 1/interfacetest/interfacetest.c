@@ -84,7 +84,7 @@ int main(){
 	for(c=0;c<19;c++)
 		strcpy(s[c],"                                                           ");
 	_term_init();/*Initializes the terminal for the interface*/
-	i=i_create(60,20,20,6,'@',40,32,40,32,40,32);
+	i=i_create(60,20,20,6,'@',40,37,40,37,40,37);
   i_drawAll(i);/*Draws limits*/
 
 
@@ -160,9 +160,9 @@ int main(){
 			i_writeChar(i,'h',2, 3, 3);
 		}
 		if(c=='j'){
-			i_drawStrMap(i,"hellow",2, 3, 1);
-			i_drawStrMap(i,"hellow",2, 3, 2);
-			i_drawStrMap(i,"hellow",2, 3, 3);
+			i_drawStrMap(i,"abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijA",01, 01, 1);
+			i_drawStrMap(i,"abcdefghijklmnopqrA",1, 1, 2);
+			i_drawStrMap(i,"abcdefghijklmnopqrsabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijA",01, 01, 3);
 		}
 		if(c=='k'){
 			i_drawStrMap(i,"It's me",2, 3, 1);

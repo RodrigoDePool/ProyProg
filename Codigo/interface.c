@@ -155,7 +155,7 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 
 
 void i_drawAll(Interface *i){
-	int j;
+	int j, k;
 	if(i==NULL)
 		return;
 
@@ -166,18 +166,24 @@ void i_drawAll(Interface *i){
 	/*Now we write the map if it is there*/
 	if(i->map!=NULL){
 		for(j=0;j<i->br-1;j++){
-			i_drawStr(i,i->map[j],j+1,1,1);
+			for(k=0;k<i->bc-1;k++){
+				win_write_char_at(i->board,i->map[j][k],j+1,k+1);
+			}
 		}
 	}
 
 	/*Now we write the command line and the display*/
-		for(j=0;j<i->br-1;j++){
-			i_drawStr(i,i->mapDisplay[j],j+1,1,2);
+	for(j=0;j<i->br-1;j++){
+		for(k=0;k<i->dc-2;k++){
+			win_write_char_at(i->display,i->mapDisplay[j][k],j+1,k+1);
 		}
+	}
 
-		for(j=0;j<i->cr-2;j++){
-			i_drawStr(i,i->mapCommand[j],j+1,1,3);
+	for(j=0;j<i->cr-2;j++){
+		for(k=0;k<i->bc+i->dc-2;k++){
+			win_write_char_at(i->command,i->mapCommand[j][k],j+1,k+1);
 		}
+	}
 
 	/*First we markdown the board, the first row of it and the first column*/
 	for(j=1;j<i->bc;j++){
@@ -227,8 +233,6 @@ void i_drawAll(Interface *i){
 	win_write_char_at(i->command,i->cr-1,0,'+');
 	win_write_char_at(i->display,0,0,'+');
 	win_write_char_at(i->display,0,i->dc-1,'+');
-
-
 	
 	fflush(stdout);
 	return;
@@ -237,7 +241,7 @@ void i_drawAll(Interface *i){
 
 
 void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
-	
+	int j;
 	if(i==NULL)
 		return;
 
@@ -267,13 +271,12 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
 
 void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
 	int j;
-	FILE * f;
 		if(i==NULL)
 		return;
 
 	switch (bdc) {
 		case 1:
-			if(r<0 || c<0)
+			if(r<0 || c<0 || r>i->br-2)
 				return;/*The row and colum 0 are not usable*/
 
 			for(j=c;j<i->bc-1&&j-c<strlen(s);j++){
@@ -283,20 +286,20 @@ void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
 			break;
 
 		case 2:
-			if(r<0 || c<0 || c>i->dc-2)
+			if(r<0 || c<0 || r>i->br-2)
 				return;/*The first row, the first column and the last column are not usable*/
 			
-			for(j=c;j<i->dc-c-1&&j-strlen(s);j++){
+			for(j=c;j<i->dc-2&&j-c<strlen(s);j++){
 				i->mapDisplay[r][j]=s[j-c];
 			}
 
 			break;
 
 		case 3:
-			if(r<0 || c<0 || r>i->cr-2 || c>i->bc+i->dc-2)
+			if(r<0 || c<0 || r>i->cr-3)
 				return;/*The limitations are not usable*/
 
-			for(j=c;j<i->bc+i->dc-c-1&&j-c<strlen(s);j++){
+			for(j=c;j<i->bc+i->dc-2&&j-c<strlen(s);j++){
 					i->mapCommand[r][j]=s[j-c];
 
 			}
