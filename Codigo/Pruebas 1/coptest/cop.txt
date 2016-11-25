@@ -10,3 +10,8 @@ internal_paint
 I wont paint *
 Ive already painted *
 I dont like painting *
+run
+internal_run
+1
+I like running *
+I hate running * !
