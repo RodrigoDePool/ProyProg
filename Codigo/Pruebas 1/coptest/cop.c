@@ -3,7 +3,7 @@
 #include <assert.h>
 #define MAX_STR 500
 
-char *strdup(char *);
+/*char *strdup(char *);*/
 
 /*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
 /*First command will be the error one	   */
@@ -19,31 +19,6 @@ char *strdup(char *);
 	I wont paint *
 	Ive already painted *
 */
-
-/*Stores an internal string which we associate to a function*/
-struct _Assoc {
-	char *int_name;
-	pfun f;	
-};
-
-/*Stores a command which we associate to an internal string, and to the possible
- answers it may return*/
-struct _Ext{
-	char *ext_name;
-	char *int_name;
-	int n_ans;
-	char **ans;
-};
-
-/*Stores an array of assocs, as well as an array of exts an the number of
- elements in each array*/
-struct _CoP {
-	int numexts;
-	Ext **exts;
-	int numassocs;
-	int maxassocs; 
-	Assoc **assocs;
-};
 
 
 
@@ -153,11 +128,17 @@ CoP *cop_ini(FILE *f){
 void cop_free(CoP *c){
 	int i;
 	if(c){
-		for(i = 0; i<c->numexts; i++){
-			if(c->exts[i]) ext_free(c->exts[i]);
+		if(c->exts){
+			for(i = 0; i<c->numexts; i++){
+				if(c->exts[i]) ext_free(c->exts[i]);
+			}
+			free(c->exts);
 		}
-		for(i = 0; i< c->maxassocs; i++){
-			if(c->assocs[i]) assoc_free(c->assocs[i]);
+		if(c->assocs){
+			for(i = 0; i< c->maxassocs; i++){
+				if(c->assocs[i]) assoc_free(c->assocs[i]);
+			}
+			free(c->assocs);
 		}
 		free(c);
 	}
@@ -229,8 +210,8 @@ Ext *ext_ini(FILE *f){
 	/*This strange way of reading strings will read EVERYTHING it reads till
 	it finds a \n and store it in the CHAR** given afterwards, allocating
 	sufficient memory for it. Then, itll read the /n */
-	fscanf(f, "%m[\n]\n", &extname);
-	fscanf(f, "%m[\n]\n", &intname);
+	fscanf(f, "%m[^\n]\n", &extname);
+	fscanf(f, "%m[^\n]\n", &intname);
 	fscanf(f, "%d\n", &numans);
 	answers = (char **)malloc(numans * sizeof(char*));
 	if(answers == NULL){
