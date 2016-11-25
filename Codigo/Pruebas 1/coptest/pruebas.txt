@@ -1,3 +1,6 @@
 PRUEBAS HECHAS:
 	1) cop ini/free 0 leaks
 	2) Array de exts reservado correctamente 0 leaks :)
+LUSI, CAMBIA LAS STRUCTS DEL .H AL .C !!
+	3) Array de assocs creado, funciones asociadas correctamente :)
+	4)
