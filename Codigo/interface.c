@@ -587,10 +587,62 @@ char i_getCPlayer(Interface * i){
 }
 
 
+
+void i_cleanDisplay(Interface *i){
+	int j,k;
+	if(i==NULL)
+		return;
+	/*sets the map to blank spaces*/
+	for(j=0;j<i->br-1;j++){
+		for(k=0;k<i->dc-2;k++){
+			i->mapDisplay[j][k]=' ';
+		}
+	}
+	i_drawAll(i);
+	return;
+}
+
+
+void i_cleanCommand(Interface *i){
+	int j,k;
+	if(i==NULL)
+		return;
+	/*sets the map to blank spaces*/
+	for(j=0;j<i->cr-2;j++){
+		for(k=0;k<i->dc+i->bc-2;k++){
+			i->mapCommand[j][k]=' ';
+		}
+	}
+	i_drawAll(i);
+	return;
+}
+
+
+void i_readFile(Interface *i, char *s, int row){
+	FILE *f;
+	char buff[200];/*Buffer to load the strings read from file*/
+	if(i==NULL || s==NULL)
+		return;
+
+	f=fopen(s,"r");
+	if(f==NULL)
+		return;
+	while(fgets(buff,200,f)!=NULL){
+		i_drawStrMap(i,buff,row,0,2);
+		row++;
+	}
+	fclose(f);
+	return;
+}
+
+
+
+
 void _term_init() {
 	struct termios new;	          /*a termios structure contains a set of attributes about
 					  how the terminal scans and outputs data*/
 
+  system("setterm -cursor off");/*Turns off the cursor*/
 	tcgetattr(fileno(stdin), &initial);    /*first we get the current settings of out
 						 terminal (fileno returns the file descriptor
 						 of stdin) and save them in initial. We'd better
@@ -608,12 +660,18 @@ void _term_init() {
 	new.c_cc[VTIME] = 0;	              /*I really have no clue what this does, it must be somewhere in the book tho*/
 	new.c_lflag &= ~ISIG;                 /*here we discard signals: the program won't end even if we
 						press Ctrl+C or we tell it to finish*/
-
 	tcsetattr(fileno(stdin), TCSANOW, &new);  /*now we SET the attributes stored in new to the
 						    terminal. TCSANOW tells the program not to wait
 						    before making this change*/
+	return;
 }
 
+
+void _term_close(){
+  tcsetattr(fileno(stdin), TCSANOW, &initial);
+  system("setterm -cursor on");
+	return;
+}
 
 /*
   Reads a key from the keyboard. If the key is a "regular" key it

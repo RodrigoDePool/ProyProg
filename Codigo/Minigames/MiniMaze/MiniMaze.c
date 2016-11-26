@@ -274,12 +274,13 @@ int miniMaze(Interface *i){
   map=mazegen(rows,cols);
   i_setMap(i,map);
   map_iniPlayer(i,map,rows,cols);
-  /*BORRADO DE COMMAND Y DISPLAY*/
-  /*FUNCION QUE PONGA LAS INSTRUCCIONES EN EL DISPLAY*/
+  i_cleanCommand(i);/*Deletes whatever is in the command line*/
+  i_cleanDisplay(i);/*The same with display*/
+  i_readFile(i,MAZE_PATH,0);/*The instructions of the game*/
   /*FUNCION DE POSIBLE PISTILLAS EN COMO RESOLVER EL LABERINTO*/
   while(1){
     c=_read_key();
-    if(c=='q'){
+    if(c=='q' || c=='Q'){
       /*we free map*/
       for(j=0;j<rows;j++){
         free(map[j]);
@@ -299,6 +300,10 @@ int miniMaze(Interface *i){
         free(map);
         return WIN;
       }
+    }
+
+    if(c=='c' || c=='C'){
+      i_readFile(i,MAZE_CLUE_PATH,20);
     }
   }
 }

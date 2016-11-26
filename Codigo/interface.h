@@ -263,6 +263,34 @@ int i_getpr(Interface * i);
 */
 char i_getCPlayer(Interface * i);
 
+/*
+	This function cleans the display map leaving it all in blank spaces.
+*/
+void i_cleanDisplay(Interface *i);
+
+/*
+	This function cleans the command map leaving it all in blank spaces.
+*/
+void i_cleanCommand(Interface *i);
+
+/*
+	This function reads the info from a file
+	and writes it in the Display Map starting in the row indicated
+	Parameters:
+		i Pointer to interface
+		s path to the  file
+		row is the row in which file will start writing down the file
+	NOTE:
+		The file must have the text in such a way it fits
+		the display, otherwise the text could be cutted and fitted
+		into the display.
+	NOTE 2:
+		The reading of the file will end as soon as it finds a blank line.
+		if you wish to have a line between info in the text just
+		introduce a space (' ') in the blank line and then start the new line.
+*/
+void i_readFile(Interface *i, char *s, int row);
+
 /*FUNCTIONS OF GENERAL USE BY OTHER STRUCTURES*/
 /*
   Reads a key from the keyboard. If the key is a "regular" key it
@@ -274,8 +302,11 @@ int _read_key();
   Initializes the terminal in such a way that we can read the input
   without echo on the screen
 */
-
 void _term_init();/*Initializes the terminal*/
 
+/*
+	Sets the terminal back to normality after doing a _term_init()
+*/
+void _term_close();
 
 #endif

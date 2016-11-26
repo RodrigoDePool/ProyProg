@@ -10,6 +10,7 @@ int main(){
   _term_init();
   i=i_create(cols+1,rows+1,40,15,'@',40,37,40,37,40,37);
   i_drawAll(i);
+
   do{
     sol=miniMaze(i);
     if(sol==WIN){
@@ -25,6 +26,6 @@ int main(){
 
   }while(c=='s' || c=='S');
   i_free(i);
-  tcsetattr(fileno(stdin), TCSANOW, &initial);
+  _term_close();
   return 1;
 }
