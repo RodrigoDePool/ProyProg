@@ -618,7 +618,7 @@ void i_cleanCommand(Interface *i){
 }
 
 
-void i_readFile(Interface *i, char *s, int row){
+void i_readFile(Interface *i, char *s, int row,int bdc){
 	FILE *f;
 	char buff[200];/*Buffer to load the strings read from file*/
 	if(i==NULL || s==NULL)
@@ -628,7 +628,7 @@ void i_readFile(Interface *i, char *s, int row){
 	if(f==NULL)
 		return;
 	while(fgets(buff,200,f)!=NULL){
-		i_drawStrMap(i,buff,row,0,2);
+		i_drawStrMap(i,buff,row,0,bdc);
 		row++;
 	}
 	fclose(f);

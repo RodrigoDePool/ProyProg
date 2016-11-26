@@ -275,21 +275,22 @@ void i_cleanCommand(Interface *i);
 
 /*
 	This function reads the info from a file
-	and writes it in the Display Map starting in the row indicated
+	and writes it in the Map indicated starting in the row indicated
 	Parameters:
 		i Pointer to interface
 		s path to the  file
 		row is the row in which file will start writing down the file
+		bdc if 1 it writes in boardMap, 2 in DisplayMap, 3 in CommandMap
 	NOTE:
 		The file must have the text in such a way it fits
-		the display, otherwise the text could be cutted and fitted
-		into the display.
+		the map, otherwise the text could be cutted and fitted
+		into the map.
 	NOTE 2:
 		The reading of the file will end as soon as it finds a blank line.
 		if you wish to have a line between info in the text just
 		introduce a space (' ') in the blank line and then start the new line.
 */
-void i_readFile(Interface *i, char *s, int row);
+void i_readFile(Interface *i, char *s, int row, int bdc);
 
 /*FUNCTIONS OF GENERAL USE BY OTHER STRUCTURES*/
 /*
