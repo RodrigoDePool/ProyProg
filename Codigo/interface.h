@@ -8,11 +8,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "rectangles.h"
-
+#include <termios.h>
 
 typedef struct _Interface Interface;
 
 
+struct termios initial;
 
 /*	Creates an interface.
 	Parameters:
@@ -23,7 +24,7 @@ typedef struct _Interface Interface;
 														 (limit between board and display, and right limit)
 			  	the rows of the display are the same as the board, with the same limitation
 
-				cr rows of command (The first and last row are not usable, they are limits) 
+				cr rows of command (The first and last row are not usable, they are limits)
 				the colums are equal to dc+bc , being the first and last one limitations
 
 				bkcl background colour of the board
@@ -78,9 +79,9 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc);
 	 If the string exceeds the rectangle it cuts it down
 	 If the r or c exceeds the limits usable of the board/display/command
 	 it wont do anything
-	 It prints a copy of s in the maps and executes i_drawALl(i), it does not, 
-	 however, allocate any memory, nor use the memory in s. 
-	 You may free s with no fear in case it is dynamic. 
+	 It prints a copy of s in the maps and executes i_drawALl(i), it does not,
+	 however, allocate any memory, nor use the memory in s.
+	 You may free s with no fear in case it is dynamic.
 	 Also, the coords should be in MAP coords, NOT rectangle coords
 */
 void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc);
@@ -187,14 +188,14 @@ int i_writeChar(Interface *i,char c,int row, int col, int bdc);
 /*
 	Gets the Row where the player is.
 	Parameters: i: pointer to the interface.
-	Returns: -1 Error, anything else OK. 
+	Returns: -1 Error, anything else OK.
 */
 int i_wherePlayerBeRow(Interface * i);
 
 /*
 	Gets the Col where the player is.
 	Parameters: i: pointer to the interface.
-	Returns: -1 Error, anything else OK. 
+	Returns: -1 Error, anything else OK.
 */
 int i_wherePlayerBeCol(Interface * i);
 
@@ -203,7 +204,7 @@ int i_wherePlayerBeCol(Interface * i);
 	Parameters: i: pointer to the interface.
 				r: row of the char we want
 				c: column of the char we want
-	Returns: '0' Error, anything else OK. 
+	Returns: '0' Error, anything else OK.
 */
 char i_whatCaractHere(Interface * i, int r, int c);
 
@@ -261,6 +262,20 @@ int i_getpr(Interface * i);
 	Returns: the requested char or 0 if ERROR or not initialized.
 */
 char i_getCPlayer(Interface * i);
+
+/*FUNCTIONS OF GENERAL USE BY OTHER STRUCTURES*/
+/*
+  Reads a key from the keyboard. If the key is a "regular" key it
+  returns its ascii code; if it is an arrow key, it returns one of the
+  four interface directions with the "minus" sign
+*/
+int _read_key();
+/*
+  Initializes the terminal in such a way that we can read the input
+  without echo on the screen
+*/
+
+void _term_init();/*Initializes the terminal*/
 
 
 #endif

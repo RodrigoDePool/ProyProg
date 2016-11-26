@@ -1,5 +1,5 @@
 #ifndef MINIMAZE_H
-#define MINIMAZE../_H
+#define MINIMAZE_H
 #include "../../interface.h"
 #define WIN 1
 #define QUIT 0

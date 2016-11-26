@@ -133,7 +133,7 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 		free(i);
 		return NULL;
 	}
-	
+
 	i->command=win_new(br,0,cr,bc+dc,cbkcl,cfgcl);
 	if(i->command==NULL){
 		for(j=0;j<i->dc;j++){
@@ -163,11 +163,10 @@ void i_drawAll(Interface *i){
 	win_cls(i->board);
 	win_cls(i->display);
 
-	/*Now we write the map if it is there*/
 	if(i->map!=NULL){
 		for(j=0;j<i->br-1;j++){
 			for(k=0;k<i->bc-1;k++){
-				win_write_char_at(i->board,i->map[j][k],j+1,k+1);
+				win_write_char_at(i->board,j+1,k+1,i->map[j][k]);
 			}
 		}
 	}
@@ -175,15 +174,16 @@ void i_drawAll(Interface *i){
 	/*Now we write the command line and the display*/
 	for(j=0;j<i->br-1;j++){
 		for(k=0;k<i->dc-2;k++){
-			win_write_char_at(i->display,i->mapDisplay[j][k],j+1,k+1);
+			win_write_char_at(i->display,j+1,k+1,i->mapDisplay[j][k]);
 		}
 	}
 
 	for(j=0;j<i->cr-2;j++){
 		for(k=0;k<i->bc+i->dc-2;k++){
-			win_write_char_at(i->command,i->mapCommand[j][k],j+1,k+1);
+			win_write_char_at(i->command,j+1,k+1,i->mapCommand[j][k]);
 		}
 	}
+
 
 	/*First we markdown the board, the first row of it and the first column*/
 	for(j=1;j<i->bc;j++){
@@ -233,7 +233,7 @@ void i_drawAll(Interface *i){
 	win_write_char_at(i->command,i->cr-1,0,'+');
 	win_write_char_at(i->display,0,0,'+');
 	win_write_char_at(i->display,0,i->dc-1,'+');
-	
+
 	fflush(stdout);
 	return;
 }
@@ -288,7 +288,7 @@ void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
 		case 2:
 			if(r<0 || c<0 || r>i->br-2)
 				return;/*The first row, the first column and the last column are not usable*/
-			
+
 			for(j=c;j<i->dc-2&&j-c<strlen(s);j++){
 				i->mapDisplay[r][j]=s[j-c];
 			}
@@ -303,7 +303,7 @@ void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
 					i->mapCommand[r][j]=s[j-c];
 
 			}
-			
+
 			break;
 
 		default:
@@ -319,6 +319,9 @@ void i_setMap(Interface *i,char **map){
 	int j,k;
 	if(i==NULL || map==NULL)
 		return;
+	if(i->map!=NULL)/*if theres a map we free it*/
+		i_freeMap(i);
+
 	i->map=(char **)malloc(sizeof(char *)*(i->br-1));
 	if(i->map==NULL)
 		return;
@@ -342,7 +345,8 @@ void i_setMap(Interface *i,char **map){
 
 
 	for(j=0;j<i->br-1;j++){
-		i_drawStr(i,map[j],j+1,1,1);
+		for(k=0;k<i->bc-1;k++)
+			win_write_char_at(i->board,j+1,k+1,map[j][k]);
 	}
 	return;
 }
@@ -436,7 +440,7 @@ void i_free(Interface *i){
 	/*we free the maps*/
 	i_freeMap(i);
 
-	for(j=0;j<i->br-2;j++){
+	for(j=0;j<i->br-1;j++){
 		free(i->mapDisplay[j]);
 	}
 	for(j=0;j<i->cr-2;j++){
@@ -457,11 +461,11 @@ int i_setBackgroundColor(Interface *i, int bkcl, int bdc){
 			return -1;
 		i->bbkcl=bkcl;
 		break;
-		
+
 	case 2:
 		if((win_bgcol(i->display, bkcl))==1)
 				return -1;
-		
+
 		i->dbkcl=bkcl;
 		break;
 
@@ -473,7 +477,7 @@ int i_setBackgroundColor(Interface *i, int bkcl, int bdc){
 	default:
 		break;
 	}
-	
+
 	i_drawAll(i);
 	return 0;
 }
@@ -487,7 +491,7 @@ int i_setForegroundColor(Interface *i, int fgcl, int bdc){
 			return -1;
 		i->bfgcl=fgcl;
 		break;
-		
+
 	case 2:
 		if((win_fgcol(i->display, fgcl))==1)
 			return -1;
@@ -529,13 +533,13 @@ int i_writeChar(Interface *i,char c,int row, int col, int bdc){
 
 int i_wherePlayerBeRow(Interface * i){
 	if(!i) return -1;
-	
+
 	return i->pr;
 }
 
 int i_wherePlayerBeCol(Interface * i){
 	if(!i) return -1;
-	
+
 	return i->pc;
 }
 
@@ -543,7 +547,7 @@ char i_whatCaractHere(Interface * i, int r, int c){
 	if(!i||r>i->br-1||c>i->bc-1){
 		return 0;
 	}
-	
+
 	return i->map[r][c];
 }
 
@@ -580,4 +584,63 @@ int i_getpr(Interface * i){
 char i_getCPlayer(Interface * i){
 	if(!i) return 0;
 	return i->cplayer;
+}
+
+
+void _term_init() {
+	struct termios new;	          /*a termios structure contains a set of attributes about
+					  how the terminal scans and outputs data*/
+
+	tcgetattr(fileno(stdin), &initial);    /*first we get the current settings of out
+						 terminal (fileno returns the file descriptor
+						 of stdin) and save them in initial. We'd better
+						 restore them later on*/
+	new = initial;	                      /*then we copy them into another one, as we aren't going
+						to change ALL the values. We'll keep the rest the same */
+	new.c_lflag &= ~ICANON;	              /*here we are setting up new. This line tells to stop the
+						canonical mode (which means waiting for the user to press
+						enter before sending)*/
+	new.c_lflag &= ~ECHO;                 /*by deactivating echo, we tell the terminal NOT TO
+						show the characters the user is pressing*/
+	new.c_cc[VMIN] = 1;                  /*this states the minimum number of characters we have
+					       to receive before sending is 1 (it means we won't wait
+					       for the user to press 2,3... letters)*/
+	new.c_cc[VTIME] = 0;	              /*I really have no clue what this does, it must be somewhere in the book tho*/
+	new.c_lflag &= ~ISIG;                 /*here we discard signals: the program won't end even if we
+						press Ctrl+C or we tell it to finish*/
+
+	tcsetattr(fileno(stdin), TCSANOW, &new);  /*now we SET the attributes stored in new to the
+						    terminal. TCSANOW tells the program not to wait
+						    before making this change*/
+}
+
+
+/*
+  Reads a key from the keyboard. If the key is a "regular" key it
+  returns its ascii code; if it is an arrow key, it returns one of the
+  four interface directions with the "minus" sign
+*/
+int _read_key() {
+  char choice;
+  choice = fgetc(stdin);
+
+
+  if (choice == 27 && fgetc(stdin) == '[') { /* The key is an arrow key */
+    choice = fgetc(stdin);
+
+    switch(choice) {
+    case('A'):
+      return NORTH;
+    case('B'):
+      return SOUTH;
+    case('C'):
+      return EAST;
+    case('D'):
+      return WEST;
+    default:
+      return HERE;
+    }
+  }
+  else
+    return choice;
 }
