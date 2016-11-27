@@ -275,11 +275,13 @@ void i_cleanCommand(Interface *i);
 
 /*
 	This function reads the info from a file
-	and writes it in the Map indicated starting in the row indicated
+	and writes it in the MAP given by bdc code,
+ starting in the row and column indicated
 	Parameters:
 		i Pointer to interface
 		s path to the  file
 		row is the row in which file will start writing down the file
+		col is the same but with column
 		bdc if 1 it writes in boardMap, 2 in DisplayMap, 3 in CommandMap
 	NOTE:
 		The file must have the text in such a way it fits
@@ -290,7 +292,7 @@ void i_cleanCommand(Interface *i);
 		if you wish to have a line between info in the text just
 		introduce a space (' ') in the blank line and then start the new line.
 */
-void i_readFile(Interface *i, char *s, int row, int bdc);
+void i_readFile(Interface *i, char *s, int row, int col,int bdc);
 
 /*FUNCTIONS OF GENERAL USE BY OTHER STRUCTURES*/
 /*

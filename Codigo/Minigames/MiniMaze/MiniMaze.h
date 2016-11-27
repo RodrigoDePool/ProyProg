@@ -3,8 +3,8 @@
 #include "../../interface.h"
 #define WIN 1
 #define QUIT 0
-#define MAZE_PATH "DATA/miniInst/mazeInst"
-#define MAZE_CLUE_PATH "DATA/miniInst/mazeClue"
+#define MAZE_PATH "DATA/miniInst/maze/mazeInst"
+#define MAZE_CLUE_PATH "DATA/miniInst/maze/mazeClue"
 
 /*
   Parameters:

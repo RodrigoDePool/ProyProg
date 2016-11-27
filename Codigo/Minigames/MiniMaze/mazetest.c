@@ -4,11 +4,11 @@
 #include "MiniMaze.h"
 
 int main(){
-  int rows=50,cols=120,sol;
+  int rows=50,cols=110,sol;
   char c;
   Interface *i;
   _term_init();
-  i=i_create(cols+1,rows+1,40,15,'@',40,37,40,37,40,37);
+  i=i_create(cols+1,rows+1,40,8,'@',40,37,40,37,40,37);
   i_drawAll(i);
 
   do{
