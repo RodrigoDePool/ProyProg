@@ -256,12 +256,16 @@ void i_drawStr(Interface *i, char *s, int r, int c,int bdc){
 			if(r<1 || c<1 || c>i->dc-2)
 				return;/*The first row, the first column and the last column are not usable*/
 		  win_write_line_at(i->display, r, c, s);
+			/*in case the string is long and reaches the limitation we redraw it*/
+			win_write_char_at(i->display,r,i->dc-1,'|');
 			return;
 
 		case 3:
 			if(r<1 || c<1 || r>i->cr-2 || c>i->bc+i->dc-2)
 				return;/*The limitations are not usable*/
 			win_write_line_at(i->command,r,  c, s);
+			/*in case the string is long and reaches the limitation we redraw it*/
+			win_write_char_at(i->command,r,i->bc+i->dc-1,'|');
 			return;
 
 		default:
@@ -309,7 +313,7 @@ void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
 		default:
 			return;
 	}
-	i_drawAll(i);
+	i_drawStr(i,s,r+1,c+1,bdc);
 	return;
 }
 
@@ -598,7 +602,12 @@ void i_cleanDisplay(Interface *i){
 			i->mapDisplay[j][k]=' ';
 		}
 	}
-	i_drawAll(i);
+	/*redraws the display*/
+	for(j=0;j<i->br-1;j++){
+		for(k=0;k<i->dc-2;k++){
+			win_write_char_at(i->display,j+1,k+1,i->mapDisplay[j][k]);
+		}
+	}
 	return;
 }
 
@@ -613,7 +622,12 @@ void i_cleanCommand(Interface *i){
 			i->mapCommand[j][k]=' ';
 		}
 	}
-	i_drawAll(i);
+	/*Redraws the command line*/
+	for(j=0;j<i->cr-2;j++){
+		for(k=0;k<i->bc+i->dc-2;k++){
+			win_write_char_at(i->command,j+1,k+1,i->mapCommand[j][k]);
+		}
+	}
 	return;
 }
 
