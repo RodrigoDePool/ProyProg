@@ -657,6 +657,7 @@ void _term_init() {
 					  how the terminal scans and outputs data*/
 
   system("setterm -cursor off");/*Turns off the cursor*/
+	system("resize -s 59 151");
 	tcgetattr(fileno(stdin), &initial);    /*first we get the current settings of out
 						 terminal (fileno returns the file descriptor
 						 of stdin) and save them in initial. We'd better
