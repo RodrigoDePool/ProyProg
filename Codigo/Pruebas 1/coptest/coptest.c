@@ -70,6 +70,7 @@ int main(){
 		printf("\tAssoc[%d] asocia %s a %p\n", i,c->assocs[i]->int_name,
 							c->assocs[i]->f);
 	}
+	printf("Nuevo número de assocs (debería ser 3): %d\n", c->numassocs);
 	printf("Las direcciones impresas debrían ser:\n");
 	printf("\t%p\n\t%p\n\t%p\n", pdrawing, ppainting, prunning);
 	

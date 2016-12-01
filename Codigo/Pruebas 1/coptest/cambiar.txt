@@ -1,0 +1,61 @@
+IMplementacion struct de .h a .c
+
+Muchos controles de errores
+
+extsearch que vaya de 1 a n, no de 0 a n (el 0 es el de error, lo cambie porq fichero de prueba no tenia errorfunct)
+
+preguntar a santini xq no me deja usar strdupa
+
+preguntar si 
+printf("%p\n", prunning); imprime LA DIRECC DEL PUNTERO O LA DIRECC APUNTADA POR
+EL PUNTER0 (ver las lineas de abajo)
+
+Se jode antes de llamar a la funcion, el print de las answers que hago
+para comprobar no lo hace (no llega hasta ese punto)
+
+
+
+
+
+
+
+
+
+#include <stdio.h>
+
+int main()
+{
+  int my_variable = 6, other_variable = 10;
+  int *my_pointer;
+
+  printf("the address of my_variable is    : %p\n", &my_variable);
+  printf("the address of other_variable is : %p\n", &other_variable);
+
+  my_pointer = &my_variable;
+
+  printf("\nafter \"my_pointer = &my_variable\":\n");
+  printf("\tthe value of my_pointer is %p\n", my_pointer);
+  printf("\tthe value at that address is %d\n", *my_pointer);
+
+  my_pointer = &other_variable;
+
+  printf("\nafter \"my_pointer = &other_variable\":\n");
+  printf("\tthe value of my_pointer is %p\n", my_pointer);
+  printf("\tthe value at that address is %d\n", *my_pointer);
+
+  return 0;
+}
+
+This will produce following result.
+
+the address of my_variable is    : 0xbfffdac4
+the address of other_variable is : 0xbfffdac0
+
+after "my_pointer = &my_variable":
+        the value of my_pointer is 0xbfffdac4
+        the value at that address is 6
+
+after "my_pointer = &other_variable":
+        the value of my_pointer is 0xbfffdac0
+        the value at that address is 10
+

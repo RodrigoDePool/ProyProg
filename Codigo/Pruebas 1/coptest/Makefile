@@ -10,4 +10,4 @@ cop.o: cop.c cop.h types.h
 	gcc -c -g -Wall cop.c
 
 clean:
-	rm -f *.o *.exe
+	rm -f *.o core
