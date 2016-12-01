@@ -8,7 +8,7 @@ int main(){
   char c;
   Interface *i;
   _term_init();
-  i=i_create(cols+1,rows+1,40,8,'@',40,37,40,37,40,37);
+  i=i_create(MAXCOLS-30,MAXROWS-6,30,6,'@',40,37,40,37,40,37);
   i_drawAll(i);
 
   do{

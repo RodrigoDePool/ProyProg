@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include "rectangles.h"
 #include <termios.h>
+#define MAXCOLS 144
+#define MAXROWS 41
 
 typedef struct _Interface Interface;
 

@@ -653,11 +653,16 @@ void i_readFile(Interface *i, char *s, int row, int col, int bdc){
 
 
 void _term_init() {
+	int i,j;
+	char buff[20];
 	struct termios new;	          /*a termios structure contains a set of attributes about
 					  how the terminal scans and outputs data*/
 
-  system("setterm -cursor off");/*Turns off the cursor*/
-	system("resize -s 59 151");
+	system("setterm -cursor off");/*Turns off the cursor*/
+	i=MAXROWS;
+	j=MAXCOLS;
+	sprintf(buff,"resize -s %d %d",i,j);
+	system(buff);/*resizes the window to fit the interface*/
 	tcgetattr(fileno(stdin), &initial);    /*first we get the current settings of out
 						 terminal (fileno returns the file descriptor
 						 of stdin) and save them in initial. We'd better

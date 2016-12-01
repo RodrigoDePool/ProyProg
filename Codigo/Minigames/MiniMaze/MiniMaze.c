@@ -276,7 +276,7 @@ int miniMaze(Interface *i){
   map_iniPlayer(i,map,rows,cols);
   i_cleanCommand(i);/*Deletes whatever is in the command line*/
   i_cleanDisplay(i);/*The same with display*/
-  i_readFile(i,MAZE_PATH,0,0,2);/*The instructions of the game*/
+  i_readFile(i,MAZE_PATH,3,0,2);/*The instructions of the game*/
   /*FUNCION DE POSIBLE PISTILLAS EN COMO RESOLVER EL LABERINTO*/
   while(1){
     c=_read_key();
