@@ -283,8 +283,11 @@ pfun assoc_search(char *int_name, CoP *c){
 	assert(int_name && c);
 	int i;
 	for(i = 0; i<c->numassocs; i++){
-		if(strcmp (c->assocs[i]->int_name, int_name) == 0)
+		printf("Desde assoc_search: comparo %s con int_name %s\n", c->assocs[i]->int_name, int_name);
+		if(strcmp (c->assocs[i]->int_name, int_name) == 0){
+			printf("Y acierto para %s\n", c->assocs[i]->int_name);
 			return c->assocs[i]->f;
+		}
 	}
 	return NULL;
 }
@@ -294,8 +297,13 @@ Ext *ext_search(char *verb, CoP *c){
 	assert(verb && c);
 	int i;
 	/*i=1 bc exts[0] = error function*/
+	printf("En el ext_search lo pongo a buscar el ext asociado a %s\n", verb);
 	for(i = 0; i< c->numexts; i++){
-		if(strcmp(c->exts[i]->ext_name, verb) == 0)return c->exts[i];
+		printf("Comparo %s con %s\n", verb, c->exts[i]->ext_name);
+		if(strcmp(c->exts[i]->ext_name, verb) == 0){
+			printf("Y acierto para %s\n", c->exts[i]->ext_name);
+			return c->exts[i];
+			}
 	}
 	/*verb is not an external command in the CoP, return error*/
 	return c->exts[0];
