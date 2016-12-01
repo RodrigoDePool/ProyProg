@@ -4,11 +4,8 @@
 
 #define MAX_STR 500
 
-/* PREGUNTAR SANTINI XQ NO RECONOCE ESTA FUNCION
-#include <alloca.h>
-char *strdupa(char *);*/
 
-/*char *strdup(char *);*/
+char *strdup(char *);
 
 /*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
 /*First command will be the error one	   */
@@ -173,11 +170,8 @@ int assoc_add(CoP *c, char *int_name, pfun f){
 int cop_execute(CoP *c, char *cmd, void *world){
 	assert(c && cmd && world);
 	
-	printf("A cop_exe llegó el cmd %s\n", cmd);
-	
 	char *verb, *object, *cmd_cpy;
 	cmd_cpy = strdup(cmd);
-	printf("Que duplicamos en la cadena copy: %s\n", cmd_cpy);
 	Ext* e;
 	pfun f;
 	char **answers;
@@ -187,22 +181,16 @@ int cop_execute(CoP *c, char *cmd, void *world){
 	*object = '\0';
 	object++;
 	verb = cmd_cpy;
-	printf("Veamos si separó el cmd: %s separado de %s\n", verb, object);
 	
 	/*Lets see if the verb is actually a command*/
 	e = ext_search(verb, c);
 	/*And what func the command is associated to*/
-	printf("Desde cop_execute: me llega un ext con int_name %s\n", e->int_name);
 	f = assoc_search(e->int_name, c);
-	printf("Al cop_exe me llega un pfun apuntando a la direccion: %p\n", f);
 	/*generate the proper strings for verb and object*/
 	answers = unpack_answers(e, object);
 	if(answers == NULL) return -1;
 	
 	/*Compruebo si las ans se llegaron a unpackar*/
-	printf("Comprobamos si unpackamos las %d answers.\n", e->n_ans);
-	for(int j = 0; j< e->n_ans; j++)
-		printf("%s", answers[j]);
 	
 	/*calls f with proper arguments and return its value*/
 	ret = (*f)(world, object, answers, e->n_ans);
@@ -295,11 +283,8 @@ pfun assoc_search(char *int_name, CoP *c){
 	assert(int_name && c);
 	int i;
 	for(i = 0; i<c->numassocs; i++){
-		printf("Desde assoc_search: comparo %s con int_name %s\n", c->assocs[i]->int_name, int_name);
-		if(strcmp (c->assocs[i]->int_name, int_name) == 0){
-			printf("Y acierto para %s\n", c->assocs[i]->int_name);
+		if(strcmp (c->assocs[i]->int_name, int_name) == 0)
 			return c->assocs[i]->f;
-		}
 	}
 	return NULL;
 }
@@ -309,13 +294,8 @@ Ext *ext_search(char *verb, CoP *c){
 	assert(verb && c);
 	int i;
 	/*i=1 bc exts[0] = error function*/
-	printf("En el ext_search lo pongo a buscar el ext asociado a %s\n", verb);
 	for(i = 0; i< c->numexts; i++){
-		printf("Comparo %s con %s\n", verb, c->exts[i]->ext_name);
-		if(strcmp(c->exts[i]->ext_name, verb) == 0){
-			printf("Y acierto para %s\n", c->exts[i]->ext_name);
-			return c->exts[i];
-			}
+		if(strcmp(c->exts[i]->ext_name, verb) == 0)return c->exts[i];
 	}
 	/*verb is not an external command in the CoP, return error*/
 	return c->exts[0];
@@ -348,7 +328,7 @@ char *unpack_answer(char *ans, char *object){
 	for(pc1 = ans; *pc1!= '\0'; pc1++){
 		if(*pc1 == '*') n_stars++;
 	}
-	answer= (char*)malloc(sizeof(ans)+((n_stars * obj_len)+1)*sizeof(char));
+	answer= (char*)malloc(strlen(ans)+((n_stars * obj_len)+1)*sizeof(char));
 	if(!answer) return NULL;
 	
 	/*Copy ans in answer replacing * with object*/
@@ -357,8 +337,8 @@ char *unpack_answer(char *ans, char *object){
 			*pc2 = *pc1;
 			pc2 ++;
 		}else{
-			for(int i=0; i< obj_len; i++) *pc2 = object[i];
-			pc2 += obj_len;
+			for(int i=0; i< obj_len; i++) *pc2++ = object[i];
+			/*			pc2 += obj_len; */
 		}		
 	}
 	*pc2 = '\0';
