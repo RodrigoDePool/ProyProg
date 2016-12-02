@@ -10,4 +10,4 @@ cop.o: cop.c cop.h types.h
 	gcc -c -std=c99 -g cop.c
 
 clean:
-	rm -f *.o core
+	rm -f *.o coptest *~

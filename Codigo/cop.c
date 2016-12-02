@@ -1,29 +1,14 @@
 #include "cop.h"
 #define NDEBUG
 #include <assert.h>
+
 #define MAX_STR 500
 
-
-/*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
-/*First command will be the error one	   */
-/*
-	2 ##Num of commands to read
-	draw ##typed command, could change
-	internal_draw ##wont change
-	1 ##num of possible answers
-	I'll draw * when I find my pencils
-	paint *
-	internal_paint
-	2
-	I wont paint *
-	Ive already painted *
-*/
 
 /*Stores an internal string which we associate to a function*/
 typedef struct _Assoc {
 	char *int_name;
-	pfun f;
-	
+	pfun f;	
 };
 
 /*Stores a command which we associate to an internal string, and to the possible
@@ -45,6 +30,23 @@ typedef struct _CoP {
 	Assoc **assocs;
 };
 
+char *strdup(char *);
+
+/*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
+/*First command will be the error one	   */
+/*
+	2 ##Num of commands to read
+	draw ##typed command, could change
+	internal_draw ##wont change
+	1 ##num of possible answers
+	I'll draw * when I find my pencils
+	paint *
+	internal_paint
+	2
+	I wont paint *
+	Ive already painted *
+*/
+
 
 
 
@@ -54,7 +56,7 @@ typedef struct _CoP {
 /*Parameter: file                              */
 /*Returns:  pointer to the Ext/NULL when error */
 /*Revision: 5/11/2016                  	       */
-Ext *ext_ini( FILE *f)
+Ext *ext_ini( FILE *f);
 
 /*Function: frees given Ext and all its members*/
 /*Parameter: pointer to Ext                    */
@@ -96,7 +98,7 @@ char **unpack_answers(Ext *e, char *object);
 /*Parameter: pointer to Ext and string with the object of the verb       */
 /*Returns:pointer to the alloc'd string with the answers/ NULL           */
 /*Revision: 10/11/16    			  		         */
-char *unpack_answer(char *ans, object);
+char *unpack_answer(char *ans, char *object);
 
 /******* PUBLIC  FUNCTIONS ********/
 
@@ -121,7 +123,7 @@ CoP *cop_ini(FILE *f){
 	}
 	for(i = 0; i < n_exts; i++){
 		e[i] = ext_ini(f);
-		if(e[i]) == NULL{
+		if(e[i] == NULL){
 			for(j = 0; j<i; j++)
 				ext_free(e[j]);
 			free(e);
@@ -142,12 +144,31 @@ CoP *cop_ini(FILE *f){
 	}
 	
 	/*THIRD: set info to the alloc'd CoP*/
-	a->numexts = n_exts;
-	a->exts = e;
-	a->numassocs = 0;
-	a->maxassocs = n_exts;
-	a->assocs = a;
+	c->numexts = n_exts;
+	c->exts = e;
+	c->numassocs = 0;
+	c->maxassocs = n_exts;
+	c->assocs = a;
 	return c;
+}
+
+void cop_free(CoP *c){
+	int i;
+	if(c){
+		if(c->exts){
+			for(i = 0; i<c->numexts; i++){
+				if(c->exts[i]) ext_free(c->exts[i]);
+			}
+			free(c->exts);
+		}
+		if(c->assocs){
+			for(i = 0; i< c->maxassocs; i++){
+				if(c->assocs[i]) assoc_free(c->assocs[i]);
+			}
+			free(c->assocs);
+		}
+		free(c);
+	}
 }
 
 int assoc_add(CoP *c, char *int_name, pfun f){
@@ -174,29 +195,38 @@ int assoc_add(CoP *c, char *int_name, pfun f){
 int cop_execute(CoP *c, char *cmd, void *world){
 	assert(c && cmd && world);
 	
-	char *verb, *object;
+	char *verb, *object, *cmd_cpy;
+	cmd_cpy = strdup(cmd);
 	Ext* e;
-	pfun *f;
+	pfun f;
 	char **answers;
+	Status ret;
 	/*Separate action and object from cmd*/
-	object = strchr(cmd, ' ');
+	object = strchr(cmd_cpy, ' ');
 	*object = '\0';
 	object++;
-	verb = cmd;
+	verb = cmd_cpy;
 	
 	/*Lets see if the verb is actually a command*/
 	e = ext_search(verb, c);
 	/*And what func the command is associated to*/
-	f = assoc_search(e->int_name, c);)
-	
+	f = assoc_search(e->int_name, c);
 	/*generate the proper strings for verb and object*/
 	answers = unpack_answers(e, object);
 	if(answers == NULL) return -1;
-		
+	
+	/*Compruebo si las ans se llegaron a unpackar*/
+	
 	/*calls f with proper arguments and return its value*/
-	return (*f)(world, object, answers, e->n_ans);
-	/*When will all these strings be freed? ASK*/
+	ret = (*f)(world, object, answers, e->n_ans);
+	for (int i=0; i< e->n_ans; i++){
+		if(answers[i]) free(answers[i]);
+	}
+	free(answers);
+	free(cmd_cpy);
+	return ret;	
 }
+
 
 /********LOCAL FUNCTIONS IMPLEMENTATION ********/
 Ext *ext_ini(FILE *f){
@@ -210,8 +240,8 @@ Ext *ext_ini(FILE *f){
 	/*This strange way of reading strings will read EVERYTHING it reads till
 	it finds a \n and store it in the CHAR** given afterwards, allocating
 	sufficient memory for it. Then, itll read the /n */
-	fscanf(f, "%m[\n]\n", &extname);
-	fscanf(f, "%m[\n]\n", &intname);
+	fscanf(f, "%m[^\n]\n", &extname);
+	fscanf(f, "%m[^\n]\n", &intname);
 	fscanf(f, "%d\n", &numans);
 	answers = (char **)malloc(numans * sizeof(char*));
 	if(answers == NULL){
@@ -289,15 +319,14 @@ Ext *ext_search(char *verb, CoP *c){
 	assert(verb && c);
 	int i;
 	/*i=1 bc exts[0] = error function*/
-	for(i = 1; i< c->numexts; i++){
-		if(strcmp(c->exts[i]->ext_name, verb) == 0)
-			return c->exts[i];
+	for(i = 0; i< c->numexts; i++){
+		if(strcmp(c->exts[i]->ext_name, verb) == 0)return c->exts[i];
 	}
 	/*verb is not an external command in the CoP, return error*/
-	return c->exts[0]
+	return c->exts[0];
 }
 
-Ext *unpack_answers(Ext *e, char *object){
+char **unpack_answers(Ext *e, char *object){
 	assert(e != NULL && object != NULL);
 	char **answers = (char**)malloc(e->n_ans * sizeof(char*));
 	if(answers == NULL) return NULL;
@@ -314,17 +343,17 @@ Ext *unpack_answers(Ext *e, char *object){
 	return answers;
 }
 
-char *unpack_answer(char *ans, object){
+char *unpack_answer(char *ans, char *object){
 	assert(ans && object);
 	char *answer = NULL, *pc1, *pc2;
-	int obj_len= strlen(object)
+	int obj_len= strlen(object);
 	int n_stars = 0;
 	
 	/*Initializes answ with enough space*/
 	for(pc1 = ans; *pc1!= '\0'; pc1++){
 		if(*pc1 == '*') n_stars++;
 	}
-	answer= (char*)malloc(sizeof(ans)+((n_stars * obj_len)+1)*sizeof(char));
+	answer= (char*)malloc(strlen(ans)+((n_stars * obj_len)+1)*sizeof(char));
 	if(!answer) return NULL;
 	
 	/*Copy ans in answer replacing * with object*/
@@ -333,8 +362,8 @@ char *unpack_answer(char *ans, object){
 			*pc2 = *pc1;
 			pc2 ++;
 		}else{
-			for(int i=0; i< obj_len; i++) *pc2 = object[i];
-			pc2 += obj_len;
+			for(int i=0; i< obj_len; i++) *pc2++ = object[i];
+			/*			pc2 += obj_len; */
 		}		
 	}
 	*pc2 = '\0';

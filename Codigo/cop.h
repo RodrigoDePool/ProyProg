@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stslib.h>
+#include <stdlib.h>
 #include <string.h>
 #include "types.h"
 
@@ -10,6 +10,8 @@ typedef Status (*pfun)(void*, char*, char**, int);
 typedef struct _Assoc Assoc;
 typedef struct _Ext Ext; 
 typedef struct _CoP CoP;
+
+
 
 
 /*Function: adds assoc between a COPY of a string and a function to the CoP   */
@@ -23,6 +25,12 @@ int assoc_add(CoP *c, char *int_name, pfun f);
 /*Returns: pointer to CoP/ NULL when error                    */
 /*Revision: 5/11/16		                              */
 CoP *cop_ini(FILE *f);
+
+/*Function: frees CoP and all its members*/
+/*Parameter: CoP to free		 */
+/*Returns:                 		 */
+/*Revision: 18/11/16			 */
+void cop_free(CoP *c);
 
 /*Function: executes a typed command */
 /*Parameter: CoP, command to execute, world where the cmd will be executed*/

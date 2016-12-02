@@ -7,34 +7,10 @@
 number of possible answers*/
 typedef Status (*pfun)(void*, char*, char**, int);
 
-/*typedef struct _Assoc Assoc;
+typedef struct _Assoc Assoc;
 typedef struct _Ext Ext; 
-typedef struct _CoP CoP;*/
+typedef struct _CoP CoP;
 
-/*Stores an internal string which we associate to a function*/
-typedef struct _Assoc {
-	char *int_name;
-	pfun f;	
-}Assoc;
-
-/*Stores a command which we associate to an internal string, and to the possible
- answers it may return*/
-typedef struct _Ext{
-	char *ext_name;
-	char *int_name;
-	int n_ans;
-	char **ans;
-}Ext;
-
-/*Stores an array of assocs, as well as an array of exts an the number of
- elements in each array*/
-typedef struct _CoP {
-	int numexts;
-	Ext **exts;
-	int numassocs;
-	int maxassocs; 
-	Assoc **assocs;
-}CoP;
 
 
 

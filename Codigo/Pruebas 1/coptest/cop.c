@@ -5,6 +5,31 @@
 #define MAX_STR 500
 
 
+/*Stores an internal string which we associate to a function*/
+typedef struct _Assoc {
+	char *int_name;
+	pfun f;	
+};
+
+/*Stores a command which we associate to an internal string, and to the possible
+ answers it may return*/
+typedef struct _Ext{
+	char *ext_name;
+	char *int_name;
+	int n_ans;
+	char **ans;
+};
+
+/*Stores an array of assocs, as well as an array of exts an the number of
+ elements in each array*/
+typedef struct _CoP {
+	int numexts;
+	Ext **exts;
+	int numassocs;
+	int maxassocs; 
+	Assoc **assocs;
+};
+
 char *strdup(char *);
 
 /*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
