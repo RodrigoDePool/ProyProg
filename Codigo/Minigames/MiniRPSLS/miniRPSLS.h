@@ -1,13 +1,13 @@
 #ifndef MINIRPSLS
 #define MINIRPSLS
 #include "../../interface.h"
-#define INI_PATH "miniInst/RPSLS/RPSLSini"
-#define SPOCK_PATH "miniInst/RPSLS/SPOCK"
-#define LIZZARD_PATH "miniInst/RPSLS/LIZZARD"
-#define SCISSORS_PATH "miniInst/RPSLS/SCISSORS"
-#define ROCK_PATH "miniInst/RPSLS/ROCK"
-#define PAPER_PATH "miniInst/RPSLS/PAPER"
-#define RPSLS_INST_PATH "miniInst/RPSLS/InstructionsRPSLS"
+#define INI_PATH "DATA/miniInst/RPSLS/RPSLSini"
+#define SPOCK_PATH "DATA/miniInst/RPSLS/SPOCK"
+#define LIZZARD_PATH "DATA/miniInst/RPSLS/LIZZARD"
+#define SCISSORS_PATH "DATA/miniInst/RPSLS/SCISSORS"
+#define ROCK_PATH "DATA/miniInst/RPSLS/ROCK"
+#define PAPER_PATH "DATA/miniInst/RPSLS/PAPER"
+#define RPSLS_INST_PATH "DATA/miniInst/RPSLS/InstructionsRPSLS"
 #define WAIT 15000
 
 /*

@@ -70,14 +70,42 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 		return NULL;
 	}
 
+	i->map=(char **)malloc(sizeof(char *)*(i->br-1));
+	if(i->map==NULL){
+		free(i->mapDisplay);
+		free(i->mapCommand);
+		free(i);
+		return NULL;
+	}
+
+	for(j=0;j<i->br-1;j++){
+		i->map[j]=(char *)malloc(sizeof(char *)*(i->bc-1));
+		if(i->map[j]==NULL){
+				for(k=0;k<j;k++)
+					free(i->map[k]);
+				free(i->map);
+				return NULL;
+		}
+	}
+	for(j=0;j<i->br-1;j++){
+		for(k=0;k<i->bc-1;k++){
+			i->map[j][k]=' ';
+		}
+	}
+
+
+
 	for(j=0;j<i->br-1;j++){
 		i->mapDisplay[j]=(char*)malloc(sizeof(char)*(i->dc-2));
 		if(!i->mapDisplay[j]){
 			while(j>0){
 				free(i->mapDisplay[--j]);
 			}
+			for(k=0;k<i->br-1;k++)
+				free(i->map[k]);
 			free(i->mapDisplay);
 			free(i->mapCommand);
+			free(i->map);
 			free(i);
 			return NULL;
 		}
@@ -95,7 +123,10 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 			for(k=0;k<i->dc;k++){
 				free(i->mapDisplay[k]);
 			}
+			for(k=0;k<i->br-1;k++)
+				free(i->map[k]);
 			free(i->mapDisplay);
+			free(i->map);
 			free(i->mapCommand);
 			free(i);
 			return NULL;
@@ -113,6 +144,9 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 		for(j=0;j<i->cr-2;j++){
 			free(i->mapCommand[j]);
 		}
+		for(k=0;k<i->br-1;k++)
+			free(i->map[k]);
+		free(i->map);
 		free(i->mapDisplay);
 		free(i->mapCommand);
 		free(i);
@@ -127,6 +161,9 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 		for(j=0;j<i->dc;j++){
 			free(i->mapCommand[j]);
 		}
+		for(k=0;k<i->br-1;k++)
+			free(i->map[k]);
+		free(i->map);
 		free(i->mapDisplay);
 		free(i->mapCommand);
 		win_delete(i->board);
@@ -142,6 +179,9 @@ Interface *i_create(int bc, int br, int dc, int cr, char cplayer,
 		for(j=0;j<i->dc;j++){
 			free(i->mapCommand[j]);
 		}
+		for(k=0;k<i->br-1;k++)
+			free(i->map[k]);
+		free(i->map);
 		free(i->mapDisplay);
 		free(i->mapCommand);
 		win_delete(i->board);
@@ -277,7 +317,6 @@ void i_drawStrMap(Interface *i, char *s, int r, int c,int bdc){
 	int j;
 		if(i==NULL)
 		return;
-
 	switch (bdc) {
 		case 1:
 			if(r<0 || c<0 || r>i->br-2)
@@ -323,22 +362,7 @@ void i_setMap(Interface *i,char **map){
 	int j,k;
 	if(i==NULL || map==NULL)
 		return;
-	if(i->map!=NULL)/*if theres a map we free it*/
-		i_freeMap(i);
 
-	i->map=(char **)malloc(sizeof(char *)*(i->br-1));
-	if(i->map==NULL)
-		return;
-
-	for(j=0;j<i->br-1;j++){
-		i->map[j]=(char *)malloc(sizeof(char *)*(i->bc-1));
-		if(i->map[j]==NULL){
-				for(k=0;k<j;k++)
-					free(i->map[k]);
-				free(i->map);
-				return;
-		}
-	}
 	for(j=0;j<i->br-1;j++){
 		for(k=0;k<i->bc-1;k++){
 			if(map[j][k]==0)
