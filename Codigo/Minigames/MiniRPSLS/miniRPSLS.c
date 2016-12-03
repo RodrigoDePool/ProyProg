@@ -1,5 +1,6 @@
 #include "miniRPSLS.h"
 #include <time.h>
+#include <unistd.h>
 #define rock 1
 #define scissors 2
 #define paper 3
@@ -9,7 +10,7 @@
 int round(Interface *i);
 int miniRPSLS(Interface *i){
   i_readFile(i,INI_PATH,0,0,1);
-  return round(i);
+  return 0;
 }
 
 
@@ -22,11 +23,10 @@ int miniRPSLS(Interface *i){
   returns 1 if win
   returns 2 it tie
   returns -1 if error
-
 */
 int round(Interface *i){
   int ran,des;
-	
+
 
   do{
     des=fgetc(stdin);
