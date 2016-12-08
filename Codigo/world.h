@@ -6,13 +6,13 @@
 #include "player.h"
 #include "object.h"
 
-typedef struct _World World;
+typedef struct _World   World;
 
 
 /*Function: Initializes a World given a Player, an    */
 /*array of objects, an array of spaces, number of objs*/
 /*and number of spaces				      */
-/*Parameters: explained above 			      */
+/*Parameters: explained above                 */
 /*Returns: a World with the given data		      */
 /*COMMENT: THE ARRAY OF OBJECTS AND THE ARRAY OF SPACES*/
 /*IS NOT COPIED AND WILL BE FREED IN WORLD FREE	      */
@@ -28,17 +28,17 @@ void world_free(World *);
 
 
 
-/*Funcitions: Gives back an array of spaces 	      */
+/*Funcitions: Gives back an array of spaces           */
 /*Parameters: World				      */
 /*Return: The pointer DIRECTLY to the array of spaces */
-/*DO NOT FREE THE SPACES 	  		      */
+/*DO NOT FREE THE SPACES                  */
 Space **world_getSpaces(World *w);
 
 
 
 /*Function: Gives back the number of spaces of the World*/
 /*Parameters: Pointer to World				*/
-/*Return: integer with the num of spaces  		*/
+/*Return: integer with the num of spaces        */
 int world_getNumSpaces(World *w);
 
 
@@ -46,7 +46,7 @@ int world_getNumSpaces(World *w);
 /*Funcition: Gives back an array of objects of the world*/
 /*Parameters: World *					*/
 /*Return: The pointer DIRECTLY to the array of objects  */
-/*DO NOT FREE THE OBJECTS			   	*/
+/*DO NOT FREE THE OBJECTS			    */
 Object **world_getObjects(World *w);
 
 
@@ -70,22 +70,22 @@ Player *world_getPlayer(World *w);
 World *worldfromfile(char *file);
 
 /*
-FORMAT OF THE FILE:
-	NUMBEROFSPACES
-	SPACE1
-	SPACE2
-	SPACE3
-	.
-	.
-	.
-	PLAYER
-	NUMBEROFOBJECTS
-	OBJECT1
-	OBJECT2
-	OBJECT3
-	.
-	.
-	.
-*/
+   FORMAT OF THE FILE:
+    NUMBEROFSPACES
+    SPACE1
+    SPACE2
+    SPACE3
+    .
+    .
+    .
+    PLAYER
+    NUMBEROFOBJECTS
+    OBJECT1
+    OBJECT2
+    OBJECT3
+    .
+    .
+    .
+ */
 
 #endif

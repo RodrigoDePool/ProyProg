@@ -20,7 +20,7 @@
    i_rnd
 
    Based on this, two generators are built: the first (f_rnd) generates
-   double precision numbers in the range [0,1], the second (n_rnd) 
+   double precision numbers in the range [0,1], the second (n_rnd)
    generates numbers with a normal distribution (with mean 0 and unitary
    variance).
 
@@ -49,8 +49,8 @@
       double n = n_rnd(sn);
    }
 
-  -------------------------------------------------------------------
-*/
+   -------------------------------------------------------------------
+ */
 
 #ifndef ____RANDOM___INCLUDED_____
 #define ____RANDOM___INCLUDED_____
@@ -58,125 +58,127 @@
 #include <math.h>
 
 
-#define NSTORE   32
+#define NSTORE    32
 
 
 
 
 
 /*
-  State returned by the initialization routine. The fields seed, a, m,
-  q, r, mask, store and lastidx are used by the integer generator (see
-  s874 for documentation on the meaning of these fields), the fields
-  stored and sval are used only by the normal distribution generator.
-*/
-typedef struct {
-  long seed;
-  long a;
-  long m;
-  long q;
-  long r;
-  long mask;  /* This is a trick to scramble the seed (see s874) */
-  long store[NSTORE];
-  int  lstidx;
+   State returned by the initialization routine. The fields seed, a, m,
+   q, r, mask, store and lastidx are used by the integer generator (see
+   s874 for documentation on the meaning of these fields), the fields
+   stored and sval are used only by the normal distribution generator.
+ */
+typedef struct
+{
+    long   seed;
+    long   a;
+    long   m;
+    long   q;
+    long   r;
+    long   mask; /* This is a trick to scramble the seed (see s874) */
+    long   store[NSTORE];
+    int    lstidx;
 
-  int stored;
-  double sval;
+    int    stored;
+    double sval;
 } rnd_state;
 
 
 /*
-  This is the state returned by the function r_norep_init, which
-  initializes a random number generators that, called n times, returns
-  all the numbers in [0,..n-1] in random order without repetitions. 
+   This is the state returned by the function r_norep_init, which
+   initializes a random number generators that, called n times, returns
+   all the numbers in [0,..n-1] in random order without repetitions.
 
-  This structure has the following elements:
+   This structure has the following elements:
 
-  Name        type                content
-  n           long             the number n of different numbers that
+   Name        type                content
+   n           long             the number n of different numbers that
                                will be returned.
-  left        long             at any given moment, the number of values
+   left        long             at any given moment, the number of values
                                that still have to be returned. If the function
-			       r_norep_rnd has been called k times with this
-			       strucure, then left = n-k
-  val         long *           an array with the numbers that haven't been
+                   r_norep_rnd has been called k times with this
+                   strucure, then left = n-k
+   val         long *           an array with the numbers that haven't been
                                generated yet. Only the first "left" entries
-			       are valid at any time
-  rst         rnd_state *      a structure for the generation of random numbers
+                   are valid at any time
+   rst         rnd_state *      a structure for the generation of random numbers
 
 
-  Created for Rev. 2.0
-*/
-typedef  struct {
-  long  n;
-  long  left;
-  long  *val;
-  rnd_state *rst;
+   Created for Rev. 2.0
+ */
+typedef  struct
+{
+    long      n;
+    long      left;
+    long      *val;
+    rnd_state *rst;
 } r_norep_state;
 
 
 /*
-  Initializes the generator of unique random number in the range
-  [0,..n-1]. Returns a structure of type r_norep_state.
-  
-  Parameters
-  name         type           content
-  seed         long           the seed for teh random number generator;
-  n            long           the value n that defines the range [0,..n-1]
+   Initializes the generator of unique random number in the range
+   [0,..n-1]. Returns a structure of type r_norep_state.
+
+   Parameters
+   name         type           content
+   seed         long           the seed for teh random number generator;
+   n            long           the value n that defines the range [0,..n-1]
                               in which the numbers have to be returned.
-*/
+ */
 r_norep_state *r_norep_init(long seed, long n);
 
 
 /*
-  Releases a structure of type r_norep_state. After this function
-  has been called, the structure can no longer be used to generate
-  random numbers.
-*/
+   Releases a structure of type r_norep_state. After this function
+   has been called, the structure can no longer be used to generate
+   random numbers.
+ */
 void r_norep_end(r_norep_state *r);
 
 
 /*
-  Returns a random number in a given range without repetitions. The
-  function receives a structure of type r_norep_state that has been
-  created with a parameter n. The function can be called at most n
-  times and every time it will return a different number in the
-  interval [0,..n-1]. All numbers will be returned, and nonumber will
-  be returned twice. If the function is called more than n times, it
-  will return -1 to indicate an incorrect call.
-*/
+   Returns a random number in a given range without repetitions. The
+   function receives a structure of type r_norep_state that has been
+   created with a parameter n. The function can be called at most n
+   times and every time it will return a different number in the
+   interval [0,..n-1]. All numbers will be returned, and nonumber will
+   be returned twice. If the function is called more than n times, it
+   will return -1 to indicate an incorrect call.
+ */
 long r_norep_rnd(r_norep_state *r);
 
 
 /*
-  Inititlization function: given a seed initializes a state
-  and returns a pointer to it.
-*/
+   Inititlization function: given a seed initializes a state
+   and returns a pointer to it.
+ */
 rnd_state *r_init(long seed);
 
 
 /*
-  Finalizes the use of the generator liberating the memoty used
-  by the state
-*/
+   Finalizes the use of the generator liberating the memoty used
+   by the state
+ */
 void r_end(rnd_state *s);
 
 
 /*
-  Function that returns a pseudo-random integer number
-*/
+   Function that returns a pseudo-random integer number
+ */
 long i_rnd(rnd_state *s);
-  
+
 /*
-  Function that returns a pseudo-random floating point number
-  in the interval [0,1]
-*/
+   Function that returns a pseudo-random floating point number
+   in the interval [0,1]
+ */
 double f_rnd(rnd_state *s);
 
 /*
-  Function that returns a pseudo-random floating point number
-  with a normal distribution.
-*/
+   Function that returns a pseudo-random floating point number
+   with a normal distribution.
+ */
 double n_rnd(rnd_state *s);
 
 #endif
