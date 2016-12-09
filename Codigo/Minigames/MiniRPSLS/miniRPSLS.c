@@ -26,7 +26,6 @@ int _round(Interface *i)
 {
     int ran, des;
 
-
     do
     {
         des = fgetc(stdin);
@@ -35,7 +34,6 @@ int _round(Interface *i)
 
     srand(time(NULL));
     ran = rand() % 5 + 1;
-
 
     /*WHO WON?*/
     /*Prints enemys choice*/
@@ -162,7 +160,7 @@ int miniRPSLS(Interface *i)
     i_readFile(i, RPSLS_INST_PATH, 0, 0, 2);
     read_sols(com); /*read lines for round plus tie text*/
 
-    for (j = 0; j < 3; j++)
+    for (j = 0; j < 3 && points < 2 && enemy < 2; j++)
     {
         i_cleanCommand(i);
         i_drawStrMap(i, com[j], 1, 1, 3); /*round line*/
