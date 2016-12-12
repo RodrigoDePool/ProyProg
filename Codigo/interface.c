@@ -633,6 +633,39 @@ int i_writeChar(Interface *i, char c, int row, int col, int bdc)
     }
 }
 
+int i_writeCharMap(Interface *i, char ca, int r, int c, int bdc)
+{
+    if (!i)
+        return -1;
+
+    switch (bdc)
+    {
+    case 1:
+        if (r < 0 || c < 0 || r > i->br - 2)
+            return -1;
+        i->map[r][c] = ca;
+        win_write_char_at(i->board, r + 1, c + 1, ca);
+        return 0;
+    case 2:
+        if (r < 0 || c < 0 || r > i->br - 2)
+            return -1;
+        i->mapDisplay[r][c] = ca;
+        win_write_char_at(i->display, r + 1, c + 1, ca);
+        return 0;
+    case 3:
+        if (r < 0 || c < 0 || r > i->cr - 3)
+            return -1;
+        i->mapCommand[r][c] = ca;
+        win_write_char_at(i->command, r + 1, c + 1, ca);
+        return 0;
+    default:
+        return -1;
+    }
+}
+
+
+
+
 int i_wherePlayerBeRow(Interface * i)
 {
     if (!i)
@@ -734,6 +767,29 @@ void i_cleanDisplay(Interface *i)
     return;
 }
 
+void i_cleanMap(Interface *i)
+{
+    int j, k;
+    if (i == NULL)
+        return;
+    /*sets the map to blank spaces*/
+    for (j = 0; j < i->br - 1; j++)
+    {
+        for (k = 0; k < i->bc - 1; k++)
+        {
+            i->map[j][k] = ' ';
+        }
+    }
+    /*Redraws the map*/
+    for (j = 0; j < i->br - 1; j++)
+    {
+        for (k = 0; k < i->bc - 1; k++)
+        {
+            win_write_char_at(i->board, j + 1, k + 1, i->map[j][k]);
+        }
+    }
+    return;
+}
 
 void i_cleanCommand(Interface *i)
 {

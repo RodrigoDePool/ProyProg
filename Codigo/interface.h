@@ -172,7 +172,7 @@ int  i_setForegroundColor(Interface *i, int bfgcl, int bdc);
 
 /*
     Function that draws a character in Board/Display/Command with NORMAL COORDS
-    NOT MAP COORDS. THE CHARACTER MUST NOT BE WRITTEN IN THE MAP, FOR THAT THERE
+    NOT MAP COORDS. THE CHARACTER WILL NOT BE WRITTEN IN THE MAP, FOR THAT THERE
     IS ANOTHER FUNCTION.
     Paramters:
         i pointer to the interface.
@@ -186,6 +186,24 @@ int  i_setForegroundColor(Interface *i, int bfgcl, int bdc);
     returns:  0 OK -1 Error
  */
 int i_writeChar(Interface *i, char c, int row, int col, int bdc);
+
+
+/*
+    Function that draws a character in map/DisplayMap/CommandMap with MAP COORDS
+    . THE CHARACTER WILL BE WRITTEN IN THE MAP
+    Paramters:
+        i pointer to the interface.
+        c character thats gonna be written
+        r row in the board/display/command you wanna start to write the character
+        col column in the board/display/command you wanna start to write the character
+        bdc :
+            1 draws in map
+            2 draws in displayMap
+            3 draws in commandMap
+    returns:  0 OK -1 Error
+ */
+int i_writeCharMap(Interface *i, char c, int row, int col, int bdc);
+
 
 /*
     Gets the Row where the player is.
@@ -274,6 +292,12 @@ void i_cleanDisplay(Interface *i);
     This function cleans the command map leaving it all in blank spaces.
  */
 void i_cleanCommand(Interface *i);
+
+
+/*
+    This function cleans the board map leaving it all in blank spaces.
+ */
+void i_cleanMap(Interface *i);
 
 /*
     This function reads the info from a file
