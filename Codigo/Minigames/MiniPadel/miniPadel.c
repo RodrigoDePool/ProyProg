@@ -12,7 +12,7 @@ typedef struct _Ball
 {
     char obj;
     int  xdir;
-    int  ydi;
+    int  ydir;
     int  xpos;
     int  ypos;
     int  speed;
@@ -38,7 +38,7 @@ typedef struct _Pad
     int       xpos;
     int       ypos;
     Interface *intf;
-    /*MAYBE AN EXTRA FLAG TO CANCEL THREADS???*/
+    int       stop;
 }Pad;
 
 
@@ -95,7 +95,7 @@ void *pad_movement(void *pdaux)
         c = _read_key();
         if (c == 'q')
         {
-            /*CHANGE A FLAG TO DEACTIVATE THREADS ??*/
+            pd->stop = 1;
             return NULL;
         }
         if (c == NORTH && pd->ypos > 1)
@@ -134,17 +134,17 @@ void *pad_movement(void *pdaux)
         0 if it hit a wall and change direction, or if it didnt hit anything
         1 if the game was lost cause the player did not hit it with the pad
  */
-int check(Pad *pd, Ball *ball, int rows, int cols)
+int check(Pad *pad, Ball *ball, int rows, int cols)
 {
     int random;
-    if (pd == NULL || ball == NULL)
+    if (pad == NULL || ball == NULL)
         return -1;
 
     /*If the ball is next to pad xpos*/
     if (ball->xpos == pad->xpos + 1)
     {
         /*If the pad hits directly the ball*/
-        if (pad->ypos == ball->ypos || pad->ypos - 1 == ball->pos)
+        if (pad->ypos == ball->ypos || pad->ypos - 1 == ball->ypos)
         {
             /*we change the direction of x*/
             ball->xdir = (-1) * ball->xdir;
@@ -208,17 +208,47 @@ int check(Pad *pd, Ball *ball, int rows, int cols)
         }
         /*In any other case the player lost*/
         return 1;
-    }
+    } /*END OF IF THE BALL IS NEXT TO THE XPOS OF THE PAD*/
 
 
 
     /*if the ball hits the right wall*/
     if (ball->xpos == cols - 1)
     {
-        /*CASE FOR BOTH CORNERS*/
-        /*GENERAL CASE FOR 66 AND 33 PERCENT*/
+        ball->xdir = (-1) * ball->xdir;
+        /*in case the ball hits the top corner or the bottom one*/
+        if (ball->ypos == 0 || ball->ypos == rows - 1)
+        {
+            ball->ydir = (-1) * ball->ydir;
+        }
+        else
+        {
+            /*in any other case we will have 66% chance the ball changes dir in Y*/
+            /*and 33 percent that it goes in a straight line*/
+            random = rand() % 3;
+            /*Change Y*/
+            if (random == 0 || random == 1)
+            {
+                ball->ydir = ball->ydir * (-1);
+                /*In case it came from being in a straight line*/
+                /*50% chance that it goes or up or down*/
+                if (ball->ydir == 0 && random == 1)
+                {
+                    ball->ydir = 1;
+                }
+                if (ball->ydir == 0 && random == 0)
+                {
+                    ball->ydir = -1;
+                }
+            }
+            /*go straight*/
+            if (random == 2)
+            {
+                ball->ydir = 0;
+            }
+        }
+        return 0;
     }
-
 
     /*if the ball hits the top wall*/
     if (ball->ypos == 0)
@@ -258,6 +288,21 @@ void *ball_movement(void *auxstruct)
     while (1)
     {
         win = check(pd, ball, aux->rows, aux->cols);
+        if (win == 1)
+        {
+            /*YOU LOST MAYBE CHANGE FLAG???*/
+            return NULL;
+        }
+        /*we delete the ball in its current position*/
+        i_writeCharMap(pd->intf, ' ', ball->ypos, ball->xpos, 1);
+        /*We move the ball*/
+        ball->xpos = ball->xpos + ball->xdir;
+        ball->ypos = ball->ypos + ball->ydir;
+        /*we print it*/
+        printBall(pd->intf, *ball);
+        /*we delay it MAYBE OR SPEED INCREASES??*/
+        usleep(1000 * 100); /*EN micro segundo, ponemos 500 milis*/
+        /*MAYBE WE HAVE A COUNTER TO KNOW WHEN TO STOP??*/
     }
 }
 
@@ -290,8 +335,8 @@ int miniPadel(Interface * i, int hardMode)
         free(pd);
         return -1;
     }
-    auxtruct = (Aux *) malloc(sizeof(Aux));
-    if (auxtruct == NULL)
+    auxstruct = (Aux *) malloc(sizeof(Aux));
+    if (auxstruct == NULL)
     {
         free(pd);
         free(ball);
@@ -305,9 +350,9 @@ int miniPadel(Interface * i, int hardMode)
 
     ball->obj = 'o';
 
-    /*Lets set our auxtruct pointers*/
-    auxtruct->pad  = pd;
-    auxtruct->ball = ball;
+    /*Lets set our auxstruct pointers*/
+    auxstruct->pad  = pd;
+    auxstruct->ball = ball;
 
     /*Initialize the interface for the game*/
     i_cleanDisplay(i);
@@ -321,7 +366,7 @@ int miniPadel(Interface * i, int hardMode)
     if (rows < 10 || cols < 10)
         return -1;
     auxstruct->rows = rows;
-    auxtruct->cols  = cols;
+    auxstruct->cols = cols;
 
     /*Initialize the ypos of the pad*/
     pd->ypos = 5; /*pad is ocupying y=5 and y=4 */
@@ -351,13 +396,20 @@ int miniPadel(Interface * i, int hardMode)
     pd->intf = i;
     /*Create thread for pad movement*/
     pthread_create(pth, NULL, pad_movement, (void *) pd);
-    /*IT WORKSS*/
-    sleep(8);
+    /*The same for the ball*/
+    pthread_create(pth + 1, NULL, ball_movement, (void *) auxstruct);
+
+
+    sleep(68);
 
     /*we cancel pad_movement*/
     pthread_cancel(pth[0]);
 
+    /*we cancel ball_movement*/
+    pthread_cancel(pth[1]);
+
     /*we free pad and ball*/
+    free(auxstruct);
     free(pd);
     free(ball);
     return 1;
