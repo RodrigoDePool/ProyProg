@@ -1,9 +1,11 @@
 #include <stdlib.h>
-#include "interface.h"
-typedef struct _Snake Snake;
+#include <stdio.h>
+#include "../../interface.h"
+#define WIN               1
+#define LOSE              0
+#define SNAKE_CHARACTER  '@'
+#define POINT_CHARACTER  'O'
 
-Snake *snake_ini(int* coordinates);
-void snake_free(Snake* s);
-void snake_move(Interface* i, int dir);
+int snake(Interface *i);
 
 
