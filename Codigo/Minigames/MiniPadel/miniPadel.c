@@ -301,7 +301,7 @@ void *ball_movement(void *auxstruct)
         /*we print it*/
         printBall(pd->intf, *ball);
         /*we delay it MAYBE OR SPEED INCREASES??*/
-        usleep(1000 * 70); /*EN micro segundo, ponemos 500 milis*/
+        usleep(1000 * 30); /*EN micro segundo, ponemos 500 milis*/
         /*MAYBE WE HAVE A COUNTER TO KNOW WHEN TO STOP??*/
     }
 }
@@ -399,7 +399,8 @@ int miniPadel(Interface * i, int hardMode)
     /*The same for the ball*/
     pthread_create(pth + 1, NULL, ball_movement, (void *) auxstruct);
 
-
+    /*MAYBE WE NEED A PTHREAD JOIN TO CANCEL BOTH THREADS*/
+    /*COMMUNICATING FUNCS WITH A FLAG AND CLOSING THEM TOGETHER*/
     sleep(68);
 
     /*we cancel pad_movement*/
