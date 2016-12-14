@@ -301,7 +301,7 @@ void *ball_movement(void *auxstruct)
         /*we print it*/
         printBall(pd->intf, *ball);
         /*we delay it MAYBE OR SPEED INCREASES??*/
-        usleep(1000 * 100); /*EN micro segundo, ponemos 500 milis*/
+        usleep(1000 * 70); /*EN micro segundo, ponemos 500 milis*/
         /*MAYBE WE HAVE A COUNTER TO KNOW WHEN TO STOP??*/
     }
 }
