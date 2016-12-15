@@ -139,7 +139,7 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
     int random;
     if (pad == NULL || ball == NULL)
         return -1;
-
+    srand(time(NULL) + clock());
     /*If the ball is next to pad xpos*/
     if (ball->xpos == pad->xpos + 1)
     {
