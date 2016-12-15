@@ -2,7 +2,7 @@
 #include <time.h>
 #include <pthread.h>
 #include <unistd.h>
-#define PAD_XPOS    ;
+
 
 /*
     Ball structure, the coords used in this structure are map coords
@@ -22,6 +22,8 @@ typedef struct _Ball
 /*
     Pad structure:
 
+ |
+ |
  |
  |
 
@@ -63,6 +65,8 @@ void printPad(Interface *i, Pad pd)
 {
     i_writeCharMap(i, pd.pad, pd.ypos, pd.xpos, 1);
     i_writeCharMap(i, pd.pad, pd.ypos - 1, pd.xpos, 1);
+    i_writeCharMap(i, pd.pad, pd.ypos - 2, pd.xpos, 1);
+    i_writeCharMap(i, pd.pad, pd.ypos - 3, pd.xpos, 1);
     return;
 }
 void printBall(Interface *i, Ball ball)
@@ -98,19 +102,19 @@ void *pad_movement(void *pdaux)
             pd->stop = 0;
             return NULL;
         }
-        if (c == NORTH && pd->ypos > 1)
+        if (c == NORTH && pd->ypos > 3)
         {
             /*we delete the bottom part of the pad*/
             i_writeCharMap(i, ' ', pd->ypos, pd->xpos, 1);
             /*we write the top one*/
-            i_writeCharMap(i, pd->pad, pd->ypos - 2, pd->xpos, 1);
+            i_writeCharMap(i, pd->pad, pd->ypos - 4, pd->xpos, 1);
             /*we change the coords*/
             pd->ypos--;
         }
         if (c == SOUTH && pd->ypos < rows - 1)
         {
             /*we delete the top one*/
-            i_writeCharMap(i, ' ', pd->ypos - 1, pd->xpos, 1);
+            i_writeCharMap(i, ' ', pd->ypos - 3, pd->xpos, 1);
             /*we write the bottom one*/
             i_writeCharMap(i, pd->pad, pd->ypos + 1, pd->xpos, 1);
             /*we change the coords*/
@@ -144,18 +148,18 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
     if (ball->xpos == pad->xpos + 1)
     {
         /*If the pad hits directly the ball*/
-        if (pad->ypos == ball->ypos || pad->ypos - 1 == ball->ypos)
+        if (pad->ypos == ball->ypos || pad->ypos - 1 == ball->ypos
+            || pad->ypos - 2 == ball->ypos || pad->ypos - 3 == ball->ypos)
         {
             /*we change the direction of x*/
             ball->xdir = (-1) * ball->xdir;
 
-            /*66% chance we change direction of Y by -1*/
+            /*66% chance we keep direction of Y */
             /*33% chance it goes in a straight line*/
             random = rand() % 3;
-            /*Change Y*/
+            /*Keep Y*/
             if (random == 0 || random == 1)
             {
-                ball->ydir = ball->ydir * (-1);
                 /*In case it came from being in a straight line*/
                 /*50% chance that it goes or up or down*/
                 if (ball->ydir == 0 && random == 1)
@@ -182,9 +186,10 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
          ** o
          **|
          **|
-
+         **|
+         **|
          */
-        if (ball->ypos == 0 && pad->ypos == 2)
+        if (ball->ypos == 0 && pad->ypos == 4)
         {
             ball->xdir = (-1) * ball->xdir;
             ball->ydir = 1;
@@ -203,7 +208,7 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
         if (ball->ypos == rows - 1 && pad->ypos == rows - 2)
         {
             ball->xdir = (-1) * ball->xdir;
-            ball->ydir = 1;
+            ball->ydir = -1;
             return 0;
         }
         /*In any other case the player lost*/
@@ -223,13 +228,12 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
         }
         else
         {
-            /*in any other case we will have 66% chance the ball changes dir in Y*/
+            /*in any other case we will have 66% chance the ball keep dir in Y*/
             /*and 33 percent that it goes in a straight line*/
             random = rand() % 3;
-            /*Change Y*/
+            /*keep Y*/
             if (random == 0 || random == 1)
             {
-                ball->ydir = ball->ydir * (-1);
                 /*In case it came from being in a straight line*/
                 /*50% chance that it goes or up or down*/
                 if (ball->ydir == 0 && random == 1)
@@ -348,7 +352,7 @@ int miniPadel(Interface * i, int hardMode)
 
     /*FIXED VALUES OF STRUCTS*/
     pd->pad  = '|';
-    pd->size = 2;
+    pd->size = 4;
     pd->xpos = 4;
 
     ball->obj = 'o';
@@ -372,7 +376,7 @@ int miniPadel(Interface * i, int hardMode)
     auxstruct->cols = cols;
 
     /*Initialize the ypos of the pad*/
-    pd->ypos = 5; /*pad is ocupying y=5 and y=4 */
+    pd->ypos = 5; /*pad is ocupying y=5 , y=4, y=3, y=2 */
     /*Print the pad*/
     printPad(i, *pd);
 
