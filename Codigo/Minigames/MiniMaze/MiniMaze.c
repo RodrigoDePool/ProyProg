@@ -18,6 +18,7 @@
 int generator(int min, int max)
 {
     int r;
+    srand(time(NULL) + clock());
     if (max < min)
         return -1;
     if (max == min)

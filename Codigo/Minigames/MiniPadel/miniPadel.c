@@ -321,6 +321,8 @@ int miniPadel(Interface * i, int hardMode)
     pthread_t pth[2]; /*Two main threads the ball and the pad*/
     Aux       *auxstruct;
 
+    srand(time(NULL) + clock());
+
     if (i == NULL)
     {
         return -1;
@@ -395,6 +397,9 @@ int miniPadel(Interface * i, int hardMode)
 
     /*We assign the interface to pd so we can use it in threads*/
     pd->intf = i;
+
+    /*We config the terminal for pad movement (autorepeat rate)*/
+    system("xset r rate 100");
     /*Create thread for pad movement*/
     pthread_create(pth, NULL, pad_movement, (void *) pd);
     /*The same for the ball*/
@@ -414,6 +419,9 @@ int miniPadel(Interface * i, int hardMode)
 
     /*we cancel ball_movement*/
     pthread_cancel(pth[1]);
+
+    /*We set back to normality the autorepeat rate*/
+    system("xset r rate 500");
 
     /*we free pad and ball*/
     free(auxstruct);
