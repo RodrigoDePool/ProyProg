@@ -38,7 +38,7 @@ typedef struct _Pad
     int       xpos;
     int       ypos;
     Interface *intf;
-    int       stop;
+    int       stop; /*0 for quit/lose, 1 for win, 2 for keep playing*/
 }Pad;
 
 
@@ -95,7 +95,7 @@ void *pad_movement(void *pdaux)
         c = _read_key();
         if (c == 'q')
         {
-            pd->stop = 1;
+            pd->stop = 0;
             return NULL;
         }
         if (c == NORTH && pd->ypos > 1)
@@ -275,7 +275,7 @@ void *ball_movement(void *auxstruct)
     Aux  *aux;
     Ball *ball;
     Pad  *pd;
-    int  win;
+    int  lose = 0; /*flag for losing, 1 if lost*/
 
     if (auxstruct == NULL)
         return NULL;
@@ -287,10 +287,11 @@ void *ball_movement(void *auxstruct)
 
     while (1)
     {
-        win = check(pd, ball, aux->rows, aux->cols);
-        if (win == 1)
+        lose = check(pd, ball, aux->rows, aux->cols);
+        /*If you lose or if the player wants to quit the game*/
+        if (lose == 1 || pd->stop == 0)
         {
-            /*YOU LOST MAYBE CHANGE FLAG???*/
+            pd->stop = 0;
             return NULL;
         }
         /*we delete the ball in its current position*/
@@ -399,9 +400,14 @@ int miniPadel(Interface * i, int hardMode)
     /*The same for the ball*/
     pthread_create(pth + 1, NULL, ball_movement, (void *) auxstruct);
 
-    /*MAYBE WE NEED A PTHREAD JOIN TO CANCEL BOTH THREADS*/
-    /*COMMUNICATING FUNCS WITH A FLAG AND CLOSING THEM TOGETHER*/
-    sleep(68);
+    /*We wait for the  ball thread to stop, if the player wants to quit from*/
+    /*player movement it will as well kill ball thread, so its enough to quit
+       the last one*/
+    pthread_join(pth[1], NULL);
+
+
+
+    /*WE NEED TO CHECK FOR LOSING OR WINNING*/
 
     /*we cancel pad_movement*/
     pthread_cancel(pth[0]);
