@@ -288,10 +288,10 @@ int check(char **map, int rows, int cols, int pr, int pc)
 }
 
 
-int miniMaze(Interface *i)
+int miniMaze(Interface *i, int hardMode)
 {
     char **map;
-    int  rows, cols, pr, pc, j;
+    int  rows, cols, pr, pc, j, rpr, rpc;
     char c;
     if (i == NULL)
         return -1;
@@ -321,9 +321,20 @@ int miniMaze(Interface *i)
         }
         if (c == WEST || c == EAST || c == NORTH || c == SOUTH)
         {
+            /*We register the previous place of the player*/
+            rpr = i_wherePlayerBeRow(i);
+            rpc = i_wherePlayerBeCol(i);
+
             move(i, c);
             pr = i_wherePlayerBeRow(i);
             pc = i_wherePlayerBeCol(i);
+            /*If its in hardMode we block the way you come from*/
+            if (hardMode == 1)
+            {
+                /*check if you moved*/
+                if (rpr != pr || rpc != pc)
+                    i_writeCharMap(i, '0', rpr, rpc, 1);
+            }
             if (check(map, rows, cols, pr, pc) == 1)
             {
                 /*we free map*/
