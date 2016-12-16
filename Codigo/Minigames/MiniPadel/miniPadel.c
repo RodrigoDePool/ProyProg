@@ -2,7 +2,7 @@
 #include <time.h>
 #include <pthread.h>
 #include <unistd.h>
-
+#define MILISECONDS    40 /*speed of the ball*/
 
 /*
     Ball structure, the coords used in this structure are map coords
@@ -177,6 +177,16 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
                 ball->ydir = 0;
             }
 
+
+            /*ADDED EXCEPTIONS TO AVOID CRASHES*/
+            if (ball->ypos == 0)
+            {
+                ball->ydir = 1;
+            }
+            else if (ball->ypos == rows - 1)
+            {
+                ball->ydir = -1;
+            }
             return 0;
         }
 
@@ -306,7 +316,7 @@ void *ball_movement(void *auxstruct)
         /*we print it*/
         printBall(pd->intf, *ball);
         /*we delay it MAYBE OR SPEED INCREASES??*/
-        usleep(1000 * 30); /*EN micro segundo, ponemos 500 milis*/
+        usleep(1000 * MILISECONDS); /*EN micro segundo, ponemos 500 milis*/
         /*MAYBE WE HAVE A COUNTER TO KNOW WHEN TO STOP??*/
     }
 }
@@ -365,6 +375,7 @@ int miniPadel(Interface * i, int hardMode)
     i_cleanDisplay(i);
     i_cleanCommand(i);
     i_cleanMap(i);
+
     /*INSTRUCTIONS HERE*/
 
     /*we get the usable cols and rows of the map*/
