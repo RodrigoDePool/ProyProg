@@ -57,10 +57,13 @@ void dot_setCoordinates(Dot *d, int row, int col)
 
 Snake *snake_ini(int row, int col)
 {
+	int i;
 	Snake *s = (Snake*) malloc(sizeof(Snake));
-	s->body = (Dot**) malloc(sizeof(Dot*)*15);
-	s->body[0] = dot_ini (row, col);
-	s->tamanio = 1;
+	s->body = (Dot**) malloc(sizeof(Dot*)*22);
+	for (i=0; i<8; i++){
+	s->body[i] = dot_ini (row+i, col);
+	}
+	s->tamanio = i;
 	return s;
 }
 
@@ -75,26 +78,23 @@ void snake_free(Snake* s)
 /*More or less complex functions*/
 int snake_moveHead(Interface *i, int row, int col, Snake *s)
 {
-	int aux, index;
+	int index;
 	char point;	
 
-	if (row < 1 || col < 1){
+	if (row < 10 || col < 33 || col > 78 || row > 22){
 	i_drawStr(i, "error1", 2, 2, 2);
-	return -1; /*If you hit a wall (belonging to the board) you lose*/
+	return -1; /*If you hit a wall you lose*/
 	}
 
-	point = i_whatCaractHere(i, row+1, col+1);
+	point = i_whatCaractHere(i, row, col);
 
 	if (point == SNAKE_CHARACTER){
 	i_drawStr(i, "error2", 2, 2, 2); 
 	return -1; /*If you hit yourself you lose*/
 	}	
-	aux = i_writeCharMap(i, SNAKE_CHARACTER, row, col, 1);
+	i_writeCharMap(i, SNAKE_CHARACTER, row, col, 1);
 
-	if (aux == -1){
-	i_drawStr(i, "error3", 2, 2, 2); 	
-	return -1; /*If you hit a wall (not belonging to the board) you lose*/
-	}
+
 	if (point != POINT_CHARACTER) /*If you dont eat a point, you move one forward*/
 		i_writeCharMap(i, ' ', dot_getRow(s->body[s->tamanio-1]), dot_getCol(s->body[s->tamanio-1]), 1); 
 	
@@ -104,8 +104,9 @@ int snake_moveHead(Interface *i, int row, int col, Snake *s)
 		s->body[s->tamanio-1] = d;
 	}
 
-	for (index=s->tamanio-3; index>=0; index--) /*Sliding movement*/
-		s->body[index+1] = s->body[index];
+	for (index=s->tamanio-1; index>0; index--) /*Sliding movement*/
+		dot_setCoordinates(s->body[index], dot_getRow(s->body[index-1]), dot_getCol(s->body[index-1]));
+	
 	dot_setCoordinates(s->body[0], row, col); /*Head movement*/
 
 	return 0;
@@ -137,13 +138,16 @@ int snake_move(Snake *s, Interface *i, int dir)
 void *snake_play(void *interface) /*This function will move the snake according to the player commands*/
 { 
 	Interface *i = (Interface *) interface;
-	int aux;
+	int aux, index;
 	char buff;
-	Snake *s = snake_ini(17, 60);
-	i_writeCharMap(i, SNAKE_CHARACTER, 17, 60, 1);
-	sleep(5);
+	char buff1[2];
+	Snake *s = snake_ini(15, 60);
+	for (index=0; index<8; index++){
+		i_writeCharMap(i, SNAKE_CHARACTER, 15+index, 60, 1);
+	}
 	while (1)
 	    	{
+			
 			if (key_read == 'q' || key_read == 'Q')
 			{
 			    snake_free(s);
@@ -160,10 +164,11 @@ void *snake_play(void *interface) /*This function will move the snake according 
 				flag_snakeResult = -1;
 				return NULL;
 			    }
-			    sleep(1.5); /*soft delay between movements*/
+			    usleep(250000); /*soft delay between movements*/
 			}
-			
-			if (s->tamanio == 15){ /*The player wins when his snake reaches a size of 15 dots*/
+			sprintf(buff1, "%d%d", dot_getRow(s->body[0]), dot_getCol(s->body[0]));
+			i_drawStr(i, buff1, 2, 2, 2);
+			if (s->tamanio == 22){ /*The player wins when his snake reaches a size of 15 dots*/
 			    snake_free(s);    
 			    flag_snakeResult = 1;
 			    return NULL;
@@ -177,7 +182,6 @@ void *snake_play(void *interface) /*This function will move the snake according 
 
 void *read_keys() /*This function will read the keys pressed by the player*/
 { 
-	sleep(0.25);
 	while(1) key_read = _read_key();
 	return NULL;
 }
@@ -186,11 +190,17 @@ void *read_keys() /*This function will read the keys pressed by the player*/
 void *snake_points(void *interface) /*This function will print points on the board*/
 { 
 	Interface *i = (Interface *) interface;
-	int index;
+	int index, row, col;
 	srand(time(NULL)); /*Randomizes the seed*/
-	for (index=0; index<15; index++){
-		i_writeCharMap(i, POINT_CHARACTER, rand()%34 + 1, rand()%112 + 1, 1);
-		sleep(10);
+	for (index=0; index<14; index++){
+		row = rand()%12 + 11;
+		col = rand()%46 + 33;
+		while(i_whatCaractHere(i, row, col) == SNAKE_CHARACTER){
+			row = rand()%12 + 11;
+			col = rand()%46 + 33;
+		}
+		i_writeCharMap(i, POINT_CHARACTER, row, col, 1);
+		sleep(4);
 	}
 	return NULL;
 }

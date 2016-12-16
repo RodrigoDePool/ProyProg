@@ -11,8 +11,9 @@ int main()
     Interface *i;
     _term_init();
     i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
+    i_readFile(i, "map.txt", 9, 32, 1); /*48x15*/ 
     i_drawAll(i);
-sleep(5);        
+     
     sol = snake(i);
 
         if (sol == WIN)
@@ -23,7 +24,7 @@ sleep(5);
         {
             i_drawStrMap(i, "Loser", 1, 1, 3);
         }
-	sleep(10);
+	sleep(3);
     i_free(i);
     _term_close();
     return 1;
