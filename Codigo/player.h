@@ -4,13 +4,13 @@
 #include "types.h"
 #include <stdio.h>
 
-typedef struct _Player Player;
+typedef struct _Player   Player;
 
 Player *playerfromfile(FILE*);
 
 Player *player_ini();
-/*Function: Initializes the player  	      */
-/*Parameters: None 		     	      */
+/*Function: Initializes the player            */
+/*Parameters: None                    */
 /*Return: Player* or NULL if an error happens */
 
 
@@ -24,7 +24,7 @@ void player_free(Player*);
 
 
 Status player_setName(Player*, char*);
-/*Function: Sets the name of the player    	      */
+/*Function: Sets the name of the player           */
 /*Parameters: Pointer to Player and an array of chars   */
 /*Return: OK if it has succeeded ERROR if it hasn't     */
 
@@ -33,7 +33,7 @@ Status player_setName(Player*, char*);
 
 char *player_getName(Player*);
 /*Function: Gives back the name of the player	       */
-/*Parameters: Pointer to char	 		       */
+/*Parameters: Pointer to char	               */
 /*Return: An array of chars with the name of the player*/
 /*its a COPY YOU MUST FREE IT			        */
 
@@ -41,8 +41,8 @@ char *player_getName(Player*);
 
 
 Status player_setSpaceid(Player*, int);
-/*Function: Sets the space where the player is 		*/
-/*Parameters: Pointer to player and an integer   	*/
+/*Function: Sets the space where the player is      */
+/*Parameters: Pointer to player and an integer      */
 /*Returns: ERROR or OK                                  */
 
 
@@ -65,8 +65,8 @@ Status player_setCoordinateX(Player*, int);
 
 int player_getCoordinateX(Player*);
 /*Function: Gives back the coordinate x of the location of the   */
-/*player					 	         */
-/*Parameters: Pointer to player 		  	         */
+/*player					             */
+/*Parameters: Pointer to player                      */
 /*Return: int with the coordinate x of the location of the player*/
 
 
@@ -82,8 +82,8 @@ Status player_setCoordinateY(Player*, int);
 
 int player_getCoordinateY(Player*);
 /*Function: Gives back the coordinate y of the location of the   */
-/*player  							 */
-/*Parameters: Pointer to player 		  	         */
+/*player                             */
+/*Parameters: Pointer to player                      */
 /*Return: int with the coordinate y of the location of the player*/
 
 

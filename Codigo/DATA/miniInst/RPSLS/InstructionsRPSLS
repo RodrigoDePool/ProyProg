@@ -1,0 +1,22 @@
+
+INSTRUCTIONS:
+It is a simple game of
+ROCK - PAPER - SCISSORS
+  LIZZARD - SPOCK
+Take your choice with the
+controls. At the same time
+the enemy will take his.
+
+CONTROLS:
+Press 1 for ROCK
+Press 2 for SCISSORS
+Press 3 for PAPER
+Press 4 for LIZZARD
+Press 5 for SPOCK
+
+RULES:
+ROCK     > LIZZARD-SCISSORS
+SCISSORS > LIZZARD-PAPER
+PAPER    > SPOCK-ROCK
+LIZZARD  > SPOCK-PAPER
+SPOCK    > SCISSORS-ROCK
