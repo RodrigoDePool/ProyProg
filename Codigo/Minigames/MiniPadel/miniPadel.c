@@ -15,7 +15,6 @@ typedef struct _Ball
     int  ydir;
     int  xpos;
     int  ypos;
-    int  speed;
 }Ball;
 
 
@@ -330,10 +329,10 @@ int miniPadel(Interface * i, int hardMode)
 {
     int       cols, rows;
     Pad       *pd;
-    Ball      *ball;
+    Ball      *ball, *hball;
     int       random;
-    pthread_t pth[2]; /*Two main threads the ball and the pad*/
-    Aux       *auxstruct;
+    pthread_t pth[3]; /*Two main threads the ball and the pad*/
+    Aux       *auxstruct, *auxstruct2;
 
     srand(time(NULL) + clock());
 
@@ -404,8 +403,6 @@ int miniPadel(Interface * i, int hardMode)
     }
     ball->ydir = random;
 
-    /*We set the speed in seconds*/
-    ball->speed = 1; /* is this enough??*/
 
     /*Print the ball*/
     printBall(i, *ball);
@@ -420,13 +417,43 @@ int miniPadel(Interface * i, int hardMode)
     /*The same for the ball*/
     pthread_create(pth + 1, NULL, ball_movement, (void *) auxstruct);
 
+
+
+    if (hardMode == 1)
+    {
+        sleep(5);
+        /*Alloc memory and fix values for hball*/
+        hball      = (Ball *) malloc(sizeof(Ball));
+        auxstruct2 = (Aux *) malloc(sizeof(Aux));
+        hball->obj = 'o';
+        /*Lets set our auxstruct pointers*/
+        auxstruct2->pad  = pd;
+        auxstruct2->ball = hball;
+        auxstruct2->rows = rows;
+        auxstruct2->cols = cols;
+        /*Initialize the ball*/
+        hball->xpos = cols / 2; /*Fix the ball more or less in the center of the map*/
+        hball->ypos = rows / 2;
+
+        hball->xdir = 1; /*Always starts towards the wall*/
+        /*random direction of Y*/
+        random = rand() % 3;
+        if (random == 2)
+        {
+            random = -1;
+        }
+        hball->ydir = random;
+        pthread_create(pth + 2, NULL, ball_movement, (void *) auxstruct2);
+
+
+        /*Print the ball*/
+        printBall(i, *hball);
+    }
+
     /*We wait for the  ball thread to stop, if the player wants to quit from*/
     /*player movement it will as well kill ball thread, so its enough to quit
        the last one*/
     pthread_join(pth[1], NULL);
-
-
-
     /*WE NEED TO CHECK FOR LOSING OR WINNING*/
 
     /*we cancel pad_movement*/
@@ -435,6 +462,13 @@ int miniPadel(Interface * i, int hardMode)
     /*we cancel ball_movement*/
     pthread_cancel(pth[1]);
 
+    if (hardMode == 1)
+    {
+        pthread_cancel(pth[2]);
+        free(auxstruct2);
+        free(hball);
+    }
+
     /*We set back to normality the autorepeat rate*/
     system("xset r rate 500");
 
@@ -442,7 +476,7 @@ int miniPadel(Interface * i, int hardMode)
     free(auxstruct);
     free(pd);
     free(ball);
-    return 1;
+    return 0;
 }
 
 

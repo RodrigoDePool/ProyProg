@@ -10,7 +10,7 @@
     Parameters:
         i Interface pointer in which the minigame will be executed
         hardMode: 0 if its normal mode (normal speed)
-                  1 if its hard mode (extra speed)
+                  1 if its hard mode extra balls
     Returns:
         0 if you lose
         1 if you win
