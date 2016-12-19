@@ -6,20 +6,32 @@
 #define numspaces(w)    (w)->numspaces
 #define obj(w)          (w)->objects
 #define numobj(w)       (w)->numobjects
-#define player(w)       (w)->player
 
 
+
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*
+    remmember that you know if a player has an object by its atribute in
+    object struct
+    TO BE ADD :
+    POINTER TO INTERFACE
+    THE ID OF THE SPACE THE PLAYER IS IN
+ */
 struct _World
 {
     Space  **spaces;
     int    numspaces;
     Object **objects;
     int    numobjects;
-    Player *player;
 };
 
 
-
+/*
+    I THINK WE SHOULD DIVIDE THIS
+ */
 World *world_ini(Object **obj, Player *p, Space **space, int numobj, int numspaces)
 {
     World *w;
@@ -94,12 +106,6 @@ int world_getNumObjects(World *w)
 
 
 
-
-Player *world_getPlayer(World *w)
-{
-    assert(w != NULL);
-    return player(w);
-}
 
 
 World *worldfromfile(char *file)

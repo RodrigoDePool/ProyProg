@@ -6,22 +6,31 @@
 #include <assert.h>
 
 
-#define sId(s)          (s)->sId
-#define neighbour(s)    s->neighbour
-#define sDesc(s)        (s)->shortDesc
-#define lDesc(s)        (s)->longDesc
-#define light(s)        (s)->light
-#define isLocked(s)     (s)->isLocked
-#define map(s)          (s)->map
-#define rows(s)         (s)->rows
-#define cols(s)         (s)->cols
+#define sId(s)         (s)->sId
+#define sDesc(s)       (s)->shortDesc
+#define lDesc(s)       (s)->longDesc
+#define light(s)       (s)->light
+#define isLocked(s)    (s)->isLocked
+#define map(s)         (s)->map
+#define rows(s)        (s)->rows
+#define cols(s)        (s)->cols
+#define numdoors(s)    (s)->numdoors
+#define doors(s)       (s)->doors
 #define MAX_L_DESC    1000
 #define MAX_S_DESC    100
+
+typedef struct door_
+{
+    int x;
+    int y;
+    int neighbour; /*Value of the space id the door leads to*/
+} Door;
 
 struct space_
 {
     int  sId;
-    int  neighbour[8];
+    int  numdoors;
+    Door *doors;
     char *shortDesc;
     char *longDesc;
     Bool light;
@@ -43,9 +52,7 @@ Space * space_ini()
     s = (Space *) malloc(sizeof(Space));
     if (!s)
         return NULL;
-    sId(s) = -1;
-    for (i = 0; i < 8; i++)
-        neighbour(s)[i] = -1;
+    sId(s)      = -1;
     sDesc(s)    = NULL;
     lDesc(s)    = NULL;
     light(s)    = FALSE;
@@ -53,6 +60,8 @@ Space * space_ini()
     map(s)      = NULL;
     rows(s)     = -1;
     cols(s)     = -1;
+    numdoors(s) = -1;
+    doors(s)    = NULL;
     return s;
 }
 
@@ -74,6 +83,10 @@ void space_free(Space *s)
         }
         free(map(s));
     }
+    if (doors(s) != NULL)
+    {
+        free(doors(s));
+    }
     free(s);
 }
 
@@ -88,21 +101,6 @@ Status space_setId(Space *s, int sId)
 {
     assert(s && sId > -1);
     sId(s) = sId;
-    return OK;
-}
-
-int space_getNeighbour(Space *s, int n)
-{
-    if (!s || n < 0 || n > 7)
-        return -1;
-    return neighbour(s)[n];
-}
-
-Status space_setNeighbour(Space *s, int n, int neighbour)
-{
-    assert(s && n > -1 && n<8 && neighbour>-1);
-    if (neighbour(s)[n] == -1)
-        neighbour(s)[n] = neighbour;
     return OK;
 }
 
@@ -212,6 +210,77 @@ Status space_setMap(Space *s, char **map)
     return OK;
 }
 
+Status space_setNDoors(Space *s, int num)
+{
+    if (s == NULL || num < 0)
+        return ERROR;
+    numdoors(s) = num;
+    /*if there is more than a door we give it memory*/
+    if (num > 0)
+    {
+        doors(s) = (Door *) malloc(sizeof(Door) * num);
+        if (doors(s) == NULL)
+            return ERROR;
+    }
+    return OK;
+}
+
+int space_getNDoors(Space *s)
+{
+    if (s == NULL)
+        return -1;
+    return numdoors(s);
+}
+
+Status space_setDoor(Space *s, int n, int x, int y, int sId)
+{
+    if (s == NULL || x < 0 || y < 0 || numdoors(s) <= n || n < 0)
+        return ERROR;
+    doors(s)[n].x         = x;
+    doors(s)[n].y         = y;
+    doors(s)[n].neighbour = sId;
+    return OK;
+}
+
+int space_checkDoorPoint(Space *s, int x, int y)
+{
+    int i;
+    if (s == NULL || x < 0 || y < 0)
+        return -1;
+    for (i = 0; i < numdoors(s); i++)
+    {
+        if (doors(s)[i].x == x && doors(s)[i].y == y)
+        {
+            return doors(s)[i].neighbour;
+        }
+    }
+    return -1;
+}
+
+int space_checkDoorAPoint(Space *s, int x, int y)
+{
+    int aux;
+    if (s == NULL || x < 0 || y < 0)
+        return -1;
+    /*up*/
+    aux = space_checkDoorPoint(s, x, y - 1);
+    if (aux != -1)
+        return aux;
+    /*down*/
+    aux = space_checkDoorPoint(s, x, y + 1);
+    if (aux != -1)
+        return aux;
+    /*right*/
+    aux = space_checkDoorPoint(s, x + 1, y);
+    if (aux != -1)
+        return aux;
+    /*left*/
+    aux = space_checkDoorPoint(s, x - 1, y);
+    if (aux != -1)
+        return aux;
+    return -1;
+}
+
 char ** mapfromfile(FILE * f, int nrows, int ncols)
 {
     assert(nrows > 0);
@@ -250,7 +319,7 @@ Space * spacefromfile(FILE * f)
 {
     assert(f != NULL);
     char  buff[MAX_L_DESC];
-    int   aux, i;
+    int   aux, i, ndoors, x, y;
     FILE  *file;
     Space *s;
 
@@ -264,21 +333,23 @@ Space * spacefromfile(FILE * f)
         space_free(s);
         return NULL;
     }
-    for (i = 0; i < 7; i++)
+    fscanf(f, "%d\n", &aux);
+    if (space_setNDoors(s, aux) == ERROR)
     {
-        fscanf(f, "%d ", &aux);
-        if (space_setNeighbour(s, i, aux) == ERROR)
+        space_free(s);
+        return NULL;
+    }
+    ndoors = aux;
+    for (i = 0; i < ndoors; i++)
+    {
+        fscanf(f, "%d %d %d\n", &x, &y, &aux);
+        if (space_setDoor(s, i, x, y, aux) == ERROR)
         {
             space_free(s);
             return NULL;
         }
     }
-    fscanf(f, "%d\n", &aux);
-    if (space_setNeighbour(s, i, aux) == ERROR)
-    {
-        space_free(s);
-        return NULL;
-    }
+
     fscanf(f, "%1000[^\n]\n", buff);
     if (space_setSDesc(s, buff) == ERROR)
     {

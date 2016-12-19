@@ -9,6 +9,10 @@
 typedef struct _World   World;
 
 
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
 /*Function: Initializes a World given a Player, an    */
 /*array of objects, an array of spaces, number of objs*/
 /*and number of spaces				      */
@@ -19,7 +23,10 @@ typedef struct _World   World;
 World *world_ini(Object **obj, Player *p, Space **space, int numobj, int numspaces);
 
 
-
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
 /*Function: frees world and ALL its variables INCLUIDING  */
 /*THE ARRAY OF SPACES AND THE ARRAY OF OBJECT WHEN CREATED*/
 /*Parameters: Pointer to world				  */
@@ -58,13 +65,10 @@ int world_getNumObjects(World *w);
 
 
 
-/*Function: Gives back a pointer to the player*/
-/*Parameter: Pointer to world                 */
-/*Return: the pointer DIRECTLY to the player  */
-/*DO NOT FREE THIS PLAYER		      */
-Player *world_getPlayer(World *w);
-
-
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
+/*NEEDS TO BR MODIFIED NEW STRUCT*/
 /*Return: Initializes a World from a file (format)*/
 /*Parameter: path to the file you want to open*/
 World *worldfromfile(char *file);
