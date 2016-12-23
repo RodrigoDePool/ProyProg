@@ -6,6 +6,7 @@
 #define LOSE              0
 #define SNAKE_CHARACTER  '@'
 #define POINT_CHARACTER  'O'
+#define SNAKE_MAX_SIZE 22
 
 int flag_snakeResult = 0; /*Global flag, manages the game result. Treat carefully*/
 char key_read = NORTH; /*Needed to keep the snake moving without pressing keys*/
@@ -59,7 +60,7 @@ Snake *snake_ini(int row, int col)
 {
 	int i;
 	Snake *s = (Snake*) malloc(sizeof(Snake));
-	s->body = (Dot**) malloc(sizeof(Dot*)*22);
+	s->body = (Dot**) malloc(sizeof(Dot*)*SNAKE_MAX_SIZE);
 	for (i=0; i<8; i++){
 	s->body[i] = dot_ini (row+i, col);
 	}
@@ -79,34 +80,32 @@ void snake_free(Snake* s)
 int snake_moveHead(Interface *i, int row, int col, Snake *s)
 {
 	int index;
-	char point;	
+	char point;
 
 	if (row < 10 || col < 33 || col > 78 || row > 22){
-	i_drawStr(i, "error1", 2, 2, 2);
 	return -1; /*If you hit a wall you lose*/
 	}
 
 	point = i_whatCaractHere(i, row, col);
 
 	if (point == SNAKE_CHARACTER){
-	i_drawStr(i, "error2", 2, 2, 2); 
 	return -1; /*If you hit yourself you lose*/
-	}	
+	}
 	i_writeCharMap(i, SNAKE_CHARACTER, row, col, 1);
 
 
 	if (point != POINT_CHARACTER) /*If you dont eat a point, you move one forward*/
-		i_writeCharMap(i, ' ', dot_getRow(s->body[s->tamanio-1]), dot_getCol(s->body[s->tamanio-1]), 1); 
-	
+		i_writeCharMap(i, ' ', dot_getRow(s->body[s->tamanio-1]), dot_getCol(s->body[s->tamanio-1]), 1);
+
 	else{ /*If you do, you add a dot to the snake*/
-		Dot *d = dot_ini(dot_getRow(s->body[s->tamanio-1]), dot_getCol(s->body[s->tamanio-1])); 
+		Dot *d = dot_ini(dot_getRow(s->body[s->tamanio-1]), dot_getCol(s->body[s->tamanio-1]));
 		s->tamanio++;
 		s->body[s->tamanio-1] = d;
 	}
 
 	for (index=s->tamanio-1; index>0; index--) /*Sliding movement*/
 		dot_setCoordinates(s->body[index], dot_getRow(s->body[index-1]), dot_getCol(s->body[index-1]));
-	
+
 	dot_setCoordinates(s->body[0], row, col); /*Head movement*/
 
 	return 0;
@@ -127,35 +126,34 @@ int snake_move(Snake *s, Interface *i, int dir)
     case EAST:
         return snake_moveHead(i, dot_getRow(s->body[0]), dot_getCol(s->body[0])+1, s);
     default:
-	i_drawStr(i, "error4", 2, 2, 2); 
+	i_drawStr(i, "error4", 2, 2, 2);
         return -1;
     }
 }
 
-	
-	
+
+
 
 void *snake_play(void *interface) /*This function will move the snake according to the player commands*/
-{ 
+{
 	Interface *i = (Interface *) interface;
 	int aux, index;
 	char buff;
-	char buff1[2];
 	Snake *s = snake_ini(15, 60);
 	for (index=0; index<8; index++){
 		i_writeCharMap(i, SNAKE_CHARACTER, 15+index, 60, 1);
 	}
 	while (1)
 	    	{
-			
+
 			if (key_read == 'q' || key_read == 'Q')
 			{
 			    snake_free(s);
 			    flag_snakeResult = -1;
 			    return NULL;
 			}
-			
-			if (key_read == WEST || key_read == EAST || key_read == NORTH || key_read == SOUTH) 
+
+			if (key_read == WEST || key_read == EAST || key_read == NORTH || key_read == SOUTH)
 			{
 			    buff = key_read;
 			    aux = snake_move(s, i, buff);
@@ -164,12 +162,10 @@ void *snake_play(void *interface) /*This function will move the snake according 
 				flag_snakeResult = -1;
 				return NULL;
 			    }
-			    usleep(250000); /*soft delay between movements*/
+			    usleep(200000); /*soft delay between movements*/
 			}
-			sprintf(buff1, "%d%d", dot_getRow(s->body[0]), dot_getCol(s->body[0]));
-			i_drawStr(i, buff1, 2, 2, 2);
-			if (s->tamanio == 22){ /*The player wins when his snake reaches a size of 15 dots*/
-			    snake_free(s);    
+			if (s->tamanio == SNAKE_MAX_SIZE){ /*The player wins when his snake reaches a size of 15 dots*/
+			    snake_free(s);
 			    flag_snakeResult = 1;
 			    return NULL;
 			}
@@ -181,18 +177,19 @@ void *snake_play(void *interface) /*This function will move the snake according 
 /*move to the last direction issued, giving the game the feeling of the old school snake*/
 
 void *read_keys() /*This function will read the keys pressed by the player*/
-{ 
-	while(1) key_read = _read_key();
+{
+	while(flag_snakeResult==0) key_read = _read_key();
 	return NULL;
 }
 
 
 void *snake_points(void *interface) /*This function will print points on the board*/
-{ 
+{
 	Interface *i = (Interface *) interface;
 	int index, row, col;
 	srand(time(NULL)); /*Randomizes the seed*/
 	for (index=0; index<14; index++){
+		if (flag_snakeResult != 0) return NULL;
 		row = rand()%12 + 11;
 		col = rand()%46 + 33;
 		while(i_whatCaractHere(i, row, col) == SNAKE_CHARACTER){
@@ -210,26 +207,20 @@ void *snake_points(void *interface) /*This function will print points on the boa
 /*Game function*/
 int snake(Interface *i)
 {
+	flag_snakeResult = 0;
+	key_read = NORTH;
+	i_readFile(i, "map.txt", 9, 32, 1); /*48x15*/
+	i_drawAll(i);
+	i_cleanDisplay(i);
+	i_cleanCommand(i);
 	pthread_t juego[3];
 	pthread_create(&(juego[0]), NULL, snake_play, (void*) i); /*The function that will move the snake*/
 	pthread_create(&(juego[1]), NULL, read_keys, NULL); /*The function that will move the snake*/
 	pthread_create(&(juego[2]), NULL, snake_points, (void*) i); /*The function that will place the points*/
-	
-	while (flag_snakeResult == 0) sleep(0.5);
+
+	while (flag_snakeResult == 0);
 
 	if (flag_snakeResult == 1) return WIN;
 	else if (flag_snakeResult == -1) return LOSE;
-	return ERR;	
+	return ERR;
 }
-
-
-
-
-
-
-
-
-
-
-
-
