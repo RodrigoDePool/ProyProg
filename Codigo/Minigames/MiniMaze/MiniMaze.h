@@ -9,6 +9,8 @@
 /*
    Parameters:
     i pointer to the Interface
+    0 for normal mode
+    1 for hard mode
    Returns:
     WIN if the player completed the maze and QUIT if the player quit the game
 
@@ -17,8 +19,9 @@
     the file in the MAZE_PATH. This MUST be the path of the instructions of the maze
     from the main function that executes it.
     the same with the clues.
+
  */
-int miniMaze(Interface *i);
+int miniMaze(Interface *i, int hardMode);
 
 
 

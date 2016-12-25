@@ -14,7 +14,7 @@ int main()
 
     do
     {
-        sol = miniMaze(i);
+        sol = miniMaze(i, 1);
         if (sol == WIN)
         {
             i_drawStrMap(i, "Ganador", 1, 1, 3);

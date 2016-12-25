@@ -30,14 +30,7 @@ int space_getId(Space *s);
    Revision: 15 oct 2016*/
 Status space_setId(Space *s, int sId);
 
-/*Returns: sId of the chosen s neighbour (minigame case 4:7). -1 in case of error
-   Revision: 7 oct 2016*/
-int space_getNeighbour(Space *s, int n);
 
-/*Function: Sets sId of the chosen s neighbour (minigame case 4:7)
-   Returns: OK/ERROR
-   Revision: 15 oct 2016*/
-Status space_setNeighbour(Space *s, int n, int neighbour);
 
 /*Returns: COPY ofshort description of s, NULL in case of error
    Revision: 7 oct 2016*/
@@ -102,6 +95,46 @@ int space_getNRows(Space *s);
    Revision: 15 oct 2016*/
 Status space_setNRows(Space *s, int nrows);
 
+/*
+    Function: Sets the number of doors of a space
+    Return: OK/ERROR
+    num>=0
+ */
+Status space_setNDoors(Space *s, int num);
+
+/*
+    Function:
+    Return: returns the number of doors of an space or -1 if not intialized
+ */
+int space_getNDoors(Space *s);
+
+/*
+    Function: sets the n door of the space to the given x and y
+            the door will lead to the sId (space id) specified
+    NOTE: THE FIRST DOOR IS DOOR 0(ZERO)
+    Return: OK/ERROR
+    cases of error:
+        x<0, y<0, n>=number of doors
+ */
+Status space_setDoor(Space *s, int n, int x, int y, int sId);
+
+/*
+    Function: checks if in the point (x,y) of the space there is a door
+    Return:
+        -1 if there is no door
+        sId of the space the door leads to
+ */
+int space_checkDoorPoint(Space *s, int x, int y);
+
+/*
+    Function: does the same as space_checkDoorPoint but instead of looking
+            at the point given it looks at the points up,down,right and left
+            of the given one
+    Returns:
+        -1 if the is no door
+        sId of the space if there is a door
+ */
+int space_checkDoorAPoint(Space *s, int x, int y);
 /**************************************/
 
 
