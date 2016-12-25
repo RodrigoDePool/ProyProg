@@ -14,7 +14,6 @@ int main(){
 	_term_init();/*Initializes the terminal for the interface*/
 	i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
 	
-  	i_drawAll(i);
   	i_readFile(i, "board2048.txt", 0, 0, 1);
   	i_drawAll(i);
 	
