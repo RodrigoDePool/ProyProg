@@ -270,13 +270,14 @@ int mini2048(Interface *in, char *numbers, int size){
 	/*finished game, won or not?*/
 	if(won == 1){
 		i_drawStr(in, "YOU WON!",  5, 4, 2);
+		sleep(2);
 		i_readFile(in, "./data/youwon.txt", 0, 0, 1);
 	}else{
 		i_drawStr(in, "YOU LOST!", 5, 4, 2);
 		sleep(3);
 		i_readFile(in, "./data/youlost.txt", 0, 0, 1);
 	}
-	sleep(3);
+	sleep(2);
 	for(i = 0; i < size; i++)
 		free(matrix[i]);
 	free(matrix);
