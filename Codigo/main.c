@@ -60,11 +60,12 @@ int main(){
 				nSpaces = atoi(buffer);
 
 				spaces = (Space **)malloc(sizeof(Space *) * nSpaces);
+				/*We open the spaces*/
 				for(j=0;j<nSpaces;j++){
 					strcpy(buffer, fgetll(f));
 					sprintf(path, "DATA/Levels/%d/%s.space", level, buffer);
 					spaceFile = fopen(path, "r");
-					spaces[j] = spacefromfile(f);
+					spaces[j] = spacefromfile(spaceFile);
 
 				}
 				level++;
