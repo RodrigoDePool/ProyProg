@@ -1,16 +1,53 @@
-all: main
 
-main: main.o interface.o rectangles.o
-	gcc -o main main.o interface.o rectangles.o
+	
+CC = gcc -ansi -pedantic
+CFLAGS = -Wall -g
+EXE = main test2048
 
-main.o: main.c ../../interface.h
-	gcc -c -g main.c
+all : $(EXE)
+
+.PHONY : clean
+clean :
+	rm -f *.o core $(EXE)
+
+$(EXE) : % : %.o interface.o rectangles.o 2048.o
+	@echo "#---------------------------"
+	@echo "# Generando $@ "
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -o $@ $@.o interface.o rectangles.o 2048.o
+
+main.o : main.c
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
+
+test2048.o : test2048.c
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
 
 interface.o: ../../interface.c ../../interface.h
-	gcc -c -g ../../interface.c
-
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
+	
+2048.o: 2048.c 2048.h
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
+	
 rectangles.o: ../../rectangles.c ../../rectangles.h
-	gcc -c -g ../../rectangles.c
-
-clean:
-	rm -f *.o main
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
