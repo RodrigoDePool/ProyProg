@@ -1,6 +1,6 @@
 
 	
-CC = gcc -ansi -pedantic
+CC = gcc -pedantic
 CFLAGS = -Wall -g
 EXE = main test2048
 
