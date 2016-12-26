@@ -113,7 +113,7 @@ int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won)
 					    	already been "twiced" in this movement 
 					    	(2240+lft = 4400, not 8000):we use the upd matrix */
 					    	matrix[j - dir][i] = 2 * matrix[j][i];
-					    	if(matrix[j - dir][i] == 128)
+					    	if(matrix[j - dir][i] == 32)
 					    		*won = 1;
 					    	matrix[j][i] = 0;
 					    	upd[j - dir][i] = 1;
@@ -261,10 +261,14 @@ int mini2048(Interface *in, char *numbers, int size){
 	
 	}
 	/*finished game, won or not?*/
-	if(won == 1)
+	if(won == 1){
 		i_drawStr(in, "YOU WON!",  5, 4, 2);
-	else
+		i_readFile(in, "./data/youwon.txt", 0, 0, 1);
+	}else{
 		i_drawStr(in, "YOU LOST!", 5, 4, 2);
+		sleep(3);
+		i_readFile(in, "./data/youlost.txt", 0, 0, 1);
+	}
 	sleep(3);
 	Numbers_free(num);
 	return won;
