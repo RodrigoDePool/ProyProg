@@ -147,6 +147,23 @@ int space_unlock(Space *s, int dir, Bool status);
 
 /*Returns: initializes and sets space from the file
 
+  FORMAT:
+
+    ID
+    Number of doors
+    x coord of door, y coord of door, sID of destiny
+    x coord of door, y coord of door, sID of destiny
+    ...
+    x coord of door, y coord of door, sID of destiny
+    Short desc
+    Long desc
+    Light
+    Lock
+    path to file with map that should look like this:
+
+      NRows NCols
+      map itself
+
    Revision: 15 oct 2016
  */
 
