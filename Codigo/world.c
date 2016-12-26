@@ -19,6 +19,7 @@
     TO BE ADD :
     POINTER TO INTERFACE
     THE ID OF THE SPACE THE PLAYER IS IN
+    a path in which the game that is being played is to be saved
  */
 struct _World
 {
