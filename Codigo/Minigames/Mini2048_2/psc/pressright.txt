@@ -14,8 +14,7 @@ si rellenarian un 0 o si no pasaria na*/
         {
         if (matriz[j+1,i]=0)
         then {matriz[j+1,i]=matriz[j,i]; matriz [j,i]=0;
-              /*Count2 me indica si en ese mvto se ha hecho algun cambio significativo en la matriz(no entre ceros),
-              xq si muevo a la dcha pero nada cambia, no quiero añadir un nuevo 2/4 al juego*/
+              /*Count2 me indica si en ese mvto se ha hecho algun cambio significativo en la matriz(no entre ceros), xq si muevo a la dcha pero nada cambia, no quiero añadir un nuevo 2/4 al juego*/
               /*La siguiente condicion incrementa count2 si m[j+1, i] no ha sido actualizada de 0 a 0 sino de 0 a X*/
               if(matriz[j+1,i]!=0) then {count2+=1}};
         else
