@@ -264,7 +264,7 @@ void i_drawAll(Interface *i)
 
     for (j = 1; j < i->br; j++)
     {
-        win_write_char_at(i->board, j, 0, '|');
+        win_write_char_at(i->board, j, 0, '║');
     }
 
 
