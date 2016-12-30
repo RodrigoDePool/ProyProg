@@ -1,0 +1,108 @@
+var i,j
+count2=0;
+
+/*Este bucle es para que si tienes 4004 puedas conseguir 8000. Sin el bucle, tendrias 4040 */
+repeat(3)
+/*Co este bucle ves que pasa con todas las casillas si las desplazaras a la dcha: si se sumarian a otra,
+si rellenarian un 0 o si no pasaria na*/
+{i=0
+    repeat(4)
+    {
+     j=2
+     repeat(3)
+   
+        {
+        if (matriz[j+1,i]=0)
+        then {matriz[j+1,i]=matriz[j,i]; matriz [j,i]=0;
+              /*Count2 me indica si en ese mvto se ha hecho algun cambio significativo en la matriz(no entre ceros), xq si muevo a la dcha pero nada cambia, no quiero añadir un nuevo 2/4 al juego*/
+              /*La siguiente condicion incrementa count2 si m[j+1, i] no ha sido actualizada de 0 a 0 sino de 0 a X*/
+              if(matriz[j+1,i]!=0) then {count2+=1}};
+        else
+            /*Asegura que la no hayan sido previamente actualizadas NINGUNA de las dos casillas a sumar:
+            si tenemos 2240 queremos 4400, no 8000
+            si tenemos 4220 queremos 4400, no 8000*/
+            if (matriz[j+1,i]=matriz[j,i] and act[j+1,i]=0 and act[j,i]=0)
+            then {matriz[j+1,i]=2*matriz[j,i]; matriz[j,i]=0; act[j+1,i]=1;  count+=matriz[j+1,i]; count2+=1}
+        j-=1
+        }
+    i+=1
+    }
+}
+/*Aqui reseteas el bool que te dice si una casilla esta o no actualizada*/
+  i=0
+  repeat(4)
+    {
+        j=0
+        repeat(4)
+            {act[j,i]=0
+            j+=1
+            }
+    i+=1
+    }
+    
+    
+  num = random(1)
+      {
+      if (num < 0.9)
+      then {num=2}
+      else {num=4}
+      }
+      
+ {
+  /*Añado un nuevo numero al primer vacio que encuentre en mi matriz 
+  si se ha hecho algun cambio con el movimiento anterior*/
+  if (count2!=0)
+  then {do {j=round(random(3.00000001)) i=round(random(3.00000001))}
+        until (matriz[j,i]=0);
+        matriz[j,i]=num}
+  }
+ /*Si alguna casilla es 0 o hay dos casillas contiguas que puedan sumarse, todavia no fin del juego (finjuego = 0)*/
+    finjuego=1
+    
+  i=0
+  do{
+    j=0
+    do{
+        if (matriz[j,i]=0)
+        then {finjuego=0}
+        j+=1
+    }
+    until (finjuego=0 or j>3)
+    i+=1
+    }
+  until(finjuego=0 or i>3)
+  
+
+  if (finjuego=1)
+  then
+     {i=0
+     do
+        {j=1
+        do
+            {if (matriz[j-1,i]=matriz[j,i])
+            then {finjuego=0}
+            j+=1
+            }
+        until  (finjuego=0 or j>3)
+        i+=1
+        }
+     until  (finjuego=0 or i>3)
+     }
+     
+  
+  if (finjuego=1)
+  then
+     {j=0
+     do
+        {i=1
+        do
+            {if (matriz[j,i-1]=matriz[j,i])
+            then {finjuego=0}
+            i+=1
+            }
+        until  (finjuego=0 or i>3)
+        j+=1
+        }
+     until  (finjuego=0 or j>3)
+     }
+
