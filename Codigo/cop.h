@@ -37,3 +37,22 @@ void cop_free(CoP *c);
 /*Return: value of the executed function/ -1 when memory error        */
 /*Revision: 11/11/16							  */
 int cop_execute(CoP *c, char *cmd, void *world);
+
+
+
+
+
+/*These are local functions that were made public to be used for Questions and Answers game*/
+
+/*Function: MALLOCS an array of possible answers to a cmd,replacing * with obj*/
+/*Parameter: pointer to Ext and string with the object of the verb	      */
+/*Returns:pointer to the alloc'd array of strings with the answers/ NULL      */
+/*Revision: 10/11/16                                      */
+char **unpack_answers(Ext *e, char *object);
+
+/*Function: MALLOCS a string for an answer to a cmd, replacing * with obj*/
+/*Parameter: pointer to Ext and string with the object of the verb       */
+/*Returns:pointer to the alloc'd string with the answers/ NULL           */
+/*Revision: 10/11/16                                 */
+char *unpack_answer(char *ans, char *object, char separator);
+

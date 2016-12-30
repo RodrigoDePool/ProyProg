@@ -91,17 +91,6 @@ pfun assoc_search(char *int_name, CoP *c);
 /*Revision: 10/11/16                          */
 Ext *ext_search(char *verb, CoP *c);
 
-/*Function: MALLOCS an array of possible answers to a cmd,replacing * with obj*/
-/*Parameter: pointer to Ext and string with the object of the verb	      */
-/*Returns:pointer to the alloc'd array of strings with the answers/ NULL      */
-/*Revision: 10/11/16                                      */
-char **unpack_answers(Ext *e, char *object);
-
-/*Function: MALLOCS a string for an answer to a cmd, replacing * with obj*/
-/*Parameter: pointer to Ext and string with the object of the verb       */
-/*Returns:pointer to the alloc'd string with the answers/ NULL           */
-/*Revision: 10/11/16                                 */
-char *unpack_answer(char *ans, char *object);
 
 /******* PUBLIC  FUNCTIONS ********/
 
@@ -379,7 +368,7 @@ char **unpack_answers(Ext *e, char *object)
         return NULL;
     for (int i = 0; i < e->n_ans; i++)
     {
-        answers[i] = unpack_answer(e->ans[i], object);
+        answers[i] = unpack_answer(e->ans[i], object, '*');
         if (answers[i] == NULL)
         {
             for (int j = 0; j < i; i++)
@@ -393,7 +382,7 @@ char **unpack_answers(Ext *e, char *object)
     return answers;
 }
 
-char *unpack_answer(char *ans, char *object)
+char *unpack_answer(char *ans, char *object, char separator)
 {
     assert(ans && object);
     char *answer = NULL, *pc1, *pc2;
@@ -403,7 +392,7 @@ char *unpack_answer(char *ans, char *object)
     /*Initializes answ with enough space*/
     for (pc1 = ans; *pc1 != '\0'; pc1++)
     {
-        if (*pc1 == '*')
+        if (*pc1 == separator)
             n_stars++;
     }
     answer = (char *) malloc(strlen(ans) + ((n_stars * obj_len) + 1) * sizeof(char));
@@ -413,7 +402,7 @@ char *unpack_answer(char *ans, char *object)
     /*Copy ans in answer replacing * with object*/
     for (pc1 = ans, pc2 = answer; *pc1 != '\0'; pc1++)
     {
-        if (*pc1 != '*')
+        if (*pc1 != separator)
         {
             *pc2 = *pc1;
             pc2++;
