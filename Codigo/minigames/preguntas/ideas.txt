@@ -1,0 +1,36 @@
+pues veamos
+supongo que necesito un archivo con las preguntas, y una lista de sus posibles respuestas
+y guardar cual de ellas es a correcta (no?)
+Algo así:
+
+2 //Numero de preguntas
+¿Estoy guapa? //Pregunta
+3 //Número de posibles respuestas
+a 1 Si, como siempre. //carácter=codigo+ T/F + respuesta
+b 0 Más fea que nunca.
+c 0 y a ti q te importa
+¿Ere hilipolla?
+2
+a 0 No
+b 1 Andre y aleho zi
+
+
+Posibilidad: hacer q las preguntas no sean solo para Lucia, y añadir una linea 
+que indique quien te hace la pregunta, y q la maquina componga algo tipo:
+
+Lets say you come across Ricky and says:
+"What do you want to talk about?"
+What would you answer?
+a Cacas y culos
+b Cosas normales
+
+yyyy el jugador introduce a o b y tachaaaaan :D
+
+en ese caso el fichero sería
+Lets say * comes across you and says: "\"
+1 //numero preguntas
+Ricky
+What do you want to talk about?
+2
+a 1 cacas y culos
+b 0 Cosas normales
