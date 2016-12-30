@@ -11,7 +11,7 @@ typedef struct _Answer Aswwer;
 /*These three functions alloc memory for a game struct and initialises it with the info given in 
 file like this:
 
-Imagine * says "/", what would you answer? //Introductory sentence
+Imagine * says "\", what would you answer? //Introductory sentence
 2 //Numero de preguntas
 Lucia //preguntadora
 ¿Estoy guapa? //Pregunta
@@ -39,3 +39,8 @@ Parameters: pointer to the structure to freed*/
 void game_free(Game *g);
 void question_free(Question *q);
 void answer_free(Answer *a);
+
+/*Checks if the choice made for the question q is ok or not.
+ Writes a message on the board saying it, in (row, col) NOT MAP COORDS
+ Returns 1/0 depending on the choice being correct or not*/
+int answer_check(Interface *in, Question *q, int row, int col, char choice);

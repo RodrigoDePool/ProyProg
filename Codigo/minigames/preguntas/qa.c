@@ -142,6 +142,75 @@ void answer_free(Answer *a){
 	}
 }
 
+int answer_check(Interface *in, Question *q, int row, int col, char choice){
+	assert(in && q && row > 0 && col > 0);
+	int i;
+	for (i = 0; i < q->numans; i++){
+		if(q->ans[i]->code == choice){
+			if(q->ans[i]->truth == 1){
+				i_drawStr(in, "Correct answer!", row, col, 1);
+				return 1;
+			}
+			i_drawStr(in, "Incorrect answer!", row, col, 1);
+			return 0;
+		}
+	}
+}
+
+int qa(char *path, Interface *in){
+	assert(path);
+	int i, row, col, size, result;
+	char *buff, *intro, choice;
+	FILE *f;
+	Game *g = game_ini(f);
+	if(g == NULL) return -1;
+	f = fopen(path, "r");
+	
+	if(f == NULL){
+		game_free(g);
+		return -1;
+	}
+	
+	/*We build and ask each question*/
+	for(i = 0; i < g->nquestions; i++){
+		row = 5;
+		col = 10;
+		/*Build intro using a cop function*/
+		/*First we replace the person name,then the question between ""*/
+		intro = unpack_answer(g->q[i]->intro, g->q[i]->person,'*');
+		buff = unpack_answer(g->q[i]->intro, g->q[i]->qu,'\');
+		free(intro);
+		/*We have to add a \n at the end of the question*/
+		size = sizeof(buff);
+		intro = (char *)malloc(size + sizeof(char));
+		if(intro == NULL){
+			game_free(g);
+			return -1;
+		}
+		strcpy(intro, buff);
+		intro[strlen(buff)] = "\n";
+		intro[strlen(buff) + 1] = "\0";
+		
+		i_drawStr(in, intro, row, col, 1);
+		for(j = 0; j < g->q[i]->numans; j++){
+			i_writeChar(in, g->q[i]->ans[j]->code, ++row, col, 1);
+			i_writeChar(in, ' ' , row, col + 1, 1);			
+			i_writeChar(in, g->q[i]->ans[j]->answer, row, col + 2, 1);
+		}
+		choice = _read_key();
+		result = answer_check(in, g->q[i], ++row, col, choice);	
+		if(result == 0){
+			free(intro);
+			free(buff);
+			game_free(g);
+			return 0;
+		}
+	}
+	/*If the game hasnt returned yet, its because all the answers were correct:
+	return 1*/
+	game_free(g);
+	return 1;
+}
 
 
 
