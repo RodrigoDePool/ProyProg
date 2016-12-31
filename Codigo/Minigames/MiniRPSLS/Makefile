@@ -16,4 +16,4 @@ rectangles.o: ../../rectangles.c ../../rectangles.h
 	gcc -c -g ../../rectangles.c
 
 clean:
-	rm -f *.o
+	rm *.o
