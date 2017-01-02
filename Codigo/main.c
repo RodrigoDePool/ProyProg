@@ -16,13 +16,14 @@ It will be read secuentially
 -To start a new level:
 
 	L
-	number of spaces
-	"path to the level dir"
+	<start coord x> <start coord y>
+	<number of spaces>
+	"<path to the level dir>"
 	#To write something on the command line:
-	C Whatever
+	C <Whatever>
 
 	#To write something on the display:
-	D Whatever
+	D <Whatever>
 
 
 -To start a new animation:
@@ -30,6 +31,7 @@ It will be read secuentially
 
 NOTE 1: the space numbers are assinged in order of addition
 			So if you add Space1 and Space2 it ID's should be 0 and 1
+			Also, the space with ID 0 will be the one in which you will start
 NOTE 2: the lines are read with fgetll, you might want to read it's documentation
 
 
@@ -44,7 +46,7 @@ int main(){
 
 	_term_init();
     i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
-
+    i_drawAll(i);
 	f=fopen("DATA/mainGame", "r");
 	
 	while(1){
@@ -66,8 +68,11 @@ int main(){
 					sprintf(path, "DATA/Levels/%d/%s.space", level, buffer);
 					spaceFile = fopen(path, "r");
 					spaces[j] = spacefromfile(spaceFile);
-
+					
 				}
+
+
+
 				level++;
 				for(j=0;j<nSpaces;j++){
 					space_free(spaces[j]);

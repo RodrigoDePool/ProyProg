@@ -151,20 +151,20 @@ int space_unlock(Space *s, int dir, Bool status);
 
     ID
     Number of doors
-    x coord of door, y coord of door, sID of destiny
-    x coord of door, y coord of door, sID of destiny
+    <x coord of door> <y coord of door> <sID of destiny>
+    <x coord of door> <y coord of door> <sID of destiny>
     ...
-    x coord of door, y coord of door, sID of destiny
-    Short desc
-    Long desc
-    Light
-    Lock
-    path to file with map that should look like this:
+    <x coord of door> <y coord of door> <sID of destiny>
+    <Short desc>
+    <Long desc>
+    <Light>
+    <Lock>
+    <path to file with map that should look like this:
 
-      NRows NCols
-      map itself
-
-   Revision: 15 oct 2016
+      <NRows> <NCols>
+          <map itself>
+  >
+   Revision: 26 dic 2016
  */
 
 Space * spacefromfile(FILE * f);
