@@ -17,7 +17,7 @@
     THE ID OF THE SPACE THE PLAYER IS IN
     a path in which the game that is being played is to be saved
 
-    array de strings dondeel primeroseael puntero que apunta al primer 
+    array de strings donde el primero sea el puntero que apunta al primer 
     riddle el segundo al segundo riddle
     y un int que tenga el numero de riddles que has hecho
     funcion que chequee los objetos requeridos
@@ -49,10 +49,8 @@ World *world_ini(char * path, Interface * i)
 
     w->objects = NULL;
     w->numobjects = 0;
-    w->objectPaths = NULL;
     w->spaces = NULL;
     w->numspaces = 0;
-    w->spacePaths = NULL;
     w->PlSpaceID = -1;
     w->PlRow = -1;
     w->PlCol = -1;
@@ -95,14 +93,16 @@ void world_free(World *w)
 
 int world_setInterface(World * w, Interface * i)
 {
-	if(!w) retun -1;
+	if(!w) return -1;
+    if(w->i!=NULL)
+        i_free(w->i);
 	w->i=i;
 	return 0;
 }
 
 Interface * world_getInterface(World * w)
 {
-	if(!w) retun NULL;
+	if(!w) return NULL;
 	return w->i;
 }
 
@@ -150,8 +150,13 @@ Object **world_getObjects(World *w)
 
 Object *world_getObject(World *w, int ID)
 {
+    int i;
     assert(w != NULL);
-    return w->objects[ID];
+    for(i=0;i<w->numobjects;i++){
+        if(object_getId(w->objects[i])==ID)
+            return w->objects[i];
+    }
+    return NULL;
 }
 
 int world_getNumObjects(World *w)
@@ -161,22 +166,28 @@ int world_getNumObjects(World *w)
 }
 
 int world_objectPick(World * w, int ID){
-    if(!w||!path)
+    Object * obj;
+    if(!w||ID<0)
         return -1;
-    object_pick(w->objects[ID]);
-    w->numobjects++;
-    return 0;
+    obj = world_getObject(w, ID);
+    if(obj==NULL)
+        return -1;
+    object_Pick(obj);
+    return w->numobjects;
 }
 
 int world_objectDrop(World * w, int ID){
-    if(!w||!path)
+    Object * obj;
+    if(!w||ID<0)
         return -1;
-    object_drop(w->objects[ID]);
-    w->numobjects--;
-    return 0;
+    obj = world_getObject(w, ID);
+    if(obj == NULL)
+        return -1;
+    object_Drop(obj);
+    return w->numobjects;
 }
 
-char * _world_getSpacePath(int ID){
+char * world_getSpacePath(int ID){
 	FILE * f;
 	char * buffer;
 	int i=0;
@@ -194,7 +205,7 @@ char * _world_getSpacePath(int ID){
 	return buffer;
 }
 
-char * _world_getSpacePathFile(FILE * , int ID){
+char * world_getSpacePathFile(FILE * f, int ID){
 	char * buffer;
 	int i=0;
 	while(i<=ID){
@@ -209,11 +220,11 @@ char * _world_getSpacePathFile(FILE * , int ID){
 
 int world_AddSpace(World * w, int ID)
 {
-    if(!w||!path)
+    if(!w)
         return -1;
     FILE * f;
     char * path;
-    path = _world_getSpacePath(ID);
+    path = world_getSpacePath(ID);
     if(path==NULL)
     	return -1;
     f = fopen(path, "r");
@@ -313,8 +324,20 @@ World *worldfromfile(char *file)
     {
     	line= fgetll(f);
     	SpaceID = atoi(line);
-    	buffer =_world_getSpacePathFile(SpacePathsFile, SpaceID);
+    	strcpy(buffer, world_getSpacePathFile(SpacePathsFile, SpaceID));
     	SpaceFile = fopen(buffer, "r");
+        if (SpaceFile == NULL)
+        {
+            for (j = i; j >= 0; j--)
+            {
+                space_free(w->spaces[j]);
+            }
+            free(w->spaces);
+            fclose(f);
+            fclose(SpacePathsFile);
+            return NULL;
+        }
+
         w->spaces[SpaceID] = spacefromfile(SpaceFile);
         if (w->spaces[SpaceID] == NULL)
         {
@@ -337,17 +360,17 @@ World *worldfromfile(char *file)
 
     fscanf(f, "%d\n", &(w->numobjects));
     w->objects = (Object * *) malloc(sizeof(Object *) * w->numobjects);
-    if (objects == NULL)
+    if (w->objects == NULL)
     {
         world_free(w);
         fclose(f);
         return NULL;
     }
 
-    for (i = 0; i < numobjects; i++)
+    for (i = 0; i < w->numobjects; i++)
     {
-        objects[i] = objectfromfile(f);
-        if (objects[i] == NULL)
+        w->objects[i] = objectfromfile(f);
+        if (w->objects[i] == NULL)
         {
             world_free(w);
             fclose(f);
@@ -366,13 +389,19 @@ int world_saveToFile(World * w, char * path)
 	FILE * f;
 	int i;
 
-	f=fopen(path, "w");
+    if(path!=NULL)
+	   f=fopen(path, "w");
+    else if(w->path!=NULL)
+        f=fopen(w->path, "w");
+    else return -1;
+
+    if(!f) return -1;
 
 	fprintf(f, "%d %d %d\n", w->PlSpaceID, w->PlRow, w->PlCol);
 
 	for(i=0;i<MAXSPACES;i++){
 		if(w->spaces[i]!=NULL){
-			fprintf(f, "%d\n", space_getID(w->spaces[i]));
+			fprintf(f, "%d\n", space_getId(w->spaces[i]));
 		}
 	}
 
@@ -384,5 +413,6 @@ int world_saveToFile(World * w, char * path)
 		fprintf(f, "%s\n", object_getDesc(w->objects[i]));
 
 	}
+    return 0;
 }
 
