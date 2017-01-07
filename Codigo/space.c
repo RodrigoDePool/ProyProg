@@ -19,12 +19,6 @@
 #define MAX_L_DESC    1000
 #define MAX_S_DESC    100
 
-typedef struct door_
-{
-    int x;
-    int y;
-    int neighbour; /*Value of the space id the door leads to*/
-} Door;
 
 struct space_
 {
@@ -232,17 +226,19 @@ int space_getNDoors(Space *s)
     return numdoors(s);
 }
 
-Status space_setDoor(Space *s, int n, int x, int y, int sId)
+Status space_setDoor(Space *s, int n, int x, int y, int sId, int nx, int ny)
 {
     if (s == NULL || x < 0 || y < 0 || numdoors(s) <= n || n < 0)
         return ERROR;
     doors(s)[n].x         = x;
     doors(s)[n].y         = y;
     doors(s)[n].neighbour = sId;
+    doors(s)[n].nx        = nx;
+    doors(s)[n].ny        = ny;
     return OK;
 }
 
-int space_checkDoorPoint(Space *s, int x, int y)
+Door *space_checkDoorPoint(Space *s, int x, int y)
 {
     int i;
     if (s == NULL || x < 0 || y < 0)
@@ -251,34 +247,34 @@ int space_checkDoorPoint(Space *s, int x, int y)
     {
         if (doors(s)[i].x == x && doors(s)[i].y == y)
         {
-            return doors(s)[i].neighbour;
+            return &doors(s);
         }
     }
-    return -1;
+    return NULL;
 }
 
-int space_checkDoorAPoint(Space *s, int x, int y)
+Door *space_checkDoorAPoint(Space *s, int x, int y)
 {
-    int aux;
+    Door *aux;
     if (s == NULL || x < 0 || y < 0)
-        return -1;
+        return NULL;
     /*up*/
     aux = space_checkDoorPoint(s, x, y - 1);
-    if (aux != -1)
+    if (aux != NULL)
         return aux;
     /*down*/
     aux = space_checkDoorPoint(s, x, y + 1);
-    if (aux != -1)
+    if (aux != NULL)
         return aux;
     /*right*/
     aux = space_checkDoorPoint(s, x + 1, y);
-    if (aux != -1)
+    if (aux != NULL)
         return aux;
     /*left*/
     aux = space_checkDoorPoint(s, x - 1, y);
-    if (aux != -1)
+    if (aux != NULL)
         return aux;
-    return -1;
+    return NULL;
 }
 
 char ** mapfromfile(FILE * f, int nrows, int ncols)
@@ -319,7 +315,7 @@ Space * spacefromfile(FILE * f)
 {
     assert(f != NULL);
     char  buff[MAX_L_DESC];
-    int   aux, i, ndoors, x, y;
+    int   aux, i, ndoors, x, y, nx, ny;
     FILE  *file;
     Space *s;
 
@@ -342,8 +338,8 @@ Space * spacefromfile(FILE * f)
     ndoors = aux;
     for (i = 0; i < ndoors; i++)
     {
-        fscanf(f, "%d %d %d\n", &x, &y, &aux);
-        if (space_setDoor(s, i, x, y, aux) == ERROR)
+        fscanf(f, "%d %d %d %d %d\n", &x, &y, &aux, &nx, &ny);
+        if (space_setDoor(s, i, x, y, aux, nx, ny) == ERROR)
         {
             space_free(s);
             return NULL;

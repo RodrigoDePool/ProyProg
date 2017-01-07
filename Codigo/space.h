@@ -5,6 +5,16 @@
 
 
 typedef struct space_   Space;
+/*Door struct*/
+typedef struct door_
+{
+    int x;
+    int y;
+    int neighbour; /*Value of the space id the door leads to*/
+    /*Coords you appear in the neighbour space*/
+    int nx;
+    int ny;
+} Door;
 
 
 /**************************************/
@@ -111,30 +121,33 @@ int space_getNDoors(Space *s);
 /*
     Function: sets the n door of the space to the given x and y
             the door will lead to the sId (space id) specified
+            , (nx,ny) are the coords you appear in the neighbour space
     NOTE: THE FIRST DOOR IS DOOR 0(ZERO)
     Return: OK/ERROR
     cases of error:
         x<0, y<0, n>=number of doors
  */
-Status space_setDoor(Space *s, int n, int x, int y, int sId);
+Status space_setDoor(Space *s, int n, int x, int y, int sId, int nx, int ny);
 
 /*
     Function: checks if in the point (x,y) of the space there is a door
     Return:
-        -1 if there is no door
-        sId of the space the door leads to
+        NULL if there is no door
+        Door * with the info in case there is a space there
+    NOTE: DO NOT FREE THE DOOR GIVEN
  */
-int space_checkDoorPoint(Space *s, int x, int y);
+Door *space_checkDoorPoint(Space *s, int x, int y);
 
 /*
     Function: does the same as space_checkDoorPoint but instead of looking
             at the point given it looks at the points up,down,right and left
             of the given one
     Returns:
-        -1 if the is no door
-        sId of the space if there is a door
+        NULL if there is no door
+        Door * with the info in case there is a space there
+        NOTE: DO NOT FREE THE DOOR GIVEN
  */
-int space_checkDoorAPoint(Space *s, int x, int y);
+Door *space_checkDoorAPoint(Space *s, int x, int y);
 /**************************************/
 
 
@@ -147,7 +160,7 @@ int space_unlock(Space *s, int dir, Bool status);
 
 /*Returns: initializes and sets space from the file
 
-  FORMAT:
+   FORMAT:
 
     ID
     Number of doors
@@ -163,7 +176,7 @@ int space_unlock(Space *s, int dir, Bool status);
 
       <NRows> <NCols>
           <map itself>
-  >
+   >
    Revision: 26 dic 2016
  */
 
