@@ -1,0 +1,19 @@
+Imagine * says ")", what would you answer?
+3
+Lucia
+¿Estoy guapa?
+3
+a 1 Si, como siempre.
+b 0 Más fea que nunca.
+c 0 y a ti q te importa?
+Lucia
+¿Ere hilipolla?
+2
+a 0 No
+b 1 Andre y aleho zi
+Andres
+Espejito, quién es el más bello de este reino?
+3
+a 1 YO
+b 1 Mi reflejo
+c 0 Mis compix de clase jesjes

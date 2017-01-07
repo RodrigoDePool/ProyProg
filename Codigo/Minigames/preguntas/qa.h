@@ -1,12 +1,12 @@
 #include "../../interface.h"
 #include "../../cop.h"
 #include <stdio.h>
-#include <stdlib.c>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct _Game Game;
 typedef struct _Question Question;
-typedef struct _Answer Aswwer;
+typedef struct _Answer Answer;
 
 /*These three functions alloc memory for a game struct and initialises it with the info given in 
 file like this:
@@ -16,6 +16,7 @@ Imagine * says "\", what would you answer? //Introductory sentence
 Lucia //preguntadora
 ¿Estoy guapa? //Pregunta
 3 //Número de posibles respuestas
+
 a 1 Si, como siempre. //carácter=codigo+ 1True/0False + respuesta
 b 0 Más fea que nunca.
 c 0 y a ti q te importa
@@ -42,5 +43,8 @@ void answer_free(Answer *a);
 
 /*Checks if the choice made for the question q is ok or not.
  Writes a message on the board saying it, in (row, col) NOT MAP COORDS
- Returns 1/0 depending on the choice being correct or not*/
+ Returns 1/0 depending on the choice being correct or not
+ if no matching code, returns -1*/
 int answer_check(Interface *in, Question *q, int row, int col, char choice);
+
+int qa(Interface *in, char *path);
