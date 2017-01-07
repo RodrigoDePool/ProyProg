@@ -23,5 +23,11 @@ int main()
 
     i_free(i);
     _term_close();
+    if (sol == 0)
+        printf("You lose\n");
+    else if (sol == 1)
+        printf("You win\n");
+    else
+        printf("Error\n");
     return 1;
 }

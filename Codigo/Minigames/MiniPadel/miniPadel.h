@@ -2,6 +2,7 @@
 #define MINIPADEL_H
 /*Libraries*/
 #include "../../interface.h"
+#define PADEL_INST    "DATA/miniInst/padel/padelInst"
 
 /*Functions*/
 /*

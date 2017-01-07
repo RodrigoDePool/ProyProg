@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #define MILISECONDS    40 /*speed of the ball*/
+#define FTIME          45
 
 /*
     Ball structure, the coords used in this structure are map coords
@@ -39,7 +40,7 @@ typedef struct _Pad
     int       xpos;
     int       ypos;
     Interface *intf;
-    int       stop; /*0 for quit/lose, 1 for win, 2 for keep playing*/
+    int       stop; /*0 for quit/lose, 1 for win*/
 }Pad;
 
 
@@ -53,6 +54,7 @@ typedef struct _Aux
     Ball *ball;
     int  rows; /*rows and cols of the interface*/
     int  cols;
+    int  flag; /*This flags indicates whether its the first or second ball (1 or 2)*/
 }Aux;
 
 
@@ -285,11 +287,13 @@ int check(Pad *pad, Ball *ball, int rows, int cols)
  */
 void *ball_movement(void *auxstruct)
 {
-    Aux  *aux;
-    Ball *ball;
-    Pad  *pd;
-    int  lose = 0; /*flag for losing, 1 if lost*/
-
+    Aux    *aux;
+    Ball   *ball;
+    Pad    *pd;
+    int    lose = 0;  /*flag for losing, 1 if lost*/
+    time_t ini, now;
+    int    flag;
+    char   s[4];
     if (auxstruct == NULL)
         return NULL;
 
@@ -297,6 +301,10 @@ void *ball_movement(void *auxstruct)
     aux  = (Aux *) auxstruct;
     ball = aux->ball;
     pd   = aux->pad;
+    flag = aux->flag;
+
+    /*we get a reference for the clock*/
+    ini = time(NULL);
 
     while (1)
     {
@@ -314,9 +322,21 @@ void *ball_movement(void *auxstruct)
         ball->ypos = ball->ypos + ball->ydir;
         /*we print it*/
         printBall(pd->intf, *ball);
-        /*we delay it MAYBE OR SPEED INCREASES??*/
-        usleep(1000 * MILISECONDS); /*EN micro segundo, ponemos 500 milis*/
-        /*MAYBE WE HAVE A COUNTER TO KNOW WHEN TO STOP??*/
+        usleep(1000 * MILISECONDS); /*EN micro segundo, ponemos 40 milis*/
+        /*we check the time*/
+        now = time(NULL) - ini;
+        if (flag == 1)
+        {
+            /*we print the elapsed time*/
+            sprintf(s, "%d", (int) now);
+            i_drawStrMap(pd->intf, (char *) s, 1, 1, 2);
+            /*If the time elapsed is bigger than FTIME the player won*/
+            if ((double) now > FTIME)
+            {
+                pd->stop = 1;
+                return NULL;
+            }
+        }
     }
 }
 
@@ -328,6 +348,7 @@ void *ball_movement(void *auxstruct)
 int miniPadel(Interface * i, int hardMode)
 {
     int       cols, rows;
+    int       win;
     Pad       *pd;
     Ball      *ball, *hball;
     int       random;
@@ -363,19 +384,22 @@ int miniPadel(Interface * i, int hardMode)
     pd->pad  = '|';
     pd->size = 4;
     pd->xpos = 4;
+    pd->stop = 1;
 
     ball->obj = 'o';
 
     /*Lets set our auxstruct pointers*/
     auxstruct->pad  = pd;
     auxstruct->ball = ball;
+    auxstruct->flag = 1; /*first ball*/
 
     /*Initialize the interface for the game*/
     i_cleanDisplay(i);
     i_cleanCommand(i);
     i_cleanMap(i);
 
-    /*INSTRUCTIONS HERE*/
+    /*INSTRUCTIONS*/
+    i_readFile(i, PADEL_INST, 3, 1, 2);
 
     /*we get the usable cols and rows of the map*/
     rows = i_getbr(i) - 1;
@@ -429,6 +453,7 @@ int miniPadel(Interface * i, int hardMode)
         /*Lets set our auxstruct pointers*/
         auxstruct2->pad  = pd;
         auxstruct2->ball = hball;
+        auxstruct2->flag = 2; /*second ball*/
         auxstruct2->rows = rows;
         auxstruct2->cols = cols;
         /*Initialize the ball*/
@@ -454,7 +479,6 @@ int miniPadel(Interface * i, int hardMode)
     /*player movement it will as well kill ball thread, so its enough to quit
        the last one*/
     pthread_join(pth[1], NULL);
-    /*WE NEED TO CHECK FOR LOSING OR WINNING*/
 
     /*we cancel pad_movement*/
     pthread_cancel(pth[0]);
@@ -472,11 +496,13 @@ int miniPadel(Interface * i, int hardMode)
     /*We set back to normality the autorepeat rate*/
     system("xset r rate 500");
 
+    win = pd->stop;
+
     /*we free pad and ball*/
     free(auxstruct);
     free(pd);
     free(ball);
-    return 0;
+    return win;
 }
 
 
