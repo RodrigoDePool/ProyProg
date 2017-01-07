@@ -3,6 +3,7 @@
 #include <string.h>
 #include <memory.h>
 #include "rectangles.h"
+#include "types.h"
 
 
 /*
