@@ -33,7 +33,7 @@ typedef struct   _CoP
     Assoc **assocs;
 };
 
-char *strdup(char *);
+/*char *strdup(char *);*/
 
 /*EXAMPLE OF THE FILE THIS MODULE WILL READ*/
 /*First command will be the error one	   */

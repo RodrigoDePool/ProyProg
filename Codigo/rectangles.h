@@ -79,7 +79,7 @@
 #include <stdlib.h>
 
 #define ERR    -1
-#define OK     (!(ERR))
+/*#define OK     (!(ERR))*/
 
 
 
