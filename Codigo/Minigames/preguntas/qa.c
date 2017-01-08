@@ -149,6 +149,40 @@ void answer_free(Answer *a){
 	}
 }
 
+
+/*Given a game struct, builds and writes the intro of a certain question
+ "Imagine arroz asked you, "habicbuela?" what whoukd you answer?"
+ Returns -1 if anything went wrong
+  */
+int build_intro(Interface *in, Game* g, int i, int row, int col){
+
+	char *intro, *buff, size;
+	/*Build intro using a cop function*/
+	/*First we replace the person name,then the question between " "*/
+	intro = unpack_answer(g->intro, g->q[i]->person, '*' );
+	buff = unpack_answer(intro, g->q[i]->qu,')');
+	free(intro);
+	/*We have to add a \n at the end of the question*/
+	size = 1 + strlen(buff);
+	intro = (char *)malloc((size + 1)*sizeof(char));
+	if(intro == NULL){
+		free(buff);
+		return -1;
+	}
+	
+	strcpy(intro, buff);
+	intro[strlen(buff)+1] = '\n';
+	intro[strlen(buff) + 2] = '\0';
+	/*Clean board to erase previous question*/
+	i_readFile(in, "blanco.txt", 0, 0, 1);
+	
+	/*Ask question and check the answer*/
+	i_drawStr(in, intro, row, col, 1);
+	free(intro);
+	free(buff);
+	return 0;
+}
+
 int answer_check(Interface *in, Question *q, int row, int col, char choice){
 	assert(in && q && row > 0 && col > 0);
 	int i;
@@ -171,10 +205,37 @@ int answer_check(Interface *in, Question *q, int row, int col, char choice){
 	
 }
 
+int last_answer(Interface *in, Game *g, int row, int col){
+	
+	time_t ini, now;
+	
+	if(build_intro(in, g, i, row, col) == -1){
+		return -1;
+	}
+	
+	for(j = 0; j < g->q[i]->numans; j++){
+		i_writeChar(in, g->q[i]->ans[j]->code, ++row, col, 1);
+		i_writeChar(in, ' ' , row, col + 1, 1);			
+		i_drawStr(in, g->q[i]->ans[j]->answer, row, col + 2, 1);
+	}
+	
+	ini = time(NULL);
+	do{
+	
+	/*Cosas de threads*/
+	
+	
+	now = time(NULL) - ini;
+	}while(now < 15)
+	
+	return 1;
+}
+
+
 int qa(Interface *in, char *path){
 	assert(path);
-	int i, j, row, col, size, result;
-	char *buff, *intro, choice;
+	int i, j, row, col, result;
+	char choice;
 	FILE *f;
 	f = fopen(path, "r");
 	
@@ -187,33 +248,14 @@ int qa(Interface *in, char *path){
 	return -1;
 	}
 	/*We build and ask each question*/
-	for(i = 0; i < g->nquestions; i++){
+	for(i = 0; i < g->nquestions-1; i++){
 		row = 5;
 		col = 10;
-		/*Build intro using a cop function*/
-		/*First we replace the person name,then the question between " "*/
-		intro = unpack_answer(g->intro, g->q[i]->person, '*' );
-		buff = unpack_answer(intro, g->q[i]->qu,')');
-		free(intro);
-		/*We have to add a \n at the end of the question*/
-		size = 1 + strlen(buff);
-		intro = (char *)malloc((size + 1)*sizeof(char));
-		if(intro == NULL){
-			free(buff);
+		
+		if(build_intro(in, g, i, row, col) == -1){
 			game_free(g);
 			return -1;
 		}
-		
-		strcpy(intro, buff);
-		intro[strlen(buff)+1] = '\n';
-		intro[strlen(buff) + 2] = '\0';
-		/*Clean board to erase previous question*/
-		i_readFile(in, "blanco.txt", 0, 0, 1);
-		
-		/*Ask question and check the answer*/
-		i_drawStr(in, intro, row, col, 1);
-		free(intro);
-		free(buff);
 		
 		for(j = 0; j < g->q[i]->numans; j++){
 			i_writeChar(in, g->q[i]->ans[j]->code, ++row, col, 1);
@@ -223,13 +265,13 @@ int qa(Interface *in, char *path){
 		
 		
 		do{
-		choice = _read_key();
-		if(choice == 'q'){
-			sleep(1);
-			game_free(g);
-			return 0;
-		}
-		result = answer_check(in, g->q[i], 1+row, col, choice);
+			choice = _read_key();
+			if(choice == 'q'){
+				sleep(1);
+				game_free(g);
+				return 0;
+			}
+			result = answer_check(in, g->q[i], 1+row, col, choice);
 		}while (result == -1);
 		if(result == 0){
 			sleep(2);
@@ -239,6 +281,17 @@ int qa(Interface *in, char *path){
 		
 	}
 	
+	/*This executes the last question*/
+	/*Aqui podemos poner un if level == 2 para que solo se ejecute si
+	es el juego en el que lucia te pega y no el normal de preguntas
+	al normal ademas se le pasaria en nquestions una mas de las q realmente
+	hubiera*/
+	result = last_check(in, g, row, col);
+	if(result != 1){
+		game_free(g);
+		return result;
+	}
+	
 	/*If the game hasnt returned yet, its because all the answers were correct:
 	return 1*/
 	i_drawStr(in, "All your answers were correct: you won!", row+2, col, 1);
@@ -246,7 +299,6 @@ int qa(Interface *in, char *path){
 	game_free(g);
 	return 1;
 }
-
 
 
 
