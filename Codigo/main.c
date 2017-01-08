@@ -4,93 +4,91 @@
 #include "lineread.h"
 #include "interface.h"
 #include "space.h"
+#include "world.h"
 
-#define MAXBUF 1000
+#define SAVE_KEY     's'
+#define SOLVE_KEY    'x'
+#define HELP_KEY     'h'
 
 
 /*
-mainGame file
-the mainGame should be structured in parts: animations and levels
-It will be read secuentially
-
--To start a new level:
-
-	L
-	<start coord x> <start coord y>
-	<number of spaces>
-	"<path to the level dir>"
-	#To write something on the command line:
-	C <Whatever>
-
-	#To write something on the display:
-	D <Whatever>
+   mainGame file
 
 
--To start a new animation:
-	A
+ */
+int main()
+{
+    World     *w;
+    Interface *i;
+    Door      *d;
+    /*row , col and space the player is in*/
+    int       prow, pcol, pspace;
+    /*flag to see if the key press was a move*/
+    int       fmove;
+    int       sid;
+    char      c;
+    /*Starting menu*/
+    w = menu();
+    if (menu == NULL)
+    {
+        return 0;
+    }
+    /*Get prow, pcol,pspace*/
+    /*get map of pspace*/
+    /*get interface and set it in i*/
+    /*set interface map of space*/
+    /*draw map*/
+    /*set player with prow and pcol*/
+    /*set descriptions and objects(part of the riddle) in display*/
 
-NOTE 1: the space numbers are assinged in order of addition
-			So if you add Space1 and Space2 it ID's should be 0 and 1
-			Also, the space with ID 0 will be the one in which you will start
-NOTE 2: the lines are read with fgetll, you might want to read it's documentation
+    /*main game loop*/
+    while (1)
+    {
+        fmove = 0;
+        c     = _read_key();
+        /*if its a move*/
+        if (c == SOUTH || c == NORTH || c == WEST || c == EAST)
+        {
+            fmove = 1; /*there was a movement*/
+            move(i, c)
+        }
+        else if (c == SAVE_KEY)
+        {
+            /*menu function of save*/
+        }
+        else if (c == SOLVE_KEY)
+        {
+            /*Solve function*/
+            /*if fail print fail message and thats it*/
+            /*else animation and set WHOLE new space and stuff*/
+        }
+        else if (c == HELP_KEY)
+        {
+            /*print help message*/
+        }
 
-
-*/
-int main(){
-	FILE * f;
-	FILE * spaceFile;
-	char buffer[MAXBUF], path[MAXBUF];
-	int nSpaces, level = 0;
-	int j;
-	Space ** spaces;
-
-	_term_init();
-    i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
-    i_drawAll(i);
-	f=fopen("DATA/mainGame", "r");
-	
-	while(1){
-		if(feof(f)){
-			break;
-		}
-
-		strcpy(buffer,fgetll(f));	
-		switch(buffer[0]){
-			/*Level*/
-			case L:
-				strcpy(buffer, fgetll(f));
-				nSpaces = atoi(buffer);
-
-				spaces = (Space **)malloc(sizeof(Space *) * nSpaces);
-				/*We open the spaces*/
-				for(j=0;j<nSpaces;j++){
-					strcpy(buffer, fgetll(f));
-					sprintf(path, "DATA/Levels/%d/%s.space", level, buffer);
-					spaceFile = fopen(path, "r");
-					spaces[j] = spacefromfile(spaceFile);
-					
-				}
-
-
-
-				level++;
-				for(j=0;j<nSpaces;j++){
-					space_free(spaces[j]);
-				}
-				free(spaces);
-				break;
-
-			/*Animation*/
-			case A:
-
-				break;
-
-			default:
-				break;
-		}
-	}
-	i_free(i);
-    _term_close();
-	fclose(f);
-	return 0;
+        /*if there was a movement*/
+        if (fmove == 1)
+        {
+            /*get new prow, pcol after movement*/
+            d = space_checkDoorAPoint(pspace, pcol, prow);
+            if (d != NULL)
+            {
+                /*print 'Do you want to go through the door? (y/n)'*/
+                do
+                {
+                    c = _read_key();
+                } while (c != 'y' && c != 'n');
+                if (c == 'y')
+                {
+                    /*check if d is new space or a minigame*/
+                    /*if space set new space with coords and map and stuff and
+                       descriptions*/
+                    /*else must be a minigame, then execute it
+                       maybe allow it to play again or go back to the map
+                       in case of winning print message and give object*/
+                }
+            }
+        }
+    }
 }
