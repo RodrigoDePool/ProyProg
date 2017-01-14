@@ -23,4 +23,4 @@ lineread.o: ../../lineread.c ../../lineread.h
 	gcc -c -g ../../lineread.c
 
 clean:
-	rm -f *.o worldtest
+	rm -f *.o worldtest world_new.txt
