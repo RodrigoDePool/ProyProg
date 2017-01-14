@@ -1,2 +1,0 @@
-Line 0 1 1, Coords read: 0 1 1
-Pl in interface: 1 1

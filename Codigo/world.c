@@ -208,7 +208,7 @@ int world_getNumSpaces(World *w)
 }
 
 int world_getPllevel(World * w){
-    if(!w) return NULL;
+    if(!w) return -1;
     return w->Pllevel;
 }
 
@@ -482,6 +482,11 @@ World *worldfromfile(char *file, Interface * i)
         }
     }
 
+
+    /*Pllevel*/
+
+    fscanf(f, "%d", &(w->Pllevel));
+
     /*Path*/
     w->path=(char*)malloc(sizeof(char)*(strlen(file)+1));
     if(!w->path)
@@ -527,6 +532,13 @@ int world_saveToFile(World * w, char * path)
 		fprintf(f, "%s\n", object_getDesc(w->objects[i]));
 
 	}
+
+
+    /*Pllevel*/
+
+    fprintf(f, "%d", &(w->Pllevel));
+
+    fclose(f);
     return 0;
 }
 
