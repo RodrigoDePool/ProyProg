@@ -30,7 +30,7 @@ first version only available for SIZE FOUR */
 int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score);
 
 /*main function*/
-int mini2048(Interface *i, char *numbers, int size);
+int mini2048(Interface *i);
 
 
 

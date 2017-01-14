@@ -1,4 +1,8 @@
 Imagine * says ")", what would you answer?
+Correct answer!
+Incorrect answer!
+I couldnt find any answer matching your char choice, try againI couldnt find any answer matching your char choice, try again
+All your answers were correct: you won!
 3
 Lucia
 ¿Estoy guapa?

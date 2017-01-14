@@ -2,7 +2,10 @@
 #include "2048.h"
 #define NDEBUG
 #include <assert.h>
-
+#define NUMBERSPATH "./data/numbers.txt"
+#define BOARDPATH "./data/board2048.txt"
+#define LOSTPATH "./data/youlost.txt"
+#define WONPATH "./data/youwon.txt"
 int asprintf(char **strp, const char *fmt, ...);
 
 struct _Numbers{
@@ -120,7 +123,7 @@ int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won)
 					    	already been "twiced" in this movement 
 					    	(2240+lft = 4400, not 8000):we use the upd matrix */
 					    	matrix[j - dir][i] = 2 * matrix[j][i];
-					    	if(matrix[j - dir][i] == 256)
+					    	if(matrix[j - dir][i] == 32)
 					    		*won = 1;
 					    	matrix[j][i] = 0;
 					    	upd[j - dir][i] = 1;
@@ -209,9 +212,10 @@ int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score){
 }
 
 
-int mini2048(Interface *in, char *numbers, int size){
+int mini2048(Interface *in){
 
-	int i, j, rnd, score = 0, finished = 0, won = 0;
+	assert(in && size > 0);
+	int i, j, rnd, score = 0, finished = 0, won = 0, size = 4;
 	Numbers *num;
 	char c;
 	int **matrix = (int **)malloc(size * sizeof(int *));
@@ -225,7 +229,7 @@ int mini2048(Interface *in, char *numbers, int size){
 		}
 	}
 	
-	num = Numbers_ini(numbers);
+	num = Numbers_ini(NUMBERSPATH);
 	if(!num) return -1;
 	/*Initializes matrix an adds first number*/
 	for(i = 0; i < size; i++){
@@ -240,7 +244,7 @@ int mini2048(Interface *in, char *numbers, int size){
 	j = rand() % size;
 	matrix[j][i] = rnd; 
 	
-  	i_readFile(in, "./data/board2048.txt", 0, 0, 1);
+  	i_readFile(in, BOARDPATH, 0, 0, 1);
 	draw_matrix(in, matrix, num, size, score);
 	i_drawStr(in, "Your score: ",  3, 2, 2);
 	
@@ -271,11 +275,11 @@ int mini2048(Interface *in, char *numbers, int size){
 	if(won == 1){
 		i_drawStr(in, "YOU WON!",  5, 4, 2);
 		sleep(2);
-		i_readFile(in, "./data/youwon.txt", 0, 0, 1);
+		i_readFile(in, WONPATH , 0, 0, 1);
 	}else{
 		i_drawStr(in, "YOU LOST!", 5, 4, 2);
 		sleep(3);
-		i_readFile(in, "./data/youlost.txt", 0, 0, 1);
+		i_readFile(in, LOSTPATH, 0, 0, 1);
 	}
 	sleep(2);
 	for(i = 0; i < size; i++)

@@ -3,12 +3,17 @@
 #include <assert.h>
 #include <time.h>
 #include <pthread.h>
-#define CLEANBOARD "blanco.txt"
 #define PATHLUCIA "preguntas.txt"
 #define PATHPREGUNTAS "preguntas.txt"
+#define LOSTPATH "../2048/./data/youlost.txt"
+#define WONPATH "../2048/./data/youwon.txt"
 
 struct _Game{
 	char *intro;
+	char *correct;
+	char *incorrect;
+	char *dunno;
+	char *won;
 	int nquestions;
 	Question **q;
 };
@@ -41,7 +46,7 @@ int build_intro(Interface *in, Game* g, int i, int row, int col);
  Writes a message on the board saying it, in (row, col) NOT MAP COORDS
  Returns 1/0 depending on the choice being correct or not
  if no matching code, returns -1*/
-int answer_check(Interface *in, Question *q, int row, int col, char choice);
+int answer_check(Interface *in, Game *g, Question *q, int row, int col, char choice);
 
 /* This function will be called as a thread from last_answer, to check if a 
 character has been pressed in the last answer. If so, the game would be lost*/
@@ -73,6 +78,27 @@ Game *game_ini(FILE *f){
 		free(g);
 		return NULL;
 	}
+	fscanf(f, "%m[^\n]\n", &(g->correct));
+	if(g->intro == NULL){
+		free(g);
+		return NULL;
+	}
+	fscanf(f, "%m[^\n]\n", &(g->incorrect));
+	if(g->intro == NULL){
+		free(g);
+		return NULL;
+	}
+	fscanf(f, "%m[^\n]\n", &(g->dunno));
+	if(g->intro == NULL){
+		free(g);
+		return NULL;
+	}
+	fscanf(f, "%m[^\n]\n", &(g->won));
+	if(g->intro == NULL){
+		free(g);
+		return NULL;
+	}
+	
 	fscanf(f, "%d\n", &(g->nquestions));
 	
 	/*Scan all the questions*/
@@ -150,9 +176,17 @@ Answer *answer_ini(FILE *f){
 void game_free(Game *g){
 	int i;
 	if(g){
-		if(g->intro){
+		if(g->intro)
 			free(g->intro);
-		}
+		if(g->correct)
+			free(g->correct);
+		if(g->incorrect)
+			free(g->incorrect);
+		if(g->won)
+			free(g->won);
+		if(g->dunno)
+			free(g->dunno);
+			
 		if(g->q){
 			for(i = 0; i < g->nquestions; i++){
 				if (g->q[i])
@@ -198,6 +232,10 @@ int questions(Interface *in){
 	return qa(in, 0);
 }
 
+
+
+
+
 /*************************************************/
 /****** LOCAL FUNCTIONS IMPLEMENTATION ***********/
 /*************************************************/
@@ -223,7 +261,7 @@ int build_intro(Interface *in, Game* g, int i, int row, int col){
 	intro[strlen(buff)+1] = '\n';
 	intro[strlen(buff) + 2] = '\0';
 	/*Clean board to erase previous question*/
-	i_readFile(in, CLEANBOARD, 0, 0, 1);
+	i_cleanMap(in);
 	
 	/*Ask question and check the answer*/
 	i_drawStr(in, intro, row, col, 1);
@@ -232,22 +270,25 @@ int build_intro(Interface *in, Game* g, int i, int row, int col){
 	return 0;
 }
 
-int answer_check(Interface *in, Question *q, int row, int col, char choice){
+int answer_check(Interface *in, Game *g, Question *q, int row, int col, char choice){
 	assert(in && q && row > 0 && col > 0);
 	int i;
 	for (i = 0; i < q->numans; i++){
 		if(q->ans[i]->code == choice){
 			if(q->ans[i]->truth == 1){
-				i_drawStr(in, "Correct answer!", row + 1, col, 1);
+				i_drawStr(in, g->correct, row + 1, col, 1);
 				sleep(1);
 				return 1;
 			}
-			i_drawStr(in, "Incorrect answer!", row + 1, col, 1);
+			i_drawStr(in, g->incorrect, row + 1, col, 1);
+			sleep(1);
+			i_readFile(in, LOSTPATH , 0, 0, 1);
+			sleep(2);		
 			return 0;
 		}
 	}
 	/*If the choice didnt match any answer*/
-	i_drawStr(in, "I couldnt find any answer matching your char choice, try again", 1+row, col, 1);
+	i_drawStr(in, g->dunno, 1+row, col, 1);
 	sleep(2);
 	i_drawStr(in, "                                                              ", 1+row, col, 1);
 	return -1;
@@ -264,6 +305,7 @@ int last_answer(Interface *in, Game *g, int i, int *row, int col){
 	char c = 0;
 	time_t ini, now;
 	pthread_t pth;
+	*row = 5;
 	
 	if(build_intro(in, g, i, *row, col) == -1){
 		return -1;
@@ -286,11 +328,14 @@ int last_answer(Interface *in, Game *g, int i, int *row, int col){
 	
 	/*If a key was pressed, the game has been lost. Else, won*/
 	if(c != 0){
-		i_drawStr(in, "Incorrect answer!", ++(*row), col, 1);
+		i_drawStr(in, g->incorrect, ++(*row), col, 1);
+		sleep(1);
+		i_readFile(in, LOSTPATH , 0, 0, 1);
+		sleep(2);					
 		return 0;
 	}
 	
-	i_drawStr(in, "Correct answer!", ++(*row), col, 1);
+	i_drawStr(in, g->correct, ++(*row), col, 1);
 	sleep(1);
 	
 	pthread_cancel(pth);
@@ -342,11 +387,11 @@ int qa(Interface *in, int level){
 				game_free(g);
 				return 0;
 			}
-			result = answer_check(in, g->q[i], 1+row, col, choice);
+			result = answer_check(in, g, g->q[i], 1+row, col, choice);
 		}while (result == -1);
 		
 		if(result == 0){
-			sleep(2);
+			sleep(1);
 			game_free(g);
 			return 0;
 		}		
@@ -360,15 +405,18 @@ int qa(Interface *in, int level){
 	if(level == 1)
 		result = last_answer(in, g, i, &row, col);
 	
-	
 	if(result != 1){
+		i_readFile(in, LOSTPATH , 0, 0, 1);
+		sleep(2);
 		game_free(g);
 		return result;
 	}
 	
 	/*If the game hasnt returned yet, its because all the answers were correct:
 	return 1*/
-	i_drawStr(in, "All your answers were correct: you won!", row+2, col, 1);
+	i_drawStr(in, g->won, row+2, col, 1);
+	sleep(2);
+	i_readFile(in, WONPATH , 0, 0, 1);
 	sleep(2);
 	game_free(g);
 	return 1;
