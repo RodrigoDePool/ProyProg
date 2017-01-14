@@ -440,25 +440,6 @@ World *worldfromfile(char *file, Interface * i)
     /*Object*/
 
     fscanf(f, "%d\n", &(w->numobjects));
-    w->objects = (Object * *) malloc(sizeof(Object *) * w->numobjects);
-    if (w->objects == NULL)
-    {
-        world_free(w);
-        fclose(f);
-        return NULL;
-    }
-
-    for (k = 0; k < w->numobjects; k++)
-    {
-        w->objects[k] = objectfromfile(f);
-        if (w->objects[k] == NULL)
-        {
-            world_free(w);
-            fclose(f);
-            return NULL;
-        }
-    }
-
 
     /*Pllevel*/
 
@@ -505,15 +486,7 @@ int world_saveToFile(World * w, char * path)
         }
     }
 
-    for (i = 0; i < w->numobjects; i++)
-    {
-        fprintf(f, "%d\n", object_getId(w->objects[i]));
-        fprintf(f, "%s\n", object_getName(w->objects[i]));
-        fprintf(f, "%d\n", (int) object_getHas(w->objects[i]));
-        fprintf(f, "%d\n", object_getSpaceid(w->objects[i]));
-        fprintf(f, "%s\n", object_getDesc(w->objects[i]));
-    }
-
+    fprintf(f, "%d\n", w->objects);
 
     /*Pllevel*/
 

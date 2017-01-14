@@ -53,26 +53,26 @@ void world_free(World *);
 
 /*Function: it sets an interface and frees the previous one if there was one
  *
- **Parameters: world and interface (already initialized)
- **Returns: -1 if something went wrong and 0 if everything went right
- **Revision: 6 Jan 2017
+ ***Parameters: world and interface (already initialized)
+ ***Returns: -1 if something went wrong and 0 if everything went right
+ ***Revision: 6 Jan 2017
  */
 
 int world_setInterface(World * w, Interface * i);
 
 /*Function: it returns the interface ofthe world
  *
- **Parameters: world
- **Revision: 6 Jan 2017
+ ***Parameters: world
+ ***Revision: 6 Jan 2017
  */
 
 Interface * world_getInterface(World * w);
 
 /*Function: sets a path to store the world (but it does not store it)
  *
- **Parameters: world and path
- **Returns: nothing
- **Revision: 6 Jan 2017
+ ***Parameters: world and path
+ ***Returns: nothing
+ ***Revision: 6 Jan 2017
  */
 
 void world_setPath(World * w, char * path);
@@ -203,9 +203,6 @@ int world_getPlCol(World * w);
    SpaceId2
    ...
    NumberOfObjects
-   Object1
-   Object2
-   ....
  */
 /*Where Pl... are the actual situation of  the player
    and objects are written in the object format*/
