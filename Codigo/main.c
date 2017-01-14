@@ -40,7 +40,7 @@ int main()
     /*draw map*/
     /*set player with prow and pcol*/
     /*set descriptions and objects(part of the riddle) in display*/
-
+/*SEE IF YOU ARE IN SPACE 0 AND EXECUTE TUTORIAL*/
     /*main game loop*/
     while (1)
     {
@@ -66,7 +66,7 @@ int main()
         {
             /*print help message*/
         }
-
+        /*ADD EXIT GAMEE*/
         /*if there was a movement*/
         if (fmove == 1)
         {
