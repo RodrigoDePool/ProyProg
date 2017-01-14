@@ -44,9 +44,8 @@ typedef struct _Level
 
 World *world_ini(char * path, Interface * i);
 
-/*Function: frees world and ALL its variables INCLUIDING  */
-/*THE ARRAY OF SPACES AND THE ARRAY OF OBJECT WHEN CREATED*/
-/*THE INTERFACE WILL BE FREED TOO*/
+/*Function: frees world and ALL its variables */
+/*THE INTERFACE WILL NOT BE FREED*/
 /*Parameters: Pointer to world				  */
 /*Returns: -						  */
 void world_free(World *);
