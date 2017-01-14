@@ -5,7 +5,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define MAXBUF       300
+#define MAXBUF       130
 #define MAXSPACES    30
 
 
@@ -126,7 +126,18 @@ int isItASpaceOrAMinigame(int ID)
         return 0;
 }
 
+char * fgetll(FILE * f)
+{
+	char * c;
+	c=(char*)malloc(sizeof(char)*(MAXBUF+1));
+	c[0]='#';
+	while(c[0]=='#')
+		fgets(c, MAXBUF, f);
+	if(c[strlen(c)-1]=='\n')
+		c[strlen(c)-1]=0;
+	return c;
 
+}
 
 void world_free(World *w)
 {
@@ -139,8 +150,6 @@ void world_free(World *w)
         free(w->spaces);
     if (w->path != NULL)
         free(w->path);
-    if (w->i != NULL)
-        i_free(w->i);
     /*free the levels*/
     for (i = 0; i < numLevels; i++)
     {
@@ -257,6 +266,7 @@ char * world_getSpacePath(int ID)
     return buffer;
 }
 
+/*DO NOT USE THIS FUNTION*/
 char * world_getSpacePathFile(FILE * f, int ID)
 {
     char * buffer;
@@ -349,7 +359,6 @@ World *worldfromfile(char *file, Interface * i)
     FILE  * f;
     FILE  * SpacePathsFile;
     FILE  * SpaceFile;
-    FILE  * debugging;
     int   k, j, SpaceID, PlRow, PlCol;
     World *w;
     Space * auxspace;
@@ -357,29 +366,23 @@ World *worldfromfile(char *file, Interface * i)
     char  * line;
 
 
-    w = world_ini(file, NULL);
+    w = world_ini(file, i);
     f = fopen(file, "r");
     if (f == NULL)
         return NULL;
 
-    w->i = i;
-
-    debugging = fopen("debuggingWorldFromFile.txt", "w");
-
+    
     /*PLAYER*/
     line = fgetll(f);
-    sscanf(line, "%d %d %d\n", &(w->PlSpaceID), &(PlRow), &(PlCol));
-    fprintf(debugging, "Line %s, Coords read: %d %d %d\n", line, w->PlSpaceID, PlRow, PlCol);
+    sscanf(line, "%d %d %d", &(w->PlSpaceID), &(PlRow), &(PlCol));
     free(line);
     SpacePathsFile = fopen(SPACE_PATHS_FILE, "r");
     i_drawPl(w->i, PlRow, PlCol);
 
-    fprintf(debugging, "Pl in interface: %d %d\n", i_wherePlayerBeRow(i), i_wherePlayerBeCol(i));
-
+    
     /*Space*/
     line = fgetll(f);
     sscanf(line, "%d", &(w->numspaces));
-    fprintf(debugging, "line: %s w->numspaces: %d\n", line, w->numspaces);
     free(line);
 
     w->spaces = (Space * *) malloc(sizeof(Space *) * MAXSPACES);
@@ -400,12 +403,11 @@ World *worldfromfile(char *file, Interface * i)
     {
         line    = fgetll(f);
         SpaceID = atoi(line);
+        free(line);
+        line=  fgetll(SpacePathsFile);
 
-        fprintf(debugging, "line: %s SpaceID\n: %d\n", line, SpaceID);
-        strcpy(buffer, world_getSpacePathFile(SpacePathsFile, SpaceID));
-
-        fprintf(debugging, "Path to the space: %s\n", buffer);
-        SpaceFile = fopen(buffer, "r");
+        SpaceFile = fopen(line, "r");
+        free(line);
         if (SpaceFile == NULL)
         {
             for (j = k; j >= 0; j--)
@@ -445,17 +447,7 @@ World *worldfromfile(char *file, Interface * i)
 
     fscanf(f, "%d", &(w->Pllevel));
 
-    /*Path*/
-    w->path = (char *) malloc(sizeof(char) * (strlen(file) + 1));
-    if (!w->path)
-    {
-        world_free(w);
-        fclose(f);
-        return NULL;
-    }
-    strcpy(w->path, file);
-
-
+   
     fclose(f);
     return w;
 }
@@ -478,6 +470,8 @@ int world_saveToFile(World * w, char * path)
 
     fprintf(f, "%d %d %d\n", w->PlSpaceID, i_wherePlayerBeRow(w->i), i_wherePlayerBeCol(w->i));
 
+    fprintf(f, "%d\n", w->numspaces);
+
     for (i = 0; i < MAXSPACES; i++)
     {
         if (w->spaces[i] != NULL)
@@ -486,11 +480,11 @@ int world_saveToFile(World * w, char * path)
         }
     }
 
-    fprintf(f, "%d\n", w->objects);
+    fprintf(f, "%d\n", w->numobjects);
 
     /*Pllevel*/
 
-    fprintf(f, "%d", &(w->Pllevel));
+    fprintf(f, "%d", (w->Pllevel));
 
     fclose(f);
     return 0;
