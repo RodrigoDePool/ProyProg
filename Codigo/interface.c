@@ -449,6 +449,7 @@ void i_freeMap(Interface * i)
 
 int i_drawPl(Interface *i, int br, int bc)
 {
+    
     if (i == NULL || br < 0 || bc < 0 || br > (i->br - 2) || bc > (i->bc - 2) || i->map == NULL)
         return 0;
 

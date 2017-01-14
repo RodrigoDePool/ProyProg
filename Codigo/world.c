@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "lineread.h"
+
 #define MAXBUF 300
-#define SPACE_PATHS_FILE "SpacePaths"
 #define MAXSPACES 30
+
 
 
 /*
@@ -31,15 +31,60 @@ struct _World
     int    numobjects;
     Interface * i;
     int PlSpaceID;
-    int PlRow;
-    int PlCol;
     char * path;
+    Level ** levels;
+    Minigame ** minigame;
 };
 
+Minigame ** minigamesIni()
+{
+    Minigame ** minigames=NULL;
+    int i;
+    minigames = (Minigame**)malloc(sizeof(Minigame*)*numMinigames);
+    
+    minigames[0]=NULL;
+    minigames[1]=NULL;
+    minigames[2]=NULL;
+    minigames[3]=NULL;
+    minigames[4]=NULL;
+    minigames[5]=NULL;
+    minigames[6]=NULL;
+    minigames[7]=NULL;
+    minigames[8]=NULL;  
+    minigames[9]=NULL;
+    minigames[10]=NULL;
+    minigames[11]=NULL;
+    minigames[12]=NULL;
+    minigames[13]=NULL;
+    minigames[14]=NULL;
+    minigames[15]=NULL;
+    minigames[16]=NULL;
+    minigames[17]=NULL;
+    minigames[18]=NULL;
+    minigames[19]=NULL;
 
-/*
-    I THINK WE SHOULD DIVIDE THIS
- */
+    return minigames;
+}
+
+Level ** levelsIni(){
+    Level ** levels;
+    int i;
+    levels=(Level **)malloc(sizeof(Level*)*numLevels);
+    for(i=0;i<numLevels;i++){
+        levels[i]=(Level*)malloc(sizeof(Level));
+    }
+
+    levels[0]->solution=(char*)malloc(sizeof(char*)*(strlen("a")+1));
+    strcpy(levels[0]->solution, "a");
+    levels[0]->initialAnimation=NULL;
+    levels[0]->finalAnimation=NULL;
+    levels[0]->PlIniRow=-1;
+    levels[0]->PlIniCol=-1;
+    levels[0]->PlIniSpaceID=-1;
+
+    return levels;
+}
+
 World *world_ini(char * path, Interface * i)
 {
     World *w;
@@ -52,8 +97,8 @@ World *world_ini(char * path, Interface * i)
     w->spaces = NULL;
     w->numspaces = 0;
     w->PlSpaceID = -1;
-    w->PlRow = -1;
-    w->PlCol = -1;
+    w->levels=levelsIni();
+    w->minigame=minigamesIni();
     if(path==NULL)
         w->path = NULL;
     else 
@@ -67,11 +112,17 @@ World *world_ini(char * path, Interface * i)
     return w;
 }
 
+int isItASpaceOrAMinigame(int ID){
+    if(ID>=50) return 1;
+    if(ID<0) return -1;
+    else return 0;
+}
+
 
 
 void world_free(World *w)
 {
-    int i;
+    int i = 0;
     if(w==NULL)
         return;
     for (i = 0; i < w->numobjects; i++)
@@ -86,6 +137,14 @@ void world_free(World *w)
         free(w->path);
     if(w->i!=NULL)
         i_free(w->i);
+    /*free the levels*/
+    for(i=0;i<numLevels;i++){
+        free(w->levels[i]->solution);
+        free(w->levels[i]);
+    }
+    free(w->levels);
+
+    free(w->minigame);
     free(w);
 
     return;
@@ -118,6 +177,12 @@ char * world_getPath(World * w)
 	assert(w!=NULL);
 	return(w->path);
 
+}
+
+Minigame * world_getMinigame(World * w, int ID){
+    if(!w||ID<50||ID-50>numMinigames-1)
+        return NULL;
+    return w->minigame[ID-50];
 }
 
 Space **world_getSpaces(World *w)
@@ -239,18 +304,31 @@ int world_AddSpace(World * w, int ID)
     return w->numspaces;
 }
 
+char ** world_getSpaceMap(World * w, int SpaceID){
+    if(!w)
+        return NULL;
+    return space_getMap(w->spaces[SpaceID]);
+}
+
 void world_setPlRow(World * w, int row)
 {
 
     assert(w != NULL);
-    w->PlRow=row;
+    i_drawPl(w->i, row, i_wherePlayerBeCol(w->i));
 }
 
 void world_setPlCol(World * w, int Col)
 {
 
     assert(w != NULL);
-    w->PlCol=Col;
+    i_drawPl(w->i, i_wherePlayerBeRow(w->i), Col);
+}
+
+void world_setPlCoords(World * w, int row, int Col)
+{
+
+    assert(w != NULL);
+    i_drawPl(w->i, row, Col);
 }
 
 void world_setPlSpaceID(World * w, int ID)
@@ -268,21 +346,22 @@ int world_getPlSpaceID(World * w)
 
 int world_getPlRow(World * w){
 	assert(w != NULL);
-	return w->PlRow;
+	return i_wherePlayerBeRow(w->i);
 }
 
 int world_getPlCol(World * w){
 	assert(w != NULL);
-	return w->PlCol;
+	return i_wherePlayerBeCol(w->i);
 }
 
-World *worldfromfile(char *file)
+
+World *worldfromfile(char *file, Interface * i)
 {
     assert(file != NULL);
     FILE   * f;
     FILE * SpacePathsFile;
     FILE * SpaceFile;
-    int    i, j, SpaceID;
+    int    k, j, SpaceID, PlRow, PlCol;
     World  *w;
     Space * auxspace;
     char buffer[MAXBUF];
@@ -296,12 +375,12 @@ World *worldfromfile(char *file)
 
     /*PLAYER*/
     line=fgetll(f);
-    sscanf(line, "%d %d %d", &(w->PlSpaceID), &(w->PlRow), &(w->PlCol));
+    sscanf(line, "%d %d %d\n", &(w->PlSpaceID), &(PlRow), &(PlCol));
     free(line);
     SpacePathsFile = fopen(SPACE_PATHS_FILE, "r");
+    i_drawPl(w->i, PlRow, PlCol);
 
     /*Space*/
-
     line=fgetll(f);
     sscanf(line, "%d", &(w->numspaces));
     free(line);
@@ -315,12 +394,12 @@ World *worldfromfile(char *file)
         return NULL;
     }
 
-    for(i=0;i<MAXSPACES;i++)
+    for(k=0;k<MAXSPACES;k++)
     {
-    	w->spaces[i]=NULL;
+    	w->spaces[k]=NULL;
     }
 
-    for (i = 0; i < w->numspaces; i++)
+    for (k = 0; k < w->numspaces; k++)
     {
     	line= fgetll(f);
     	SpaceID = atoi(line);
@@ -328,7 +407,7 @@ World *worldfromfile(char *file)
     	SpaceFile = fopen(buffer, "r");
         if (SpaceFile == NULL)
         {
-            for (j = i; j >= 0; j--)
+            for (j = k; j >= 0; j--)
             {
                 space_free(w->spaces[j]);
             }
@@ -341,7 +420,7 @@ World *worldfromfile(char *file)
         w->spaces[SpaceID] = spacefromfile(SpaceFile);
         if (w->spaces[SpaceID] == NULL)
         {
-            for (j = i; j >= 0; j--)
+            for (j = k; j >= 0; j--)
             {
                 space_free(w->spaces[j]);
             }
@@ -354,6 +433,7 @@ World *worldfromfile(char *file)
         fclose(SpaceFile);
     }
 
+      
     fclose(SpacePathsFile);
 
     /*Object*/
@@ -367,10 +447,10 @@ World *worldfromfile(char *file)
         return NULL;
     }
 
-    for (i = 0; i < w->numobjects; i++)
+    for (k = 0; k < w->numobjects; k++)
     {
-        w->objects[i] = objectfromfile(f);
-        if (w->objects[i] == NULL)
+        w->objects[k] = objectfromfile(f);
+        if (w->objects[k] == NULL)
         {
             world_free(w);
             fclose(f);
@@ -397,7 +477,7 @@ int world_saveToFile(World * w, char * path)
 
     if(!f) return -1;
 
-	fprintf(f, "%d %d %d\n", w->PlSpaceID, w->PlRow, w->PlCol);
+	fprintf(f, "%d %d %d\n", w->PlSpaceID, i_wherePlayerBeRow(w->i), i_wherePlayerBeCol(w->i));
 
 	for(i=0;i<MAXSPACES;i++){
 		if(w->spaces[i]!=NULL){

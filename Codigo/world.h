@@ -5,6 +5,20 @@
 #include "space.h"
 #include "object.h"
 #include "interface.h"
+#include "lineread.h"
+/*#include "/Minigames/2048/2048.h"*/
+/*#include "/Minigames/Calculo Rapido/"*/
+/*#include "/Minigames/MiniMaze/MiniMaze.h"*/
+/*#include "/Minigames/MiniPadel/miniPadel.h"*/
+/*#include "/Minigames/MiniRPSLS/miniRPSLS.h"*/
+/*#include "/Minigames/preguntas"*/
+/*#include "/Minigames/snake/snake.h"*/
+/*NOTE: if you change the next two defines you need to change their initialization functions in world.c*/
+#define numMinigames 20
+#define numLevels 4
+#define SPACE_PATHS_FILE "SpacePaths"
+
+/*The Spaces paths must be in a file with the SPACE_PATHS_FILE path*/
 
 typedef struct _World   World;
 
@@ -14,6 +28,22 @@ typedef struct _World   World;
 /*NOTE IMPORTANT: you dont need to give the path and the interface now,
         you can just type NULL, NULL and introduce them later*/
 /*Less important note: the path will be copied, you may free your string*/
+
+typedef int (*Minigame)(Interface * i);
+typedef int (*Animation)(Interface * i);
+
+typedef struct _Level
+{
+    char * solution;
+    Animation * initialAnimation;
+    Animation * finalAnimation;
+    /*Initial coords*/
+    int PlIniRow;
+    int PlIniCol;
+    int PlIniSpaceID;
+    
+}Level;
+
 
 World *world_ini(char * path, Interface * i);
 
@@ -84,6 +114,14 @@ int world_getNumSpaces(World *w);
 
 int world_AddSpace(World * w, int ID);
 
+/*Function: gets the Map of a spacewith an ID
+*Parameters: world and the ID
+*Returns: NULL if something went wrong or the Map  if OK
+*Revision: 6 Jan 2017
+*/
+
+char ** world_getSpaceMap(World * w, int SpaceID);
+
 /*WARNING: DANGEROUS FUNCTION, AVOID USING IT OR USE IT WISELY*/
 /*Funcition: Gives back an array of objects of the world*/
 /*Parameters: World *					*/
@@ -132,6 +170,12 @@ void world_setPlRow(World * w, int row);
 */
 void world_setPlCol(World * w, int Col);
 
+/*Function: changes in the world structure the col androw in which the player is (only really usefull if you want to save or change map)
+*Parameters: world, Col adn row
+*Returns: nothing
+*Revision: 6 Jan 2017
+*/
+void world_setPlCoords(World * w, int row, int Col);
 
 /*Function: changes inthe world structure the SpaceID in which the player is (only really usefull if you want to save or change map)
 *Parameters: world and SpaceID
@@ -178,13 +222,27 @@ Object2
 /*Where Pl... are the actual situation of  the player
 and objects are written in the object format*/
 
-World *worldfromfile(char *file);
+World *worldfromfile(char *file, Interface * i);
 
 /*
-*Function: Saves the world in a file of a given (OR NOT) path
+*Function: Saves the world in a file of a given (OR NOT, KEEP READING) path
 *Parameters: the world and a path, if path was NULL the function would save it to the associated path in the world structure
 *Returs: 0 if everything went right, and -1 if something went wrong
 */
 int world_saveToFile(World * w, char * path);
+
+/*
+*Function: To know if the id corresponds to a minigame or a space
+*Parameters: the ID
+*Returs: 0 = Space ; 1 = Minigame ; -1 = ERROR
+*/
+int isItASpaceOrAMinigame(int ID);
+
+/*
+*Function: gets aminigame given an ID
+*Parameters: the world and the ID
+*Returs: NULL = Error ; anyithing else will be the minigame pointer
+*/
+Minigame * world_getMinigame(World * w, int ID);
 
 #endif

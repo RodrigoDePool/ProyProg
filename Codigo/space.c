@@ -242,12 +242,12 @@ Door *space_checkDoorPoint(Space *s, int x, int y)
 {
     int i;
     if (s == NULL || x < 0 || y < 0)
-        return -1;
+        return NULL;
     for (i = 0; i < numdoors(s); i++)
     {
         if (doors(s)[i].x == x && doors(s)[i].y == y)
         {
-            return &doors(s);
+            return doors(s);
         }
     }
     return NULL;
