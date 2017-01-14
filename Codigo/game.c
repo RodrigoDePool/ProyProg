@@ -54,6 +54,9 @@ void string_free(String *s){
 }
 
 
+/*Gives a clue to the space riddle if the player has all the space objects
+  Else, tells the player that he cannot be helped
+  Returns -1 if anything went wrong*/
 int game_help(World *w){
 	assert(w);
 	Interface *in = world_getInterface(w);
@@ -64,5 +67,27 @@ int game_help(World *w){
 	
 }
 
-
+/*Saves the game and shows message
+  Returns¿?*/
 int game_save(World *w);
+
+
+
+
+int game_f(World *w, int n){
+	assert(w && n>-1 && n<3);
+	String *s = string_ini(STRPATH);
+	if(s == NULL)
+		return -1;
+	
+	if(n == 0){
+	
+	}else if(n == 1){
+	
+	}else if(n == 2){
+	
+	}
+}
+
+
+
