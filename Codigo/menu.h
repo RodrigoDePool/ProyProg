@@ -1,10 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 #include "interface.h"
-/*#include "world.h"*/
-/*
-    CHANGE VOIDS FOR WORLDS AFTER TESTS
- */
+#include "world.h"
 #define MENU_BASE         "DATA/Menu/menuGraph"
 #define MENU_INST         "DATA/Menu/menuInst"
 #define MENU_INDEX        "DATA/Menu/Index"
@@ -27,12 +24,6 @@
         NULL in case of error
     MAYBE SOME MORE COMMENTS I SHOULD ADD??
  */
-void *menu();
-
-
-/*
-    This function saves the file with info of the current game
- */
-int save(void *w);
+World *menu();
 
 #endif
