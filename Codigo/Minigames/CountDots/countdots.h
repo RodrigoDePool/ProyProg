@@ -30,4 +30,8 @@
  */
 int countDots(Interface *i, int hardMode);
 
+int easyCountDots(Interface *i);
+
+int hardCountDots(Interface *i);
+
 #endif

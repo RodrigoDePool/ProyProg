@@ -239,3 +239,14 @@ int countDots(Interface *i, int hardMode)
     }
     return 0;
 }
+
+int easyCountDots(Interface *i)
+{
+    return countDots(i, 0);
+}
+
+int hardCountDots(Interface *i)
+{
+    return countDots(i, 1);
+}
+
