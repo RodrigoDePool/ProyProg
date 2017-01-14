@@ -23,6 +23,9 @@
  */
 int miniMaze(Interface *i, int hardMode);
 
+int easyMiniMaze(Interface *i);
+
+int hardMiniMaze(Interface *i);
 
 
 #endif /*MINIMAZE_H*/

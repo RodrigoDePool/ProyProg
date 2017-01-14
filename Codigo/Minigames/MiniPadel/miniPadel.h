@@ -19,4 +19,8 @@
  */
 int miniPadel(Interface *i, int hardMode);
 
+int easyMiniPadel(Interface *i);
+
+int hardMiniPadel(Interface *i);
+
 #endif /*MINIPADEL_H*/
