@@ -164,10 +164,10 @@ int space_unlock(Space *s, int dir, Bool status);
 
     ID
     Number of doors
-    <x coord of door> <y coord of door> <sID of destiny>
-    <x coord of door> <y coord of door> <sID of destiny>
+    <x coord of door> <y coord of door> <sID of destiny> <destiny x> <destiny y>
+    <x coord of door> <y coord of door> <sID of destiny> <destiny x> <destiny y>
     ...
-    <x coord of door> <y coord of door> <sID of destiny>
+    <x coord of door> <y coord of door> <sID of destiny> <destiny x> <destiny y>
     <Short desc>
     <Long desc>
     <Light>

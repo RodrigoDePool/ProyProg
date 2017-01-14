@@ -1,8 +1,6 @@
 #include "menu.h"
 #include <string.h>
-/*COSAS A BORRAR DESPUES DE LA FASE DE PRUEBA*/
-#include <unistd.h>
-/*FIN DE COSAS A BORRAR*/
+
 
 /*
     Main menu graphical interface
@@ -219,12 +217,12 @@ int load_menu(Interface *i, char *path)
 /*
     Main function menu, to know how it works look at the .h
  */
-void *menu()
+World *menu()
 {
     Interface *i;
     int       option = 0;
     char      path[50], aux[100];
-    /*World *w;*/
+    World     *w;
 
     /*Initialize the interface*/
     _term_init();
@@ -288,19 +286,11 @@ void *menu()
     /*game are saved, we need to initialize the world in this path*/
     strcpy(aux, "DATA/LOAD/");
     strcat(aux, path);
-    i_drawStrMap(i, aux, 1, 1, 3);
-    sleep(3);
-    /*w=world from file(aux)*/
-    /*world set interface*/
-    /*if w=NULL ERROR INITIALIZING WORLD*/
+    w = worldfromfile(aux, i);
+    if (w == NULL)
+        return NULL;
 
-    /*DELETE THIS*/
-    _term_close();
-    i_free(i);
-    return NULL;
-    /*END OF DELETE*/
-
-    /*return w;*/
+    return w;
 }
 
 

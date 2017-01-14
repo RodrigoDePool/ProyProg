@@ -20,8 +20,5 @@
    REturns -1 if error
  */
 int miniRPSLS(Interface *i);
-/*
-    FALTA AGREGAR EL MODO HARD CORE QUE SERIA QUE TE IMPIDIERA VOLVER pointer
-    DONDE HAS ANDADO
- */
+
 #endif

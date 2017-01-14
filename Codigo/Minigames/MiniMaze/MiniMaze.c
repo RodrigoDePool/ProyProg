@@ -353,3 +353,31 @@ int miniMaze(Interface *i, int hardMode)
         }
     }
 }
+
+int easyMiniMaze(Interface *i)
+{
+    return miniMaze(i, 0);
+}
+
+int hardMiniMaze(Interface *i)
+{
+    return miniMaze(i, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

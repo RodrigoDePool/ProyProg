@@ -505,7 +505,15 @@ int miniPadel(Interface * i, int hardMode)
     return win;
 }
 
+int easyMiniPadel(Interface *i)
+{
+    return miniPadel(i, 0);
+}
 
+int hardMiniPadel(Interface *i)
+{
+    return miniPadel(i, 1);
+}
 
 
 
