@@ -41,10 +41,10 @@ void game_free(Game *g);
 void question_free(Question *q);
 void answer_free(Answer *a);
 
-/*Checks if the choice made for the question q is ok or not.
- Writes a message on the board saying it, in (row, col) NOT MAP COORDS
- Returns 1/0 depending on the choice being correct or not
- if no matching code, returns -1*/
-int answer_check(Interface *in, Question *q, int row, int col, char choice);
+/*Executes the LUCIA game: returns 1 if won, 0 if lost, -1 in case of error */
+int lucia(Interface *in);
 
-int qa(Interface *in, char *path);
+/*Executes the QUESTIONS game: returns 1 if won, 0 if lost, -1 in case of error
+ If the number of questions is n, the .txt should have "n+1" in the second line
+ (the nquestions line) */
+int questions(Interface *in);

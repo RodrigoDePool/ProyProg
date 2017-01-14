@@ -15,7 +15,7 @@ $(EXE) : % : %.o interface.o rectangles.o qa.o cop.o
 	@echo "# Generando $@ "
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -o $@ $@.o interface.o rectangles.o qa.o cop.o
+	$(CC) $(CFLAGS) -o $@ $@.o interface.o rectangles.o qa.o cop.o -lpthread
 
 qatest.o : qatest.c
 	@echo "#---------------------------"

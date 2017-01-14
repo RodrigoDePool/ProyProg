@@ -1,7 +1,11 @@
 #include "qa.h"
 #define NDEBUG
 #include <assert.h>
+#include <time.h>
+#include <pthread.h>
 #define CLEANBOARD "blanco.txt"
+#define PATHLUCIA "preguntas.txt"
+#define PATHPREGUNTAS "preguntas.txt"
 
 struct _Game{
 	char *intro;
@@ -21,6 +25,41 @@ struct _Answer{
 	int truth;
 	char *answer;
 };
+
+
+/*************************************************/
+/********* LOCAL FUNCTIONS DECLARATION ***********/
+/*************************************************/
+
+/*Given a game struct, builds and writes the intro of a certain question
+ "Imagine arroz asked you, "habicbuela?" what whoukd you answer?"
+ Returns -1 if anything went wrong
+  */
+int build_intro(Interface *in, Game* g, int i, int row, int col);
+
+/*Checks if the choice made for the question q is ok or not.
+ Writes a message on the board saying it, in (row, col) NOT MAP COORDS
+ Returns 1/0 depending on the choice being correct or not
+ if no matching code, returns -1*/
+int answer_check(Interface *in, Question *q, int row, int col, char choice);
+
+/* This function will be called as a thread from last_answer, to check if a 
+character has been pressed in the last answer. If so, the game would be lost*/
+void * last_answer_check(void *c);
+
+/*This executes (writes and checks) the last question (i-esima)
+Returns -1 in case of error, 1 if the player didnt answer for 15 secs, else 0*/
+int last_answer(Interface *in, Game *g, int i, int *row, int col);
+
+/*Executes the Lucia game if level = 2; else the normal one
+ If level is not going to be 2, the .txt containing n questions must have "n+1"
+ in the second line (nquestions line) */
+int qa(Interface *in, int level);
+
+
+/*************************************************/
+/******* GLOBAL FUNCTIONS IMPLEMENTATION *********/
+/*************************************************/
 
 
 Game *game_ini(FILE *f){
@@ -149,11 +188,21 @@ void answer_free(Answer *a){
 	}
 }
 
+int lucia(Interface *in){
+	assert(in);
+	return qa(in, 1);
+}
 
-/*Given a game struct, builds and writes the intro of a certain question
- "Imagine arroz asked you, "habicbuela?" what whoukd you answer?"
- Returns -1 if anything went wrong
-  */
+int questions(Interface *in){
+	assert(in);
+	return qa(in, 0);
+}
+
+/*************************************************/
+/****** LOCAL FUNCTIONS IMPLEMENTATION ***********/
+/*************************************************/
+
+
 int build_intro(Interface *in, Game* g, int i, int row, int col){
 
 	char *intro, *buff, size;
@@ -174,7 +223,7 @@ int build_intro(Interface *in, Game* g, int i, int row, int col){
 	intro[strlen(buff)+1] = '\n';
 	intro[strlen(buff) + 2] = '\0';
 	/*Clean board to erase previous question*/
-	i_readFile(in, "blanco.txt", 0, 0, 1);
+	i_readFile(in, CLEANBOARD, 0, 0, 1);
 	
 	/*Ask question and check the answer*/
 	i_drawStr(in, intro, row, col, 1);
@@ -205,39 +254,61 @@ int answer_check(Interface *in, Question *q, int row, int col, char choice){
 	
 }
 
-int last_answer(Interface *in, Game *g, int row, int col){
-	
+void * last_answer_check(void *c){
+	*((char *)c) = _read_key();
+	return NULL;
+}
+
+int last_answer(Interface *in, Game *g, int i, int *row, int col){
+	int j;
+	char c = 0;
 	time_t ini, now;
+	pthread_t pth;
 	
-	if(build_intro(in, g, i, row, col) == -1){
+	if(build_intro(in, g, i, *row, col) == -1){
 		return -1;
 	}
 	
+	(*row)++;
 	for(j = 0; j < g->q[i]->numans; j++){
-		i_writeChar(in, g->q[i]->ans[j]->code, ++row, col, 1);
-		i_writeChar(in, ' ' , row, col + 1, 1);			
-		i_drawStr(in, g->q[i]->ans[j]->answer, row, col + 2, 1);
+		i_writeChar(in, g->q[i]->ans[j]->code, ++(*row), col, 1);
+		i_writeChar(in, ' ' , *row, col + 1, 1);			
+		i_drawStr(in, g->q[i]->ans[j]->answer, *row, col + 2, 1);
+	}
+	(*row)++;
+	/*Create thread for pad movement*/
+    	pthread_create(&pth, NULL, last_answer_check, (void *)(&c));
+    	ini = time(NULL);
+	do{
+		sleep(1);
+		now = time(NULL) - ini;
+	}while(now < 15 && c == 0);
+	
+	/*If a key was pressed, the game has been lost. Else, won*/
+	if(c != 0){
+		i_drawStr(in, "Incorrect answer!", ++(*row), col, 1);
+		return 0;
 	}
 	
-	ini = time(NULL);
-	do{
+	i_drawStr(in, "Correct answer!", ++(*row), col, 1);
+	sleep(1);
 	
-	/*Cosas de threads*/
-	
-	
-	now = time(NULL) - ini;
-	}while(now < 15)
-	
+	pthread_cancel(pth);
 	return 1;
 }
 
+int qa(Interface *in, int level){
 
-int qa(Interface *in, char *path){
-	assert(path);
+	assert(in);
 	int i, j, row, col, result;
 	char choice;
 	FILE *f;
-	f = fopen(path, "r");
+	
+	if(level == 1){
+		f = fopen(PATHLUCIA, "r");
+	}else{
+		f = fopen(PATHPREGUNTAS, "r");
+	}
 	
 	if(f == NULL){
 		return -1;
@@ -257,13 +328,13 @@ int qa(Interface *in, char *path){
 			return -1;
 		}
 		
+		row++;
 		for(j = 0; j < g->q[i]->numans; j++){
 			i_writeChar(in, g->q[i]->ans[j]->code, ++row, col, 1);
 			i_writeChar(in, ' ' , row, col + 1, 1);			
 			i_drawStr(in, g->q[i]->ans[j]->answer, row, col + 2, 1);
 		}
-		
-		
+			
 		do{
 			choice = _read_key();
 			if(choice == 'q'){
@@ -273,20 +344,23 @@ int qa(Interface *in, char *path){
 			}
 			result = answer_check(in, g->q[i], 1+row, col, choice);
 		}while (result == -1);
+		
 		if(result == 0){
 			sleep(2);
 			game_free(g);
 			return 0;
-		}
-		
+		}		
 	}
 	
-	/*This executes the last question*/
+	
 	/*Aqui podemos poner un if level == 2 para que solo se ejecute si
 	es el juego en el que lucia te pega y no el normal de preguntas
 	al normal ademas se le pasaria en nquestions una mas de las q realmente
 	hubiera*/
-	result = last_check(in, g, row, col);
+	if(level == 1)
+		result = last_answer(in, g, i, &row, col);
+	
+	
 	if(result != 1){
 		game_free(g);
 		return result;
@@ -299,15 +373,6 @@ int qa(Interface *in, char *path){
 	game_free(g);
 	return 1;
 }
-
-
-
-
-
-
-
-
-
 
 
 
