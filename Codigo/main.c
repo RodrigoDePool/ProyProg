@@ -76,6 +76,7 @@ int main()
         }
         else if (c == EXIT_KEY)
         {
+            /*MESSAGE DO YOU RLLY WANT TO QUIT??*/
             world_free(w);
             _term_close();
             i_free(i);
