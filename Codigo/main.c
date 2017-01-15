@@ -5,12 +5,13 @@
 #include "space.h"
 #include "world.h"
 #include "menu.h"
-
 #define SAVE_KEY     's'
 #define SOLVE_KEY    'x'
 #define HELP_KEY     'h'
 #define EXIT_KEY     'q'
 
+#define NDEBUG
+#include <assert.h>
 
 /*
    mainGame file
@@ -30,9 +31,10 @@ int main()
     int       sid;
     char      c;
     char      **map;
+
     /*Starting menu*/
     w = menu();
-    if (menu == NULL)
+    if (w == NULL)
     {
         return 0;
     }

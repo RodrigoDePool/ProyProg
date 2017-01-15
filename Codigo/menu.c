@@ -1,6 +1,6 @@
 #include "menu.h"
 #include <string.h>
-
+#include <assert.h>
 
 /*
     Main menu graphical interface
@@ -203,6 +203,13 @@ int load_menu(Interface *i, char *path)
                 {
                     fclose(f);
                     strcpy(path, string[num - 1]);
+                    /*The string probably was read with the last character as \n*/
+                    /*Except if we are talking about the last name in the index*/
+                    /*we have to eliminate it*/
+                    if (path[strlen(path) - 1] == '\n')
+                    {
+                        path[strlen(path) - 1] = 0;
+                    }
                     return 3;
                 }
             }
