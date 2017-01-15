@@ -184,8 +184,8 @@ int ** prepares_for_next(int **matrix, int size, int *finished, int ch){
 		else rnd = 2;
 		
 		do{
-			i = rand() % 4;
-			j = rand() % 4;
+			i = rand() % size;
+			j = rand() % size;
 		}while (matrix[j][i] != 0);
 		
 		matrix[j][i] = rnd; 
@@ -198,9 +198,9 @@ int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score){
 	
 	int k, j;
 	char *sc;
-	for(k = 0; k < 4; k++){
-		for(j = 0; j < 4; j++){
-			i_readFile(i, Numbers_getFile(matrix[j][k], num), 4 + k*7, 17 + j*18, 1);
+	for(k = 0; k < size; k++){
+		for(j = 0; j < size; j++){
+			i_readFile(i, Numbers_getFile(matrix[j][k], num), 4+ k*7 ,17 + j*18, 1);
 		}
 	}
 	/*draw the score on the display*/
@@ -214,8 +214,8 @@ int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score){
 
 int mini2048(Interface *in){
 
-	assert(in && size > 0);
-	int i, j, rnd, score = 0, finished = 0, won = 0, size = 4;
+	assert(in );
+	int i, j, rnd, score = 0, finished = 0, won = 0, size = 3;
 	Numbers *num;
 	char c;
 	int **matrix = (int **)malloc(size * sizeof(int *));
