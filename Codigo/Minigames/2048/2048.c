@@ -214,7 +214,7 @@ int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score){
 
 int mini2048(Interface *in){
 
-	assert(in && size > 0);
+	assert(in );
 	int i, j, rnd, score = 0, finished = 0, won = 0, size = 4;
 	Numbers *num;
 	char c;
