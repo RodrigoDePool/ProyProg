@@ -320,6 +320,13 @@ void i_cleanMap(Interface *i);
  */
 void i_readFile(Interface *i, char *s, int row, int col, int bdc);
 
+/*
+    Does exactly the same as the one before but this one does not change
+    the map. It shows in the interface but as soon as you do a draw all
+    it will disappear
+ */
+void i_readFile_notMap(Interface *i, char *s, int row, int col, int bdc);
+
 /*FUNCTIONS OF GENERAL USE BY OTHER STRUCTURES*/
 /*
    Reads a key from the keyboard. If the key is a "regular" key it

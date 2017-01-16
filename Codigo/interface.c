@@ -449,7 +449,6 @@ void i_freeMap(Interface * i)
 
 int i_drawPl(Interface *i, int br, int bc)
 {
-    
     if (i == NULL || br < 0 || bc < 0 || br > (i->br - 2) || bc > (i->bc - 2) || i->map == NULL)
         return 0;
 
@@ -836,6 +835,24 @@ void i_readFile(Interface *i, char *s, int row, int col, int bdc)
     return;
 }
 
+void i_readFile_notMap(Interface *i, char *s, int row, int col, int bdc)
+{
+    FILE *f;
+    char buff[200];     /*Buffer to load the strings read from file*/
+    if (i == NULL || s == NULL)
+        return;
+
+    f = fopen(s, "r");
+    if (f == NULL)
+        return;
+    while (fgets(buff, 200, f) != NULL)
+    {
+        i_drawStr(i, buff, row + 1, col + 1, bdc);
+        row++;
+    }
+    fclose(f);
+    return;
+}
 
 
 

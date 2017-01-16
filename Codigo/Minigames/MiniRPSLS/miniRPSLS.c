@@ -155,9 +155,19 @@ int miniRPSLS(Interface *i)
         }
     }
     /*we initialize the screen*/
+    /*we clean what was there before*/
     i_cleanDisplay(i);
-    i_readFile(i, INI_PATH, 0, 0, 1);
+    i_cleanMap(i);
+    i_cleanCommand(i);
+    /*we set instructions*/
     i_readFile(i, RPSLS_INST_PATH, 0, 0, 2);
+    /*we allow player to read them*/
+    i_readFile(i, INFO_RPSLS, 12, 40, 1);
+    _read_key();
+    i_cleanMap(i);
+
+    /*we set interface*/
+    i_readFile(i, INI_PATH, 0, 0, 1);
     read_sols(com); /*read lines for round plus tie text*/
 
     for (j = 0; j < 3 && points < 2 && enemy < 2; j++)

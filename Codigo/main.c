@@ -5,11 +5,12 @@
 #include "space.h"
 #include "world.h"
 #include "menu.h"
-#define SAVE_KEY     's'
-#define SOLVE_KEY    'x'
-#define HELP_KEY     'h'
-#define EXIT_KEY     'q'
-
+#define SAVE_KEY      's'
+#define SOLVE_KEY     'x'
+#define HELP_KEY      'h'
+#define EXIT_KEY      'q'
+#define EXIT_POPUP    "DATA/popups/exit"
+#define DOOR_POPUP    "DATA/popups/door"
 #define NDEBUG
 #include <assert.h>
 
@@ -18,6 +19,18 @@
 
 
  */
+
+/*
+   Code of extra functions at the end
+ */
+
+/*
+   Stays in a loop reading keys untill the player presses either 'y'
+   or 'n'
+   returns the pressed key
+ */
+char YorN();
+
 int main()
 {
     World     *w;
@@ -28,7 +41,7 @@ int main()
     int       prow, pcol, pspace;
     /*flag to see if the key press was a move*/
     int       fmove;
-    int       sid;
+    int       sid, aux;
     char      c;
     char      **map;
 
@@ -76,11 +89,16 @@ int main()
         }
         else if (c == EXIT_KEY)
         {
-            /*MESSAGE DO YOU RLLY WANT TO QUIT??*/
-            world_free(w);
-            _term_close();
-            i_free(i);
-            return 0;
+            i_readFile_notMap(i, EXIT_POPUP, 12, 40, 1);
+            c = YorN();
+            if (c == 'y')
+            {
+                world_free(w);
+                _term_close();
+                i_free(i);
+                return 0;
+            }
+            i_drawAll(i);
         }
         /*if there was a movement*/
         if (fmove == 1)
@@ -92,28 +110,50 @@ int main()
             d    = space_checkDoorAPoint(s, pcol, prow);
             if (d != NULL)
             {
-                /*PRINT 'Do you want to go through the door? (y/n)'*/
-                do
-                {
-                    c = _read_key();
-                } while (c != 'y' && c != 'n');
+                i_readFile_notMap(i, DOOR_POPUP, 12, 40, 1);
+                c = YorN();
+                i_drawAll(i);
                 if (c == 'y')
                 {
-                    sid  = d->neighbour;
-                    prow = d->ny;
-                    pcol = d->nx;
-                    map  = world_getSpaceMap(w, sid);
-                    i_setMap(i, map);
-                    i_drawPl(i, prow, pcol);
-                    world_setPlSpaceID(w, sid);
-                    /*check if d is new space or a minigame*/
-                    /*if space set new space with coords and map and stuff and
-                       descriptions*/
-                    /*else must be a minigame, then execute it
-                       maybe allow it to play again or go back to the map
-                       in case of winning print message and give object*/
+                    aux = isItASpaceOrAMinigame(sid);
+                    /*if its a space*/
+                    if (aux == 0)
+                    {
+                        sid  = d->neighbour;
+                        prow = d->ny;
+                        pcol = d->nx;
+                        map  = world_getSpaceMap(w, sid);
+                        i_setMap(i, map);
+                        i_drawPl(i, prow, pcol);
+                        world_setPlSpaceID(w, sid);
+                        /*are we missing any settingfor the space*/
+                        /*setting info display desc + keys*/
+                    }
+                    else if (aux == 1)
+                    {
+                        /*minigame set up*/
+                        /*IF LOSE*/
+                        /*losing message*/
+                        /*maybe allow him to go play it again or going back*/
+                        /*IF WIN*/
+                        /*win message, inform of new piece of info in solve*/
+                        /*if they have all 3 of the minigame encourage to solve
+                           the riddle*/
+
+                        /*resetting map .. idrawALl??*/
+                    }
                 }
             }
         }
     }
+}
+
+char YorN()
+{
+    char c;
+    do
+    {
+        c = _read_key();
+    } while (c != 'y' && c != 'n');
+    return c;
 }

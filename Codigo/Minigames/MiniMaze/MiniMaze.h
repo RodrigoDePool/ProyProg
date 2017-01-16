@@ -5,6 +5,7 @@
 #define QUIT              0
 #define MAZE_PATH         "DATA/miniInst/maze/mazeInst"
 #define MAZE_CLUE_PATH    "DATA/miniInst/maze/mazeClue"
+#define INFO              "DATA/miniInst/info"
 
 /*
    Parameters:
