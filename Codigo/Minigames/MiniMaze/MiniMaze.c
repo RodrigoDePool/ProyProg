@@ -296,16 +296,26 @@ int miniMaze(Interface *i, int hardMode)
     if (i == NULL)
         return -1;
 
-    rows = i_getbr(i) - 1; /*rows of map*/
-    cols = i_getbc(i) - 1; /*cols of map*/
-
-    map = mazegen(rows, cols);
-    i_setMap(i, map);
-    map_iniPlayer(i, map, rows, cols);
+    /*Cleaning interface*/
     i_cleanCommand(i);                 /*Deletes whatever is in the command line*/
     i_cleanDisplay(i);                 /*The same with display*/
-    i_readFile(i, MAZE_PATH, 3, 0, 2); /*The instructions of the game*/
-    /*FUNCION DE POSIBLE PISTILLAS EN COMO RESOLVER EL LABERINTO*/
+    i_cleanMap(i);
+
+    /*setting instructions*/
+    i_readFile(i, MAZE_PATH, 3, 0, 2);
+    /*Info for player*/
+    i_readFile(i, INFO, 12, 40, 1);
+    _read_key();
+
+    /*Setting random made map*/
+    rows = i_getbr(i) - 1; /*rows of map*/
+    cols = i_getbc(i) - 1; /*cols of map*/
+    map  = mazegen(rows, cols);
+    i_setMap(i, map);
+    map_iniPlayer(i, map, rows, cols);
+
+
+
     while (1)
     {
         c = _read_key();

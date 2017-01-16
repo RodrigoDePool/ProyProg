@@ -11,6 +11,7 @@
 #define TICK_PATH          "DATA/miniInst/RPSLS/TICK"
 #define CROSS_PATH         "DATA/miniInst/RPSLS/CROSS"
 #define ROUND_PATH         "DATA/miniInst/RPSLS/ROUNDS"
+#define INFO_RPSLS         "DATA/miniInst/info"
 #define WAIT               5 /*sleep time in seconds between rounds*/
 
 /*

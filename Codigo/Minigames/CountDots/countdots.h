@@ -4,7 +4,7 @@
 #define ROWS             34
 #define COLS             113
 #define COUNT_INST       "DATA/miniInst/countDots/countInst"
-#define COUNT_INFO       "DATA/miniInst/countDots/info"
+#define COUNT_INFO       "DATA/miniInst/info"
 #define SMALL_DOT        "DATA/miniInst/countDots/smallDot"
 #define MEDIUM_DOT       "DATA/miniInst/countDots/mediumDot"
 #define BIG_DOT          "DATA/miniInst/countDots/bigDot"

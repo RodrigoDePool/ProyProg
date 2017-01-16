@@ -98,11 +98,6 @@ void *pad_movement(void *pdaux)
     while (1)
     {
         c = _read_key();
-        if (c == 'q')
-        {
-            pd->stop = 0;
-            return NULL;
-        }
         if (c == NORTH && pd->ypos > 3)
         {
             /*we delete the bottom part of the pad*/
@@ -400,6 +395,11 @@ int miniPadel(Interface * i, int hardMode)
 
     /*INSTRUCTIONS*/
     i_readFile(i, PADEL_INST, 3, 1, 2);
+
+    /*Allowing the player to read INSTRUCTIONS*/
+    i_readFile(i, INFO_PONG, 12, 40, 1);
+    _read_key();
+    i_cleanMap(i);
 
     /*we get the usable cols and rows of the map*/
     rows = i_getbr(i) - 1;
