@@ -1,0 +1,10 @@
+1	Modulo string util, funciona?
+2	Help: objetos acumulables, resetean con level?
+3	formato de las clues: press any key...
+4	DONDE ESCRIBO TODO? todo en el command y la clue en el display?
+5	Save: como obtengo/construyo el path?
+6	Como se hace lo de meter la solucion del jugador? Debo preocuparme por
+	el \n al final de la respuesta? (se guarda, o no?)
+7	Puedes resolver sin tener todos los objs al final, o no?
+8	NECESITO  MI LEVELLLLL
+9	Tema del clean: como devuelvo todo a sus estado anterior antes de salir? :D
