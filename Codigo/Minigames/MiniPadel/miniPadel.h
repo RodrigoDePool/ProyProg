@@ -2,8 +2,8 @@
 #define MINIPADEL_H
 /*Libraries*/
 #include "../../interface.h"
-#define PADEL_INST    "DATA/miniInst/padel/padelInst"
-#define INFO_PONG     "DATA/miniInst/info"
+#define PADEL_INST    "Codigo/DATA/miniInst/padel/padelInst"
+#define INFO_PONG     "Codigo/DATA/miniInst/padel/info"
 /*Functions*/
 /*
     This function executes a Padel minigame against a wall, to win
