@@ -291,7 +291,7 @@ World *menu()
 
     /*Now path has the name of file in DATA/LOAD where the setting for the*/
     /*game are saved, we need to initialize the world in this path*/
-    strcpy(aux, "DATA/LOAD/");
+    strcpy(aux, "Codigo/DATA/LOAD/");
     strcat(aux, path);
     w = worldfromfile(aux, i);
     if (w == NULL)
