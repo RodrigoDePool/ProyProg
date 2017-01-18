@@ -137,7 +137,7 @@ Level ** levelsIni()
 World *world_ini(char * path, Interface * i)
 {
     World *w;
-    int i;
+    int j;
     w = (World *) malloc(sizeof(World));
     if (w == NULL)
         return NULL;
@@ -154,10 +154,10 @@ World *world_ini(char * path, Interface * i)
     }
     w->minigame   = minigamesIni();
     if(!w->minigame){
-        for (i = 0; i < numLevels; i++)
+        for (j = 0; j < numLevels; j++)
         {
-            free(w->levels[i]->solution);
-            free(w->levels[i]);
+            free(w->levels[j]->solution);
+            free(w->levels[j]);
         }
         free(w);
         return NULL;
@@ -168,7 +168,7 @@ World *world_ini(char * path, Interface * i)
         w->path = NULL;
     else
         w->path = (char *) malloc(sizeof(char) * (strlen(path) + 1));
-        if(!w->ptath){
+        if(!w->path){
             world_free(w);
             return NULL;
         }
@@ -515,9 +515,14 @@ World *worldfromfile(char *file, Interface * i)
 
     /*Pllevel*/
 
-    fscanf(f, "%d", &(w->Pllevel));
+    fscanf(f, "%d\n", &(w->Pllevel));
 
-   
+    /*Finished Minigames*/
+
+    for(j=0;j<numMinigames;j++){
+        fscanf(f, "%d ", &(w->HasFinishedMinigame[j]));
+    }
+
     fclose(f);
     return w;
 }
@@ -556,8 +561,11 @@ int world_saveToFile(World * w, char * path)
 
     fprintf(f, "%d\n", (w->Pllevel));
 
+    /*Finished Minigames*/
 
-
+    for(i=0;i<numMinigames;i++){
+        fprintf(f, "%d ", w->HasFinishedMinigame[i]);
+    }
 
     fclose(f);
     return 0;
