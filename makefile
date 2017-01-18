@@ -1,7 +1,7 @@
 all:  main clean
 
 main: main.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
-	gcc -o main $^
+	gcc -o main $^ #thread Library
 	
 mainPruebas: mainPruebas.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
 	gcc -o mainPruebas $^
