@@ -304,7 +304,7 @@ int miniMaze(Interface *i, int hardMode)
     /*setting instructions*/
     i_readFile(i, MAZE_PATH, 3, 0, 2);
     /*Info for player*/
-    i_readFile(i, INFO, 12, 40, 1);
+    i_readFile(i, INFO, 5, 40, 1);
     _read_key();
 
     /*Setting random made map*/
