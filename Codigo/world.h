@@ -15,6 +15,7 @@
 #define numMinigames        20
 #define numLevels           4
 #define SPACE_PATHS_FILE    "SpacePaths"
+#define SOLUTIONS_PATH "Solutions"
 
 /*The Spaces paths must be in a file with the SPACE_PATHS_FILE path*/
 
@@ -223,10 +224,18 @@ int world_saveToFile(World * w, char * path);
 int isItASpaceOrAMinigame(int ID);
 
 /*
-   *Function: gets aminigame given an ID
+   *Function: gets a minigame given an ID
    *Parameters: the world and the ID
    *Returs: NULL = Error ; anyithing else will be the minigame pointer
  */
 Minigame * world_getMinigame(World * w, int ID);
+
+/*
+   *Function: gets a level given a level number (ID)
+   *Parameters: the world and the ID
+   *Returs: NULL = Error ; anyithing else will be the level pointer
+ */
+
+Level * world_getLevel(World * w, int ID);
 
 #endif

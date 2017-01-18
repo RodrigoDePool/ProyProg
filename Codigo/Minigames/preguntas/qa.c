@@ -349,6 +349,10 @@ int qa(Interface *in, int level){
 	char choice;
 	FILE *f;
 	
+	i_cleanDisplay(world_getInterface(w));
+	i_cleanCommand(world_getInterface(w));
+	i_cleanMap(world_getInterface(w));
+		
 	if(level == 1){
 		f = fopen(PATHLUCIA, "r");
 	}else{

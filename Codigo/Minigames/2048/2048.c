@@ -244,6 +244,11 @@ int mini2048(Interface *in){
 	j = rand() % size;
 	matrix[j][i] = rnd; 
 	
+	i_cleanDisplay(world_getInterface(w));
+	i_cleanCommand(world_getInterface(w));
+	i_cleanMap(world_getInterface(w));
+	
+	
   	i_readFile(in, BOARDPATH, 0, 0, 1);
 	draw_matrix(in, matrix, num, size, score);
 	i_drawStr(in, "Your score: ",  3, 2, 2);

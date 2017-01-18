@@ -37,6 +37,19 @@ struct _World
     Minigame  ** minigame;
 };
 
+char * fgetll(FILE * f)
+{
+    char * c;
+    c=(char*)malloc(sizeof(char)*(MAXBUF+1));
+    c[0]='#';
+    while(c[0]=='#')
+        fgets(c, MAXBUF, f);
+    if(c[strlen(c)-1]=='\n')
+        c[strlen(c)-1]=0;
+    return c;
+
+}
+
 Minigame ** minigamesIni()
 {
     Minigame ** minigames = NULL;
@@ -71,20 +84,51 @@ Level ** levelsIni()
 {
     Level ** levels;
     int   i;
+    FILE *f;
+    char * buffer;
+
+    f=fopen(SOLUTIONS_PATH, "r");
+
+    if(!f){
+        return NULL;
+    }
+
     levels = (Level * *) malloc(sizeof(Level*) * numLevels);
+    if(!levels){
+        fclose(f);
+        return NULL;
+    }
+
     for (i = 0; i < numLevels; i++)
     {
         levels[i] = (Level *) malloc(sizeof(Level));
     }
+    
+    for(i=0;i<numLevels;i++)
+    {
+        buffer=fgetll(f);
+        if(buffer==NULL){
+            fclose(f);
+            for (i = 0; i < numLevels; i++)
+            {
+                free(levels[i]);
+            }
+            free(levels);
+            return NULL;
+        }
+        levels[i]->solution = (char *) malloc(sizeof(char*) * (strlen(buffer) + 1));
+        strcpy(levels[i]->solution, buffer);
+        free(buffer);
+    }
 
-    levels[0]->solution = (char *) malloc(sizeof(char*) * (strlen("a") + 1));
-    strcpy(levels[0]->solution, "a");
     levels[0]->initialAnimation = NULL;
     levels[0]->finalAnimation   = NULL;
     levels[0]->PlIniRow         = -1;
     levels[0]->PlIniCol         = -1;
     levels[0]->PlIniSpaceID     = -1;
+    
 
+    fclose(f);
     return levels;
 }
 
@@ -126,18 +170,7 @@ int isItASpaceOrAMinigame(int ID)
         return 0;
 }
 
-char * fgetll(FILE * f)
-{
-	char * c;
-	c=(char*)malloc(sizeof(char)*(MAXBUF+1));
-	c[0]='#';
-	while(c[0]=='#')
-		fgets(c, MAXBUF, f);
-	if(c[strlen(c)-1]=='\n')
-		c[strlen(c)-1]=0;
-	return c;
 
-}
 
 void world_free(World *w)
 {
@@ -179,6 +212,12 @@ Interface * world_getInterface(World * w)
     if (!w)
         return NULL;
     return w->i;
+}
+
+Level * world_getLevel(World * w, int ID){
+    if(!w||ID<0||ID>numLevels)
+        return NULL;
+    return w->levels[ID];
 }
 
 void world_setPath(World * w, char * path)
