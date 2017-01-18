@@ -57,6 +57,7 @@ int main()
     w = menu();
     if (w == NULL)
     {
+        _term_close();
         return 0;
     }
     prow   = world_getPlRow(w);
