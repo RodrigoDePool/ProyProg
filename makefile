@@ -3,6 +3,9 @@ all:  main clean
 main: main.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
 	gcc -o main $^
 	
+mainPruebas: mainPruebas.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
+	gcc -o mainPruebas $^
+
 world.o: Codigo/world.c Codigo/world.h
 	gcc -c -g Codigo/world.c
 
@@ -16,6 +19,9 @@ rectangles.o: Codigo/rectangles.c Codigo/rectangles.h
 	gcc -c -g Codigo/rectangles.c
 
 main.o: Codigo/main.c
+	gcc -c $^
+
+mainPruebas.o: Codigo/mainPruebas.c
 	gcc -c $^
 	
 menu.o: Codigo/menu.c Codigo/menu.h
