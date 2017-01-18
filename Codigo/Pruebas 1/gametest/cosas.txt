@@ -1,20 +1,12 @@
 1	Modulo string util, funciona?
-2	Help: objetos acumulables, resetean con level? MODULO... Y EN SOLVE?
-3	formato de las clues: press any key...
-4	Instrucciones de tus juegos waps
-5	Save: como obtengo/construyo el path?
+2	Instrucciones de tus juegos waps
 6	Como se hace lo de meter la solucion del jugador? Debo preocuparme por
 	el \n al final de la respuesta? (se guarda, o no?)
-7	Puedes resolver sin tener todos los objs al final, o no? NO
-8	NECESITO  MI LEVELLLLL
-9	HAMBURGUESAAA
-10	PASAR TODO AL COMMAND!!
-
+7	HAMBURGUESAAA
 
 string
 instrucciones
 game
-	save pillar respuesta, comparar nobjs
-	pasar al command
+	save pillar respuesta
 Hamburguesa
-Minijuegos: 
+Minijuegos: imagenes de entrada

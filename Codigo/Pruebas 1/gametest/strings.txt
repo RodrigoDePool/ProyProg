@@ -1,12 +1,19 @@
-6
+7
 I'm sorry, you need to pass the three minigames if you want a clue!!
-Te joes tramposo :D|
+Te joes tramposo :D
+Press any key to continue|
 Our stupid game couldnt save your stupid game.
-Sorry not sorry|
+Sorry not sorry
+Press any key to continue|
 Everything successfully saved, our game is
-wonderful!! :DDDD|
+wonderful!! :DDDD
+Press any key to continue|
 Enter your solution to the riddle...|
-Your answer is right! Go ahead...|
-You're wrong, you stupid bitch will never find the answer c:|
+Your answer is right! Go ahead, Press any key to continue|
+You're wrong, you stupid bitch will never find the answer c:
+(Press any key to continue)|
+You need to complete the three minigames if you want to solve the riddle!
+Sorry, press any key to continue|
+
 
 
