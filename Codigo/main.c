@@ -15,14 +15,16 @@
 #include <assert.h>
 
 /*
-   mainGame file
+   main Game file
 
 
  */
+
 
 /*
    Code of extra functions at the end
  */
+
 
 /*
    Stays in a loop reading keys untill the player presses either 'y'
@@ -30,6 +32,12 @@
    returns the pressed key
  */
 char YorN();
+
+
+/*
+    given a map an its size it allocates new memory and copies it.
+ */
+char **map_copy(char **map, int rows, int cols);
 
 int main()
 {
@@ -148,6 +156,8 @@ int main()
     }
 }
 
+
+
 char YorN()
 {
     char c;
@@ -157,3 +167,41 @@ char YorN()
     } while (c != 'y' && c != 'n');
     return c;
 }
+
+
+
+char **map_copy(char **map, int rows, int cols)
+{
+    char **copy;
+    int  i, j;
+    assert(map != NULL);
+    copy = (char * *) malloc(sizeof(char *) * rows);
+    if (copy == NULL)
+        return NULL;
+    for (i = 0; i < rows; i++)
+    {
+        copy[i] = (char *) malloc(sizeof(char) * cols);
+        /*If there is not enough memory*/
+        if (copy[i] == NULL)
+        {
+            for (j = 0; j < i; j++)
+                free(copy[j]);
+            free(copy);
+            return NULL;
+        }
+        for (j = 0; j < cols; j++)
+            copy[i][j] = map[i][j];
+    }
+    return copy;
+}
+
+
+
+
+
+
+
+
+
+
+
