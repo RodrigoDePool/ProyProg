@@ -2,10 +2,10 @@
 #include "2048.h"
 #define NDEBUG
 #include <assert.h>
-#define NUMBERSPATH "./data/numbers.txt"
-#define BOARDPATH "./data/board2048.txt"
-#define LOSTPATH "./data/youlost.txt"
-#define WONPATH "./data/youwon.txt"
+#define NUMBERSPATH "./Codigo/DATA/miniInst/2048/numbers.txt"
+#define BOARDPATH "./Codigo/DATA/miniInst/2048/board2048.txt"
+#define LOSTPATH "./Codigo/DATA/miniInst/youlost.txt"
+#define WONPATH "./Codigo/DATA/miniInst/youwon.txt"
 int asprintf(char **strp, const char *fmt, ...);
 
 struct _Numbers{
@@ -244,9 +244,9 @@ int mini2048(Interface *in){
 	j = rand() % size;
 	matrix[j][i] = rnd; 
 	
-	i_cleanDisplay(world_getInterface(w));
-	i_cleanCommand(world_getInterface(w));
-	i_cleanMap(world_getInterface(w));
+	i_cleanDisplay(in);
+	i_cleanCommand(in);
+	i_cleanMap(in);
 	
 	
   	i_readFile(in, BOARDPATH, 0, 0, 1);
@@ -291,6 +291,9 @@ int mini2048(Interface *in){
 		free(matrix[i]);
 	free(matrix);
 	Numbers_free(num);
+	i_cleanDisplay(in);
+	i_cleanCommand(in);
+	i_cleanMap(in);
 	return won;
 }
 

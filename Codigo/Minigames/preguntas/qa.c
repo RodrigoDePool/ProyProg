@@ -349,9 +349,9 @@ int qa(Interface *in, int level){
 	char choice;
 	FILE *f;
 	
-	i_cleanDisplay(world_getInterface(w));
-	i_cleanCommand(world_getInterface(w));
-	i_cleanMap(world_getInterface(w));
+	i_cleanDisplay(in);
+	i_cleanCommand(in);
+	i_cleanMap(in);
 		
 	if(level == 1){
 		f = fopen(PATHLUCIA, "r");
@@ -374,6 +374,9 @@ int qa(Interface *in, int level){
 		
 		if(build_intro(in, g, i, row, col) == -1){
 			game_free(g);
+			i_cleanDisplay(in);
+			i_cleanCommand(in);
+			i_cleanMap(in);
 			return -1;
 		}
 		
@@ -413,6 +416,9 @@ int qa(Interface *in, int level){
 		i_readFile(in, LOSTPATH , 0, 0, 1);
 		sleep(2);
 		game_free(g);
+		i_cleanDisplay(in);
+		i_cleanCommand(in);
+		i_cleanMap(in);
 		return result;
 	}
 	
@@ -422,6 +428,9 @@ int qa(Interface *in, int level){
 	sleep(2);
 	i_readFile(in, WONPATH , 0, 0, 1);
 	sleep(2);
+	i_cleanDisplay(in);
+	i_cleanCommand(in);
+	i_cleanMap(in);
 	game_free(g);
 	return 1;
 }

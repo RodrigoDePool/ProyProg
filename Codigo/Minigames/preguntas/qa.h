@@ -45,6 +45,7 @@ void answer_free(Answer *a);
 int lucia(Interface *in);
 
 /*Executes the QUESTIONS game: returns 1 if won, 0 if lost, -1 in case of error
+                                IMPORTANT
  If the number of questions is n, the .txt should have "n+1" in the second line
- (the nquestions line) */
+ (the nquestions line)  AND have an extra question at the end of the file*/
 int questions(Interface *in);

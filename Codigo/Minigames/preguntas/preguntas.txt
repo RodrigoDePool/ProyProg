@@ -3,7 +3,7 @@ Correct answer!
 Incorrect answer!
 I couldnt find any answer matching your char choice, try againI couldnt find any answer matching your char choice, try again
 All your answers were correct: you won!
-3
+4
 Lucia
 ¿Estoy guapa?
 3
@@ -21,3 +21,10 @@ Espejito, quién es el más bello de este reino?
 a 1 YO
 b 1 Mi reflejo
 c 0 Mis compix de clase jesjes
+Andres
+Espejito, quién es el más bello de este reino?
+3
+a 1 YO
+b 1 Mi reflejo
+c 0 Mis compix de clase jesjes
+
