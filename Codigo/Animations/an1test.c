@@ -19,7 +19,19 @@ int main(){
   sleep(1);
   
   i_drawPl(i, 27, 43);
-  Three2Four_animation_LucyFight(i);
+  Three_animation_LucyFight(i);
+  sleep(1);
+  
+  Three2Four_animation(i);
+  sleep(1);
+
+  Four_animation_call1 (i);
+  sleep(1);
+
+  Four_animation_call2 (i);
+  sleep(1);
+
+  Four_animation_call3 (i);
   sleep(1);
 
   i_free(i);
