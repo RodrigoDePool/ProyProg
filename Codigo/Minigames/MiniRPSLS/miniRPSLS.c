@@ -162,7 +162,7 @@ int miniRPSLS(Interface *i)
     /*we set instructions*/
     i_readFile(i, RPSLS_INST_PATH, 0, 0, 2);
     /*we allow player to read them*/
-    i_readFile(i, INFO_RPSLS, 12, 40, 1);
+    i_readFile(i, INFO_RPSLS, 0, 0, 1);
     _read_key();
     i_cleanMap(i);
 
