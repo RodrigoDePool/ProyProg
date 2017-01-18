@@ -2,13 +2,13 @@
 #define MENU_H
 #include "interface.h"
 #include "world.h"
-#define MENU_BASE         "DATA/Menu/menuGraph"
-#define MENU_INST         "DATA/Menu/menuInst"
-#define MENU_INDEX        "DATA/Menu/Index"
-#define MENU_CREATE       "DATA/Menu/Create"
-#define CREATE_INST       "DATA/Menu/CreateInst"
-#define CREATE_COMMAND    "DATA/Menu/CreateCommand"
-#define LOAD_INST         "DATA/Menu/LoadInst"
+#define MENU_BASE         "Codigo/DATA/Menu/menuGraph"
+#define MENU_INST         "Codigo/DATA/Menu/menuInst"
+#define MENU_INDEX        "Codigo/DATA/Menu/Index"
+#define MENU_CREATE       "Codigo/DATA/Menu/Create"
+#define CREATE_INST       "Codigo/DATA/Menu/CreateInst"
+#define CREATE_COMMAND    "Codigo/DATA/Menu/CreateCommand"
+#define LOAD_INST         "Codigo/DATA/Menu/LoadInst"
 /*
     This is very sensible to format changes
  */

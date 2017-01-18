@@ -9,8 +9,8 @@
 #define SOLVE_KEY     'x'
 #define HELP_KEY      'h'
 #define EXIT_KEY      'q'
-#define EXIT_POPUP    "DATA/popups/exit"
-#define DOOR_POPUP    "DATA/popups/door"
+#define EXIT_POPUP    "Codigo/DATA/popups/exit"
+#define DOOR_POPUP    "Codigo/DATA/popups/door"
 #define NDEBUG
 #include <assert.h>
 
