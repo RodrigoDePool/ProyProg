@@ -65,12 +65,16 @@ int main()
     pspace = world_getPlSpaceID(w);
     map    = world_getSpaceMap(w, pspace);
     i      = world_getInterface(w);
+
+    /*SEE IF YOU ARE IN SPACE 0 AND EXECUTE TUTORIAL*/
+
+    /*sets first maps*/
     i_setMap(i, map);
     i_drawPl(i, prow, pcol);
 
     /*SET INFO IN PANEL*/
     /*set descriptions and objects(part of the riddle) in display*/
-    /*SEE IF YOU ARE IN SPACE 0 AND EXECUTE TUTORIAL*/
+
     /*main game loop*/
     while (1)
     {
@@ -129,9 +133,10 @@ int main()
                     if (aux == 0)
                     {
                         sid  = d->neighbour;
-                        prow = d->ny;
-                        pcol = d->nx;
-                        map  = world_getSpaceMap(w, sid);
+                        prow = d->nx;
+                        pcol = d->ny;
+                        i_cleanMap(i);
+                        map = world_getSpaceMap(w, sid);
                         i_setMap(i, map);
                         i_drawPl(i, prow, pcol);
                         world_setPlSpaceID(w, sid);
