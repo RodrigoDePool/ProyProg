@@ -3,10 +3,10 @@
 #include <assert.h>
 #include <time.h>
 #include <pthread.h>
-#define PATHLUCIA "preguntas.txt"
-#define PATHPREGUNTAS "preguntas.txt"
-#define LOSTPATH "../2048/./data/youlost.txt"
-#define WONPATH "../2048/./data/youwon.txt"
+#define PATHLUCIA "./Codigo/DATA/miniInst/lucia/preguntas.txt"
+#define PATHPREGUNTAS "Codigo/DATA/miniInst/preguntas/preguntas.txt"
+#define LOSTPATH "Codigo/DATA/miniInst/youlost.txt"
+#define WONPATH "Codigo/DATA/miniInst/youwon.txt"
 
 struct _Game{
 	char *intro;
