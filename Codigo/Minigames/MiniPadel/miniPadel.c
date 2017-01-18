@@ -397,7 +397,7 @@ int miniPadel(Interface * i, int hardMode)
     i_readFile(i, PADEL_INST, 3, 1, 2);
 
     /*Allowing the player to read INSTRUCTIONS*/
-    i_readFile(i, INFO_PONG, 12, 40, 1);
+    i_readFile(i, INFO_PONG, 5, 40, 1);
     _read_key();
     i_cleanMap(i);
 

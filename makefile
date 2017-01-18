@@ -1,6 +1,6 @@
 all:  main clean
 
-main: main.o world.o space.o interface.o rectangles.o menu.o #game.o
+main: main.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
 	gcc -o main $^
 	
 world.o: Codigo/world.c Codigo/world.h
@@ -23,6 +23,8 @@ menu.o: Codigo/menu.c Codigo/menu.h
 
 #game.o: Codigo/game.c Codigo/game.h
 #	gcc -c Codigo/game.c
+
+#ADD MINIGAMES
 
 clean:
 	rm -f *.o 
