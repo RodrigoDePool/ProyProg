@@ -7,6 +7,7 @@
 #define PATHPREGUNTAS "Codigo/DATA/miniInst/preguntas/preguntas.txt"
 #define LOSTPATH "Codigo/DATA/miniInst/youlost.txt"
 #define WONPATH "Codigo/DATA/miniInst/youwon.txt"
+#define INSTPATH "Codigo/DATA/miniInst/preguntas/instructions.txt"
 
 struct _Game{
 	char *intro;
@@ -349,10 +350,13 @@ int qa(Interface *in, int level){
 	char choice;
 	FILE *f;
 	
+	/*Print instructions*/
 	i_cleanDisplay(in);
-	i_cleanCommand(in);
 	i_cleanMap(in);
-		
+	i_cleanCommand(in);
+	i_readFile(in, INSTPATH , 1, 1, 2);
+	
+			
 	if(level == 1){
 		f = fopen(PATHLUCIA, "r");
 	}else{
@@ -375,7 +379,6 @@ int qa(Interface *in, int level){
 		if(build_intro(in, g, i, row, col) == -1){
 			game_free(g);
 			i_cleanDisplay(in);
-			i_cleanCommand(in);
 			i_cleanMap(in);
 			return -1;
 		}
@@ -391,6 +394,8 @@ int qa(Interface *in, int level){
 			choice = _read_key();
 			if(choice == 'q'){
 				sleep(1);
+				i_cleanDisplay(in);
+				i_cleanMap(in);	
 				game_free(g);
 				return 0;
 			}
@@ -400,6 +405,8 @@ int qa(Interface *in, int level){
 		if(result == 0){
 			sleep(1);
 			game_free(g);
+			i_cleanDisplay(in);
+			i_cleanMap(in);
 			return 0;
 		}		
 	}
@@ -408,16 +415,13 @@ int qa(Interface *in, int level){
 	/*Aqui podemos poner un if level == 2 para que solo se ejecute si
 	es el juego en el que lucia te pega y no el normal de preguntas
 	al normal ademas se le pasaria en nquestions una mas de las q realmente
-	hubiera*/
+	quiisieras, y añadirias un una pregunta inutil*/
 	if(level == 1)
 		result = last_answer(in, g, i, &row, col);
 	
 	if(result != 1){
-		i_readFile(in, LOSTPATH , 0, 0, 1);
-		sleep(2);
 		game_free(g);
 		i_cleanDisplay(in);
-		i_cleanCommand(in);
 		i_cleanMap(in);
 		return result;
 	}
@@ -429,7 +433,6 @@ int qa(Interface *in, int level){
 	i_readFile(in, WONPATH , 0, 0, 1);
 	sleep(2);
 	i_cleanDisplay(in);
-	i_cleanCommand(in);
 	i_cleanMap(in);
 	game_free(g);
 	return 1;

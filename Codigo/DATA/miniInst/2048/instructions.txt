@@ -1,0 +1,16 @@
+Press one of the four rows:
+RIGHT
+LEFT
+UP
+DOWN
+to make numbers with the
+same value sum up.
+
+For example: if you have 
+2240 and you press LEFT,
+you'll get 4400
+
+To win, you have to get
+2048 in one of the cells.
+
+Press 'q' to quit game.

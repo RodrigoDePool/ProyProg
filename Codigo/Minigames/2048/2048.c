@@ -6,6 +6,8 @@
 #define BOARDPATH "./Codigo/DATA/miniInst/2048/board2048.txt"
 #define LOSTPATH "./Codigo/DATA/miniInst/youlost.txt"
 #define WONPATH "./Codigo/DATA/miniInst/youwon.txt"
+#define INSTPATH "Codigo/DATA/miniInst/2048/instructions.txt"
+
 int asprintf(char **strp, const char *fmt, ...);
 
 struct _Numbers{
@@ -229,6 +231,13 @@ int mini2048(Interface *in){
 		}
 	}
 	
+	/*Print instructions*/
+	i_cleanDisplay(in);
+	i_cleanCommand(in);
+	i_cleanMap(in);
+	i_readFile(in, INSTPATH , 1, 1, 2);
+	
+	
 	num = Numbers_ini(NUMBERSPATH);
 	if(!num) return -1;
 	/*Initializes matrix an adds first number*/
@@ -242,12 +251,7 @@ int mini2048(Interface *in){
 	else rnd = 2;
 	i = rand() % size;
 	j = rand() % size;
-	matrix[j][i] = rnd; 
-	
-	i_cleanDisplay(in);
-	i_cleanCommand(in);
-	i_cleanMap(in);
-	
+	matrix[j][i] = rnd; 	
 	
   	i_readFile(in, BOARDPATH, 0, 0, 1);
 	draw_matrix(in, matrix, num, size, score);
