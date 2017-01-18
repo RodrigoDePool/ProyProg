@@ -4,7 +4,7 @@
 #include "game.h"
 #define STRPATH
 #define CLUEPATH 
-#define INIROW 2
+#define INIROW 1
 #define INICOL 2
 #define SLEEPTIME 2
 
@@ -68,8 +68,9 @@ int game_help(World *w, String *s){
 	Interface *in = world_getInterface(w);
 	if(!in) return -1;
 	
-	if(world_getNumObjects(w) != 3){
-		i_drawStr(in, s->st[0], INIROW , INICOL , 2);
+	if( (world_getNumObjects(w)%3 != 0) or (world_getNumObjects(w) == 0) ){
+		/*Not enough objects for the clue*/
+		i_drawStr(in, s->st[0], INIROW , INICOL , 3);
 		sleep(SLEEPTIME);
 	}else{
 		f = fopen(CLUEPATH, "r");
@@ -84,9 +85,7 @@ int game_help(World *w, String *s){
 				fclose(f);
 				return -1;
 			}else{
-				i_drawStr(in, clue, INIROW , INICOL , 2);
-				/*ASUMO QUE JUAN AÑADE A CLUE PRESS ANY KEY TO CONTINUE*/
-				c = _read_key();
+				i_drawStr(in, clue, INIROW , INICOL , 3);
 			}
 		}
 	}
@@ -101,12 +100,13 @@ int game_save(World *w, String* s){
 	assert(w && s);
 	Interface *in = world_getInterface(w);
 	if(!in) return -1;
+	
 	if(world_saveToFile(w, SAVEPATH) == -1){
-		i_drawStr(in, s->st[1], INIROW , INICOL , 2);
+		i_drawStr(in, s->st[1], INIROW , INICOL , 3);
 		sleep(SLEEPTIME);
 		return -1;
 	}else{
-		i_drawStr(in, s->st[2], INIROW , INICOL , 2);
+		i_drawStr(in, s->st[2], INIROW , INICOL , 3);
 		sleep(SLEEPTIME);
 		return 0;
 	}
@@ -122,28 +122,29 @@ int game_solve(World *w, String *s){
 	
 	
 	/*"Enter the solution" string*/
-	i_drawStr(in, s->st[3], INIROW , INICOL , 2);
+	i_drawStr(in, s->st[3], INIROW , INICOL , 3);
 	
 	/* Meto en solution la solucion del jugador... ¿habra que quitar el \n*/
 	/*  Save in pl_sol*/
 	
 	
+	/*Comprobacion de ojetos: not enough, fuera! (acumulables?)*/
+		
 	
-	/*Se puede resolver sin tener todos los objetos?*/
 	nlev = world_getPllevel(w);
 	if(nlev < 0) return -1;
 	/*Get the pointer associated to that level number*/
-	/* l = getLevel(nlev);
-	   + control de errores */
+	l = world_getLevel(w, nlev);
+	if(l == NULL) return -1;
 	
 	if( strcmp(pl_sol, l->solution) == 0 ){
 		/*You passed level string*/
-		i_drawStr(in, s->st[4], INIROW , INICOL , 2);
+		i_drawStr(in, s->st[4], INIROW , INICOL , 3);
 		sleep(SLEEPTIME);
 		return 0;
 	}else{
 		/*Youre wrong string*/
-		i_drawStr(in, s->st[5], INIROW , INICOL , 2);
+		i_drawStr(in, s->st[5], INIROW , INICOL , 3);
 		sleep(SLEEPTIME);
 		return 0;
 	}	
@@ -163,13 +164,12 @@ int game_f(World *w, int n){
 		return -1;
 	
 	if(n == 0){
-		/*Volver al estado anterior?*/
 		return game_help(w, s);
 	}else if(n == 1){
-		/*Volver al estado anterior?*/
+		i_cleanCommand(world_getInterface(w));
 		return game_save(w, s);
 	}else if(n == 2){
-		/*Volver al estado anterior?*/
+		i_cleanCommand(world_getInterface(w));
 		return game_solve(w, s);
 	}
 }
