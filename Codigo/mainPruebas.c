@@ -52,14 +52,11 @@ int main()
     int       sid, aux;
     char      c;
     char      **map;
-    _term_init();
-    i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
-    
+
     /*Starting menu*/
-    w = menu();
+    w = worldfromfile("Codigo/DATA/LOAD/default", i);
     if (w == NULL)
     {
-        _term_close();
         return 0;
     }
     prow   = world_getPlRow(w);

@@ -14,8 +14,8 @@
 /*NOTE: if you change the next two defines you need to change their initialization functions in world.c*/
 #define numMinigames        20
 #define numLevels           4
-#define SPACE_PATHS_FILE    "/Codigo/DATA/world/SpacePaths"
-#define SOLUTIONS_PATH "/Codigo/DATA/world/Solutions"
+#define SPACE_PATHS_FILE    "Codigo/DATA/world/SpacePaths"
+#define SOLUTIONS_PATH "Codigo/DATA/world/Solutions"
 
 /*The Spaces paths must be in a file with the SPACE_PATHS_FILE path*/
 
