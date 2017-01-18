@@ -178,7 +178,9 @@ int game_f(World *w, int n){
 	if(n == 0){
 		return game_help(w, s);
 	}else if(n == 1){
-		return game_save(w, s);
+		ret = game_save(w, s);
+		i_cleanCommand(world_getInterface(w));
+		return ret;
 	}else if(n == 2){
 		ret = game_solve(w, s);
 		i_cleanCommand(world_getInterface(w));
