@@ -14,8 +14,8 @@
 /*NOTE: if you change the next two defines you need to change their initialization functions in world.c*/
 #define numMinigames        20
 #define numLevels           4
-#define SPACE_PATHS_FILE    "SpacePaths"
-#define SOLUTIONS_PATH "Solutions"
+#define SPACE_PATHS_FILE    "/Codigo/DATA/world/SpacePaths"
+#define SOLUTIONS_PATH "/Codigo/DATA/world/Solutions"
 
 /*The Spaces paths must be in a file with the SPACE_PATHS_FILE path*/
 
@@ -76,6 +76,27 @@ Interface * world_getInterface(World * w);
  */
 
 void world_setPath(World * w, char * path);
+
+/*Function: tells you if you have finished a minigame (you have to tell the world when you finish a minigame)
+ *
+ ***Parameters: world and minigame ID (it can be < 50 or > 50)
+ ***Returns: the value you have assigned or -1 if error 
+ ***(generally 0 if you ave not finished or 1 f you have finished a minigame)
+ ***Revision: 18 Jan 2017
+ */
+
+int world_getMinigameFinished(World * w, int ID);
+
+
+/*Function: you can tell the world if you have finished a minigame
+ *
+ ***Parameters: world and minigame ID (<50 or >50)
+ ***Returns: -1 if err or the value you have assigned in any other case
+ ***(generally 0 if you ave not finished or 1 f you have finished a minigame)
+ ***Revision: 18 Jan 2017
+ */
+
+int world_setMinigameFinished(World * w, int ID, int finished);
 
 /*Function: gets the path associated with the world storage
    *Parameters: world

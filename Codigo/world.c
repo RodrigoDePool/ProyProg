@@ -35,6 +35,8 @@ struct _World
     char      * path;
     Level     ** levels;
     Minigame  ** minigame;
+    /*generally 1 = has finished the minigame with the same index;0 = has not finished the minigame but it can take any value except -1*/
+    int * HasFinishedMinigame;
 };
 
 char * fgetll(FILE * f)
@@ -135,6 +137,7 @@ Level ** levelsIni()
 World *world_ini(char * path, Interface * i)
 {
     World *w;
+    int i;
     w = (World *) malloc(sizeof(World));
     if (w == NULL)
         return NULL;
@@ -145,18 +148,33 @@ World *world_ini(char * path, Interface * i)
     w->numspaces  = 0;
     w->PlSpaceID  = -1;
     w->levels     = levelsIni();
+    if(!w->levels){
+        free(w);
+        return NULL;
+    }
     w->minigame   = minigamesIni();
+    if(!w->minigame){
+        for (i = 0; i < numLevels; i++)
+        {
+            free(w->levels[i]->solution);
+            free(w->levels[i]);
+        }
+        free(w);
+        return NULL;
+    }
     w->Pllevel    = 0;
+    w->HasFinishedMinigame=(int*)malloc(sizeof(int)*numMinigames);
     if (path == NULL)
         w->path = NULL;
     else
         w->path = (char *) malloc(sizeof(char) * (strlen(path) + 1));
+        if(!w->ptath){
+            world_free(w);
+            return NULL;
+        }
     strcpy(w->path, path);
 
-    if (i == NULL)
-        w->i = NULL;
-    else
-        w->i = i;
+    w->i = i;
     return w;
 }
 
@@ -218,6 +236,19 @@ Level * world_getLevel(World * w, int ID){
     if(!w||ID<0||ID>numLevels)
         return NULL;
     return w->levels[ID];
+}
+
+int world_setMinigameFinished(World * w, int ID, int finished){
+    if(!world_free||ID<0||ID%50>(numMinigames-1))
+        return -1;
+    w->HasFinishedMinigame[ID%50]=finished;
+    return 0;
+}
+
+int world_getMinigameFinished(World * w, int ID){
+    if(!w||ID<0||ID%50>(numMinigames-1))
+        return -1;
+    return w->HasFinishedMinigame[ID%50];
 }
 
 void world_setPath(World * w, char * path)
@@ -523,7 +554,10 @@ int world_saveToFile(World * w, char * path)
 
     /*Pllevel*/
 
-    fprintf(f, "%d", (w->Pllevel));
+    fprintf(f, "%d\n", (w->Pllevel));
+
+
+
 
     fclose(f);
     return 0;
