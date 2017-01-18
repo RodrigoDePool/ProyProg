@@ -126,8 +126,7 @@ int snake_move(Snake *s, Interface *i, int dir)
     case EAST:
         return snake_moveHead(i, dot_getRow(s->body[0]), dot_getCol(s->body[0])+1, s);
     default:
-	i_drawStr(i, "error4", 2, 2, 2);
-        return -1;
+        return -2;
     }
 }
 
@@ -162,7 +161,12 @@ void *snake_play(void *interface) /*This function will move the snake according 
 				flag_snakeResult = -1;
 				return NULL;
 			    }
-			    usleep(200000); /*soft delay between movements*/
+			    else if (aux == -2)
+				snake_free(s);
+				flag_snakeResult = -2;
+				return NULL;
+			    }
+			    usleep(100000); /*soft delay between movements*/
 			}
 			if (s->tamanio == SNAKE_MAX_SIZE){ /*The player wins when his snake reaches a size of 15 dots*/
 			    snake_free(s);
@@ -209,6 +213,7 @@ int snake(Interface *i)
 {
 	flag_snakeResult = 0;
 	key_read = NORTH;
+	i_cleanMap(i);
 	i_readFile(i, "map.txt", 9, 32, 1); /*48x15*/
 	i_drawAll(i);
 	i_cleanDisplay(i);
@@ -221,6 +226,6 @@ int snake(Interface *i)
 	while (flag_snakeResult == 0);
 
 	if (flag_snakeResult == 1) return WIN;
-	else if (flag_snakeResult == -1) return LOSE;
+	else if (flag_snakeResult == 0) return LOSE;
 	return ERR;
 }
