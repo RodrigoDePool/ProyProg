@@ -125,7 +125,7 @@ int create_menu(Interface *i, char *path)
     fclose(f);
     /*We copy default settings to the new file*/
     /*This part is OS sensible*/
-    strcpy(string, "cp DATA/LOAD/default DATA/LOAD/");
+    strcpy(string, "cp Codigo/DATA/LOAD/default Codigo/DATA/LOAD/");
     strcat(string, path);
     system(string);
 

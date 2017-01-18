@@ -209,7 +209,7 @@ int countDots(Interface *i, int hardMode)
     i_drawStrMap(i, buff, 1, 1, 2);
 
     /*Set message on the screen*/
-    i_readFile(i, COUNT_INFO, 12, 40, 1);
+    i_readFile(i, COUNT_INFO, 5, 25, 1);
     _read_key();
     i_cleanMap(i);
 

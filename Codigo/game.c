@@ -4,7 +4,7 @@
 #include "game.h"
 #define STRPATH
 #define CLUEPATH 
-#define INIROW 2
+#define INIROW 1
 #define INICOL 2
 #define SLEEPTIME 2
 
@@ -64,13 +64,15 @@ int game_help(World *w, String *s){
 	assert(w && s);
 	FILE *f = NULL;
 	int i;
-	char *clue, c;
+	char *clue, c = 0;
 	Interface *in = world_getInterface(w);
 	if(!in) return -1;
 	
-	if(world_getNumObjects(w) != 3){
-		i_drawStr(in, s->st[0], INIROW , INICOL , 2);
-		sleep(SLEEPTIME);
+	if( (world_getNumObjects(w)%3 != 0) or (world_getNumObjects(w) == 0) ){
+		/*Not enough objects for the clue*/
+		i_drawStr(in, s->st[0], INIROW , INICOL , 3);
+		c = _read_key();
+
 	}else{
 		f = fopen(CLUEPATH, "r");
 		if(f == NULL){
@@ -84,9 +86,7 @@ int game_help(World *w, String *s){
 				fclose(f);
 				return -1;
 			}else{
-				i_drawStr(in, clue, INIROW , INICOL , 2);
-				/*ASUMO QUE JUAN AÑADE A CLUE PRESS ANY KEY TO CONTINUE*/
-				c = _read_key();
+				i_drawStr(in, clue, INIROW , INICOL , 3);
 			}
 		}
 	}
@@ -96,22 +96,30 @@ int game_help(World *w, String *s){
 }
 
 /*Saves the game and shows message
-  Returns -1 if something went wrong, else 1*/
+  Returns -1 if something went wrong, else 0*/
 int game_save(World *w, String* s){
 	assert(w && s);
 	Interface *in = world_getInterface(w);
 	if(!in) return -1;
-	if(world_saveToFile(w, SAVEPATH) == -1){
-		i_drawStr(in, s->st[1], INIROW , INICOL , 2);
-		sleep(SLEEPTIME);
+	
+	if(world_saveToFile(w, NULL) == -1){
+		/*Fail to save string*/
+		i_drawStr(in, s->st[1], INIROW , INICOL , 3);
+		c = _read_key();
 		return -1;
 	}else{
-		i_drawStr(in, s->st[2], INIROW , INICOL , 2);
-		sleep(SLEEPTIME);
+		/*Successfully saved*/
+		i_drawStr(in, s->st[2], INIROW , INICOL , 3);
+		c = _read_key();
 		return 0;
 	}
 }
 
+
+
+
+/*Lets the player solve the riddle if he has enough objects
+  Returns 0, or -1 if anything went wrong*/
 int game_solve(World *w, String *s){
 	assert(w && s);
 	Interface *in = world_getInterface(w);	
@@ -120,31 +128,37 @@ int game_solve(World *w, String *s){
 	int l, nlev;	
 	Level *l;
 	
-	
+	/*Check if the player has enough objects*/
+	nlev = world_getPllevel(w);
+	if(nlev < 0) return -1;
+	if(world_getNumObjects(w) != (3 + (3*nlev)) ){
+		i_drawStr(in, s->st[6], INIROW , INICOL , 3);
+		c = _read_key();
+		return 0;
+	}
+		
 	/*"Enter the solution" string*/
-	i_drawStr(in, s->st[3], INIROW , INICOL , 2);
-	
+	i_drawStr(in, s->st[3], INIROW , INICOL , 3);
+			
 	/* Meto en solution la solucion del jugador... ¿habra que quitar el \n*/
 	/*  Save in pl_sol*/
 	
 	
 	
-	/*Se puede resolver sin tener todos los objetos?*/
-	nlev = world_getPllevel(w);
-	if(nlev < 0) return -1;
+	
 	/*Get the pointer associated to that level number*/
-	/* l = getLevel(nlev);
-	   + control de errores */
+	l = world_getLevel(w, nlev);
+	if(l == NULL) return -1;
 	
 	if( strcmp(pl_sol, l->solution) == 0 ){
 		/*You passed level string*/
-		i_drawStr(in, s->st[4], INIROW , INICOL , 2);
-		sleep(SLEEPTIME);
+		i_drawStr(in, s->st[4], INIROW , INICOL , 3);
+		c = _read_key();
 		return 0;
 	}else{
 		/*Youre wrong string*/
-		i_drawStr(in, s->st[5], INIROW , INICOL , 2);
-		sleep(SLEEPTIME);
+		i_drawStr(in, s->st[5], INIROW , INICOL , 3);
+		c = _read_key();
 		return 0;
 	}	
 }
@@ -153,24 +167,24 @@ int game_solve(World *w, String *s){
 int game_f(World *w, int n){
 	assert(w && n>-1 && n<3);
 	String *s = string_ini(STRPATH);
+	int ret = 0;
 	
 	/*Clean evrything before calling the proper function*/
-	i_cleanDisplay(world_getInterface(w));
 	i_cleanCommand(world_getInterface(w));
-	i_cleanMap(world_getInterface(w));
 	
 	if(s == NULL)
 		return -1;
 	
 	if(n == 0){
-		/*Volver al estado anterior?*/
 		return game_help(w, s);
 	}else if(n == 1){
-		/*Volver al estado anterior?*/
-		return game_save(w, s);
+		ret = game_save(w, s);
+		i_cleanCommand(world_getInterface(w));
+		return ret;
 	}else if(n == 2){
-		/*Volver al estado anterior?*/
-		return game_solve(w, s);
+		ret = game_solve(w, s);
+		i_cleanCommand(world_getInterface(w));
+		return ret;
 	}
 }
 
