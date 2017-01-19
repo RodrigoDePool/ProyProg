@@ -220,7 +220,7 @@ int game_drawDisplay(World *w)
 {
     assert(w);
     String    *s;
-    int sid, nlev, nobj, st, i;
+    int       sid, nlev, nobj, st, i;
     Interface *in = world_getInterface(w);
     if (!in)
         return -1;
@@ -248,14 +248,15 @@ int game_drawDisplay(World *w)
         return -1;
     }
 
-	/*Print riddle*/
-    for (i = 0; i < nobj; i++){
-    	st = (3 * nlev)+(nobj - 1);
-    	string_drawLines(in, string_getString(s, st), 3*(i+1), 1, 1, '\n', '*');
+    /*Print riddle*/
+    for (i = 0; i < nobj; i++)
+    {
+        st = (3 * nlev) + (nobj - 1);
+        string_drawLines(in, string_getString(s, st), 3 * (i + 1), 1, 1, '\n', '*');
     }
 
-	/*Print descriptions*/
-	world_getPlSpaceID(w)
+    /*Print descriptions*/
+    world_getPlSpaceID(w);
 
     string_free(s);
     return 0;

@@ -82,7 +82,14 @@ int main()
 
     i = world_getInterface(w);
 
-    /*If we are in first level do some shit about the tutorial*/
+    /*If we are in level 0 we run the tutorial*/
+    if (world_getPllevel(w) == -1)
+    {
+        /*int to check if you passed the game*/
+        /*tutorial(w);*/
+        /*if you failed close game*/
+        /*else continue the main*/
+    }
 
     /*sets first maps*/
     prow   = world_getPlRow(w);
@@ -93,7 +100,7 @@ int main()
     i_drawPl(i, prow, pcol);
 
     /*FUNCTION set info panel*/
-
+    game_drawDisplay(w);
 
     /*main game loop*/
     while (1)
@@ -109,14 +116,15 @@ int main()
             /*if fail print fail message and thats it*/
             /*else animation and set WHOLE new space and panel*/
             /* if you won set level*/
+            /*set panel*/
 
             /*TEST FOR LEVEL 0*/
-            /*world_setPlSpaceID(w, 7);
-               world_setPllevel(w, 0);
-               map = world_getSpaceMap(w, 7);
-               i_setMap(i, map);
-               i_drawPl(i, 23, 75);
-               /*END OF TEST*/
+            world_setPlSpaceID(w, 7);
+            world_setPllevel(w, 0);
+            map = world_getSpaceMap(w, 7);
+            i_setMap(i, map);
+            i_drawPl(i, 23, 75);
+            /*END OF TEST*/
             /*TEST FOR LEVEL1*/
             /*world_setPlSpaceID(w, 8);
                world_setPllevel(w, 1);
@@ -125,12 +133,19 @@ int main()
                i_drawPl(i, 2, 84);
                /*END OF TEST*/
             /*TEST FOR LEVEL 2*/
-            world_setPlSpaceID(w, 9);
-            world_setPllevel(w, 2);
-            map = world_getSpaceMap(w, 9);
-            i_setMap(i, map);
-            i_drawPl(i, 2, 79);
-            /*END OF TEST*/
+            /*world_setPlSpaceID(w, 9);
+               world_setPllevel(w, 2);
+               map = world_getSpaceMap(w, 9);
+               i_setMap(i, map);
+               i_drawPl(i, 2, 79);
+               /*END OF TEST*/
+            /*TEST FOR LEVEL 3*/
+            /*world_setPlSpaceID(w, 10);
+               world_setPllevel(w, 3);
+               map = world_getSpaceMap(w, 10);
+               i_setMap(i, map);
+               i_drawPl(i, 20, 20);
+               /*END OF LEVEL*/
         }
         else if (c == HELP_KEY)
         {
@@ -235,9 +250,6 @@ int main()
                             i_drawPl(i, prow, pcol);
                             /*free the copy*/
                             map_mainFree(map, 13);
-                            /*RESET  THE PANEL*/
-
-                            /*resetting map .. idrawALl??*/
                         }
                     }
                     else
@@ -249,7 +261,7 @@ int main()
                 }
                 /*we set the info in the panel again whether we moved a space*/
                 /*or we played a minigame*/
-                /*FUNCTION set info panel*/
+                game_drawDisplay(w);
             }
         } /*Movement else if*/
         else if (c == '0')
@@ -330,6 +342,7 @@ void afro(World *w)
     /*Cheating stuff*/
     /*we get all the objects*/
     world_setNumObjects(w, 12);
+    game_drawDisplay(w);
     return;
 }
 
