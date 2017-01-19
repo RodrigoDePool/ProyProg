@@ -207,7 +207,7 @@ int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score){
 	}
 	/*draw the score on the display*/
 	asprintf(&sc, "%d", score);
-	i_drawStr(i, sc, 4, 2, 2);
+	i_drawStr(i, sc, 33, 2, 2);
 	free(sc);
 	return 0;
 
@@ -269,7 +269,7 @@ int mini2048(Interface *in, int size, int max){
 	}
 	
 	draw_matrix(in, matrix, num, size, score);
-	i_drawStr(in, "Your score: ",  3, 2, 2);
+	i_drawStr(in, "Your score: ",  32, 2, 2);
 	
 	/*main loop*/
 	while(finished == 0 && won == 0){
