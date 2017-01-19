@@ -261,7 +261,7 @@ void map_iniPlayer(Interface *i, char **map, int rows, int cols)
    returns 1 if the solution is theres
           0 if not
  */
-int check(char **map, int rows, int cols, int pr, int pc)
+int check_maze(char **map, int rows, int cols, int pr, int pc)
 {
     /*NOt checking parameters because its an internal func*/
     /*First we check NORTH*/
@@ -345,7 +345,7 @@ int miniMaze(Interface *i, int hardMode)
                 if (rpr != pr || rpc != pc)
                     i_writeCharMap(i, '0', rpr, rpc, 1);
             }
-            if (check(map, rows, cols, pr, pc) == 1)
+            if (check_maze(map, rows, cols, pr, pc) == 1)
             {
                 /*we free map*/
                 for (j = 0; j < rows; j++)
