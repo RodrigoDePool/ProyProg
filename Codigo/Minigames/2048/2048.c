@@ -276,7 +276,6 @@ int mini2048(Interface *in, int size, int max){
 		/*read key*/
 		c = _read_key();
 		if (c == 'q' || c == 'Q'){
-			sleep(2);
 			Numbers_free(num);
 			return 0;
 		}
