@@ -209,8 +209,9 @@ int game_f(World *w, int n)
 int game_objInLevel(World *w)
 {
     assert(w);
-
+	int nlev = world_getPllevel(w);
     int nobj = world_getNumObjects(w);
+    if((nlev > -1 && nobj == (nlev+1)*3) || nobj == 12) return 3;
     if (nobj >= 0)
         return nobj % 3;
     return -1;
@@ -231,7 +232,7 @@ int game_drawDisplay(World *w)
     s = string_ini(RIDDLEPATH);
     if (s == NULL || string_getNumber(s) != 12)
     {
-        return -1;
+    	return -1;
     }
 
     /*With the level, what riddle to use,
@@ -242,7 +243,10 @@ int game_drawDisplay(World *w)
        Description at row 14*/
     nlev = world_getPllevel(w);
     nobj = game_objInLevel(w);
-    if (nlev < -1 || nobj > 0)
+    FILE *f2 = fopen("pruebas.txt", "w");
+	fprintf(f2, "%d\n", nobj);
+	fclose(f2);
+    if (nlev < -1 || nobj < 0)
     {
         string_free(s);
         return -1;
@@ -251,8 +255,8 @@ int game_drawDisplay(World *w)
     /*Print riddle*/
     for (i = 0; i < nobj; i++)
     {
-        st = (3 * nlev) + (nobj - 1);
-        string_drawLines(in, string_getString(s, st), 3 * (i + 1), 1, 1, '\n', '*');
+        st = (3 * nlev) + i;
+        string_drawLines(in, string_getString(s, st), 3 * (i + 1), 1, 2, '\n', '*');
     }
 
     /*Print descriptions*/

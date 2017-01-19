@@ -34,14 +34,18 @@ String *string_ini(char *path){
 		fclose(f);
 		return NULL;
 	}
+	
 	for(i = 0;i < s->nums; i++){
 		fscanf(f, "%m[^#]#\n\n", (s->st)+i);
+		
 		if( s->st[i] == NULL ){
 			string_free(s);
 			fclose(f);
 			return NULL;			
 		}
 	}
+	
+	fclose(f);
 	return s;
 }
 
@@ -78,6 +82,8 @@ int string_drawLines(Interface *in, char *s, int row, int col, int bdc, char sep
 	/*look for the end of first line, replace it with a \0, print
 	on interface, return the end of line char with its original value,
 	continueswith nex line*/
+	
+	
 	do{
 		while(*end != sep && *end != finish){
 			end ++;
@@ -96,6 +102,6 @@ int string_drawLines(Interface *in, char *s, int row, int col, int bdc, char sep
 			ini = end;
 		}
 	}while(finish != *end);
-
+	
 	return row;
 }
