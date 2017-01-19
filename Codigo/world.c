@@ -58,11 +58,11 @@ Minigame ** minigamesIni()
     int      i;
     minigames = (Minigame * *) malloc(sizeof(Minigame*) * numMinigames);
 
-    minigames[0]  = NULL;
-    minigames[1]  = NULL;
-    minigames[2]  = NULL;
-    minigames[3]  = NULL;
-    minigames[4]  = NULL;
+    minigames[0]  = &(easyMiniMaze);
+    minigames[1]  = &(easyMiniPadel);
+    minigames[2]  = &(mini2048_small);
+    minigames[3]  = &(miniRPSLS);
+    minigames[4]  = NULL;/*Calculo Rapido*/
     minigames[5]  = NULL;
     minigames[6]  = NULL;
     minigames[7]  = NULL;

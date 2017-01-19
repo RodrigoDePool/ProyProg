@@ -6,9 +6,9 @@
 #include "interface.h"
 /*#include "/Minigames/2048/2048.h"*/
 /*#include "/Minigames/Calculo Rapido/"*/
-/*#include "/Minigames/MiniMaze/MiniMaze.h"*/
-/*#include "/Minigames/MiniPadel/miniPadel.h"*/
-/*#include "/Minigames/MiniRPSLS/miniRPSLS.h"*/
+#include "/Minigames/MiniMaze/MiniMaze.h"
+#include "/Minigames/MiniPadel/miniPadel.h"
+#include "/Minigames/MiniRPSLS/miniRPSLS.h"
 /*#include "/Minigames/preguntas"*/
 /*#include "/Minigames/snake/snake.h"*/
 /*NOTE: if you change the next two defines you need to change their initialization functions in world.c*/
