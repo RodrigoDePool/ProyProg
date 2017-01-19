@@ -6,16 +6,16 @@
 #include "interface.h"
 /*#include "/Minigames/2048/2048.h"*/
 /*#include "/Minigames/Calculo Rapido/"*/
-#include "/Minigames/MiniMaze/MiniMaze.h"
-#include "/Minigames/MiniPadel/miniPadel.h"
-#include "/Minigames/MiniRPSLS/miniRPSLS.h"
-/*#include "/Minigames/preguntas"*/
+/*#include "/Minigames/MiniMaze/MiniMaze.h"
+   #include "/Minigames/MiniPadel/miniPadel.h"
+   #include "/Minigames/MiniRPSLS/miniRPSLS.h"
+   /*#include "/Minigames/preguntas"*/
 /*#include "/Minigames/snake/snake.h"*/
 /*NOTE: if you change the next two defines you need to change their initialization functions in world.c*/
 #define numMinigames        20
 #define numLevels           4
 #define SPACE_PATHS_FILE    "Codigo/DATA/world/SpacePaths"
-#define SOLUTIONS_PATH "Codigo/DATA/world/Solutions"
+#define SOLUTIONS_PATH      "Codigo/DATA/world/Solutions"
 
 /*The Spaces paths must be in a file with the SPACE_PATHS_FILE path*/
 
@@ -53,36 +53,36 @@ void world_free(World *);
 
 /*Function: it sets an interface and frees the previous one if there was one
  *
- ***Parameters: world and interface (already initialized)
- ***Returns: -1 if something went wrong and 0 if everything went right
- ***Revision: 6 Jan 2017
+ *******Parameters: world and interface (already initialized)
+ *******Returns: -1 if something went wrong and 0 if everything went right
+ *******Revision: 6 Jan 2017
  */
 
 int world_setInterface(World * w, Interface * i);
 
 /*Function: it returns the interface ofthe world
  *
- ***Parameters: world
- ***Revision: 6 Jan 2017
+ *******Parameters: world
+ *******Revision: 6 Jan 2017
  */
 
 Interface * world_getInterface(World * w);
 
 /*Function: sets a path to store the world (but it does not store it)
  *
- ***Parameters: world and path
- ***Returns: nothing
- ***Revision: 6 Jan 2017
+ *******Parameters: world and path
+ *******Returns: nothing
+ *******Revision: 6 Jan 2017
  */
 
 void world_setPath(World * w, char * path);
 
 /*Function: tells you if you have finished a minigame (you have to tell the world when you finish a minigame)
  *
- ***Parameters: world and minigame ID (it can be < 50 or > 50)
- ***Returns: the value you have assigned or -1 if error 
- ***(generally 0 if you ave not finished or 1 f you have finished a minigame)
- ***Revision: 18 Jan 2017
+ *******Parameters: world and minigame ID (it can be < 50 or > 50)
+ *******Returns: the value you have assigned or -1 if error
+ *******(generally 0 if you ave not finished or 1 f you have finished a minigame)
+ *******Revision: 18 Jan 2017
  */
 
 int world_getMinigameFinished(World * w, int ID);
@@ -90,10 +90,10 @@ int world_getMinigameFinished(World * w, int ID);
 
 /*Function: you can tell the world if you have finished a minigame
  *
- ***Parameters: world and minigame ID (<50 or >50)
- ***Returns: -1 if err or the value you have assigned in any other case
- ***(generally 0 if you ave not finished or 1 f you have finished a minigame)
- ***Revision: 18 Jan 2017
+ *******Parameters: world and minigame ID (<50 or >50)
+ *******Returns: -1 if err or the value you have assigned in any other case
+ *******(generally 0 if you ave not finished or 1 f you have finished a minigame)
+ *******Revision: 18 Jan 2017
  */
 
 int world_setMinigameFinished(World * w, int ID, int finished);

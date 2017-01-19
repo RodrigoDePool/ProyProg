@@ -247,7 +247,7 @@ Door *space_checkDoorPoint(Space *s, int x, int y)
     {
         if (doors(s)[i].x == x && doors(s)[i].y == y)
         {
-            return doors(s);
+            return(s->doors + i);
         }
     }
     return NULL;
