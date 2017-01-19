@@ -65,6 +65,7 @@ int main()
     Interface *i;
     Space     *s;
     Door      *d;
+    Level     *l;
     Minigame  minigame;
     /*row , col and space the player is in*/
     int       prow, pcol, pspace;
@@ -113,10 +114,38 @@ int main()
         else if (c == SOLVE_KEY)
         {
             /*Solve function*/
+            aux = game_f(w, 2);
+            /*if you solved correctly the game*/
+            if (aux == 1)
+            {
+                aux = world_getPllevel(w);
+                /*In case you ended the game*/
+                if (aux == 3)
+                {
+                    /*LAST ANIMATION*/
+                    /*FREES AND RETURNS*/
+                }
+                /*we set the final animation of the space*/
+                l = world_getLevel(w, aux);
+                (l->finalAnimation)(i);
+
+                /*we pass the level*/
+                aux++;
+                world_setPllevel(w, aux);
+                /*we take the info of the new level*/
+                l = world_getLevel(w, aux);
+                /*set the info*/
+                world_setPlSpaceID(w, l->PlIniSpaceID);
+                map = world_getSpaceMap(w, l->PlIniSpaceID);
+                i_setMap(i, map);
+                i_drawPl(i, l->PlIniRow, l->PlIniCol);
+            }
             /*if fail print fail message and thats it*/
             /*else animation and set WHOLE new space and panel*/
             /* if you won set level*/
             /*set panel*/
+
+
 
             /*TEST FOR LEVEL 0*/
             /*world_setPlSpaceID(w, 7);
@@ -142,13 +171,13 @@ int main()
                i_drawPl(i, 2, 79);
                /*END OF TEST*/
             /*TEST FOR LEVEL 3*/
-            world_setPlSpaceID(w, 10);
-            world_setNumObjects(w, 9);
-            world_setPllevel(w, 3);
-            map = world_getSpaceMap(w, 10);
-            i_setMap(i, map);
-            i_drawPl(i, 20, 20);
-            /*END OF LEVEL*/
+            /*world_setPlSpaceID(w, 10);
+               world_setNumObjects(w, 9);
+               world_setPllevel(w, 3);
+               map = world_getSpaceMap(w, 10);
+               i_setMap(i, map);
+               i_drawPl(i, 20, 20);
+               /*END OF LEVEL*/
         }
         else if (c == HELP_KEY)
         {

@@ -139,7 +139,7 @@ int game_solve(World *w, String *s)
 
     /*Read the solution and writes it in row = 1, col = 1*/
     _term_close();
-    printf("%c[%d;%dH", 27, 1, 1); /*Moving the pointer*/
+    printf("%c[%d;%dH", 27, 40, 3); /*Moving the pointer*/
     fscanf(stdin, "%ms\n", &pl_sol);
     _term_init();
 
@@ -209,9 +209,10 @@ int game_f(World *w, int n)
 int game_objInLevel(World *w)
 {
     assert(w);
-	int nlev = world_getPllevel(w);
+    int nlev = world_getPllevel(w);
     int nobj = world_getNumObjects(w);
-    if((nlev > -1 && nobj == (nlev+1)*3) || nobj == 12) return 3;
+    if ((nlev > -1 && nobj == (nlev + 1) * 3) || nobj == 12)
+        return 3;
     if (nobj >= 0)
         return nobj % 3;
     return -1;
@@ -222,7 +223,7 @@ int game_drawDisplay(World *w)
     assert(w);
     String    *s;
     int       sid, nlev, nobj, st, i;
-    char *sdesc, *ldesc;
+    char      *sdesc, *ldesc;
     Interface *in = world_getInterface(w);
     if (!in)
         return -1;
@@ -233,7 +234,7 @@ int game_drawDisplay(World *w)
     s = string_ini(RIDDLEPATH);
     if (s == NULL || string_getNumber(s) != 12)
     {
-    	return -1;
+        return -1;
     }
 
     /*With the level, what riddle to use,
@@ -258,23 +259,25 @@ int game_drawDisplay(World *w)
     }
 
     /*Print descriptions*/
-    sid = world_getPlSpaceID(w);
-	sdesc = space_getSDesc(world_getSpace(w, sid));
-	if(sdesc == NULL){
-		string_free(s);
-		return -1;
-	}
-	
-	i_drawStr(in, sdesc, 16, 1, 2);
-	free(sdesc);
-	ldesc = space_getLDesc(world_getSpace(w, sid));
-	if(ldesc == NULL){
-		string_free(s);
-		return -1;
-	}	
-	i_drawStr(in, ldesc, 17, 1, 2);
-	free(ldesc);
-	
+    sid   = world_getPlSpaceID(w);
+    sdesc = space_getSDesc(world_getSpace(w, sid));
+    if (sdesc == NULL)
+    {
+        string_free(s);
+        return -1;
+    }
+
+    i_drawStr(in, sdesc, 16, 1, 2);
+    free(sdesc);
+    ldesc = space_getLDesc(world_getSpace(w, sid));
+    if (ldesc == NULL)
+    {
+        string_free(s);
+        return -1;
+    }
+    i_drawStr(in, ldesc, 17, 1, 2);
+    free(ldesc);
+
     string_free(s);
     return 0;
 }
