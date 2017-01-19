@@ -9,4 +9,3 @@ instrucciones
 game
 	save pillar respuesta
 Hamburguesa
-Minijuegos: imagenes de entrada
