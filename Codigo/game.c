@@ -220,7 +220,7 @@ int game_drawDisplay(World *w)
 {
     assert(w);
     String    *s;
-    int       nlev, nobj, st, i;
+    int sid, nlev, nobj, st, i;
     Interface *in = world_getInterface(w);
     if (!in)
         return -1;
@@ -242,7 +242,7 @@ int game_drawDisplay(World *w)
        Description at row 14*/
     nlev = world_getPllevel(w);
     nobj = game_objInLevel(w);
-    if (nlev < 0 || nobj > 0)
+    if (nlev < -1 || nobj > 0)
     {
         string_free(s);
         return -1;
@@ -255,7 +255,7 @@ int game_drawDisplay(World *w)
     }
 
 	/*Print descriptions*/
-
+	world_getPlSpaceID(w)
 
     string_free(s);
     return 0;
