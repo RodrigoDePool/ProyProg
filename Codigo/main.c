@@ -48,6 +48,14 @@ char **map_copy(char **map, int rows, int cols);
     Frees the map
  */
 void map_mainFree(char **map, int rows);
+/*
+    Cheating function
+ */
+void afro(World *w);
+
+
+
+
 
 int main()
 {
@@ -73,6 +81,8 @@ int main()
 
     i = world_getInterface(w);
 
+    /*If we are in first level do some shit about the tutorial*/
+
     /*sets first maps*/
     prow   = world_getPlRow(w);
     pcol   = world_getPlCol(w);
@@ -81,8 +91,8 @@ int main()
     i_setMap(i, map);
     i_drawPl(i, prow, pcol);
 
-    /*SET INFO IN PANEL*/
-    /*set descriptions and objects(part of the riddle) in display*/
+    /*FUNCTION set info panel*/
+
 
     /*main game loop*/
     while (1)
@@ -96,7 +106,8 @@ int main()
         {
             /*Solve function*/
             /*if fail print fail message and thats it*/
-            /*else animation and set WHOLE new space and stuff*/
+            /*else animation and set WHOLE new space and panel*/
+
             /*TEST FOR LEVEL 0*/
             /*world_setPlSpaceID(w, 7);
                map = world_getSpaceMap(w, 7);
@@ -165,7 +176,6 @@ int main()
                     /*set map and player in new position*/
                     i_setMap(i, map);
                     i_drawPl(i, prow, pcol);
-                    /*setting info display desc + keys*/
                 }
                 /*if its a minigame*/
                 else if (aux == 1)
@@ -200,7 +210,9 @@ int main()
                                 _read_key();
                                 world_setMinigameFinished(w, sid, 1);
                                 aux = world_getNumObjects(w);
-                                aux++;
+                                /*In case you cheated you cant get extra objects*/
+                                if (aux < 12)
+                                    aux++;
                                 world_setNumObjects(w, aux);
                             }
                             else
@@ -230,10 +242,18 @@ int main()
                         i_drawAll(i);
                     }
                 }
+                /*we set the info in the panel again whether we moved a space*/
+                /*or we played a minigame*/
+                /*FUNCTION set info panel*/
             }
+        } /*Movement else if*/
+        else if (c == '0')
+        {
+            /*CHEAT CODE*/
+            afro(w);
         }
-    }
-}
+    } /*while else if*/
+}     /*main*/
 
 
 
@@ -287,7 +307,26 @@ void map_mainFree(char **map, int rows)
 }
 
 
-
+void afro(World *w)
+{
+    char c;
+    c = _read_key();
+    if (c != 'a')
+        return;
+    c = _read_key();
+    if (c != 'f')
+        return;
+    c = _read_key();
+    if (c != 'r')
+        return;
+    c = _read_key();
+    if (c != 'o')
+        return;
+    /*Cheating stuff*/
+    /*we get all the objects*/
+    world_setNumObjects(w, 12);
+    return;
+}
 
 
 
