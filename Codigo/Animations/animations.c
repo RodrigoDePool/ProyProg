@@ -334,7 +334,7 @@ int Five_animation_maze (Interface *i)
 	}
 	return 0;
 }
-
+/*
 int Five_animation_2048 (Interface *i)
 {
 	int j;
@@ -357,7 +357,7 @@ int Five_animation_2048 (Interface *i)
 
 	return 0;
 }
-
+*/
 
 
 
