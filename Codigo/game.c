@@ -37,14 +37,14 @@ int game_solve(World *w, String *s);
 int game_help(World *w, String *s){
 	assert(w && s);
 	FILE *f = NULL;
-	int i;
+	int i, nlev = world_getPllevel(w);
 	char *clue, c = 0;
 	Interface *in = world_getInterface(w);
 	if(!in) return -1;
 	
-	if( (world_getNumObjects(w)%3 != 0) or (world_getNumObjects(w) == 0) ){
+	if( (world_getNumObjects(w)%3 != 0) || (world_getNumObjects(w) == 0) ){
 		/*Not enough objects for the clue*/
-		string_drawLines(i, string_getString(s, 0), INIROW , INICOL , 3, '\n', '*');
+		string_drawLines(in, string_getString(s, 0), INIROW , INICOL , 3, '\n', '*');
 		c = _read_key();
 
 	}else{
@@ -53,7 +53,7 @@ int game_help(World *w, String *s){
 			return -1;
 		}else{
 			/*AQUI ASUMO QUE LA PRIMERA CLUE ES LA DEL LEVEL 0, NO 1*/
-			for(i = 0; i < level; i++)
+			for(i = 0; i < nlev; i++)
 				fscanf(f, "%*[^|]|\n");
 			fscanf(f, "%m[^|]|\n", &clue);
 			if(clue == NULL){
@@ -72,8 +72,9 @@ int game_help(World *w, String *s){
 
 int game_save(World *w, String* s){
 	assert(w && s);
-	Interface *in = world_getInterface(w);
-	if(!in) return -1;
+	Interface *i = world_getInterface(w);
+	char c;
+	if(!i) return -1;
 	
 	if(world_saveToFile(w, NULL) == -1){
 		/*Fail to save string*/
@@ -93,19 +94,20 @@ int game_save(World *w, String* s){
 
 int game_solve(World *w, String *s){
 	assert(w && s);
-	Interface *in = world_getInterface(w);	
-	if(!in) return -1;
+	Interface *i = world_getInterface(w);	
+	if(!i) return -1;
 	char *pl_sol, *lev_sol;
-	int l, nlev;	
+	char c;
+	int nlev;	
 	Level *l;
 	
 	/*Check if the player has enough objects*/
 	nlev = world_getPllevel(w);
 	if(nlev < 0) return -1;
-	if(world_getNumObjects(w) != (3 + (3*nlev)) ){
+	if(world_getNumObjects(w) < (3 + (3*nlev)) ){
 		string_drawLines(i, string_getString(s, 6), POPUPROW , POPUPCOL , 1, '\n', '*');
 		c = _read_key();
-		i_drawAll(in);
+		i_drawAll(i);
 		return 0;
 	}
 		
@@ -119,7 +121,7 @@ int game_solve(World *w, String *s){
 	_term_init();       
 	
 	/*Non se si la interfaz se borra, pongo idrawall por si acasp*/
-	i_drawAll(in);
+	i_drawAll(i);
 	
 	/*Get the pointer associated to that level number*/
 	l = world_getLevel(w, nlev);
@@ -129,13 +131,13 @@ int game_solve(World *w, String *s){
 		/*You passed level string*/
 		string_drawLines(i, string_getString(s, 4), POPUPROW , POPUPCOL , 1, '\n', '*');
 		c = _read_key();
-		i_drawAll(in);
+		i_drawAll(i);
 		return 1;
 	}else{
 		/*Youre wrong string*/
-		i_readFile_notMap(in, string_getString(s, 5), POPUPROW , POPUPCOL , 1);
+		i_readFile_notMap(i, string_getString(s, 5), POPUPROW , POPUPCOL , 1);
 		c = _read_key();
-		i_drawAll(in);
+		i_drawAll(i);
 		return 0;
 	}	
 }
@@ -182,13 +184,13 @@ int game_objInLevel(World *w){
 
 int game_drawDisplay(World *w){
 	assert(w);
-	String *s
-	int nlev, nobj;
+	String *s;
+	int nlev, nobj, st;
 	Interface *in = world_getInterface(w);	
 	if(!in) return -1;
 	
 	i_cleanDisplay(in);
-	i_readFile(in, DISPLAYPATH, 0, 0);
+	i_readFile(in, DISPLAYPATH, 0, 0, 2);
 	
 	s = string_ini(RIDDLEPATH);
 	if(s == NULL || string_getNumber(s) != 12){
@@ -207,7 +209,8 @@ int game_drawDisplay(World *w){
 		string_free(s);
 		return -1;
 	}
-
+	
+	st = (3 * nlev);
 	
 	
 	
