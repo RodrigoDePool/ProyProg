@@ -248,12 +248,13 @@ int game_drawDisplay(World *w)
         return -1;
     }
 
-    st = (3 * nlev);
-    for (i = 0; i < nobj; i++)
-    {
+	/*Print riddle*/
+    for (i = 0; i < nobj; i++){
+    	st = (3 * nlev)+(nobj - 1);
+    	string_drawLines(i, string_getString(s, st), 3*(i+1), 1, 1, '\n', '*');
     }
 
-
+	/*Print descriptions*/
 
 
     string_free(s);
