@@ -13,3 +13,5 @@ key.
 To win the minigame, you
 have to guess the correct 
 answer to every question.
+
+Press 'q' to quit game.

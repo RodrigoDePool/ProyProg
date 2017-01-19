@@ -428,7 +428,6 @@ int qa(Interface *in, int level){
 		do{
 			choice = _read_key();
 			if(choice == 'q'){
-				sleep(1);
 				i_cleanDisplay(in);
 				i_cleanMap(in);	
 				game_free(g);
