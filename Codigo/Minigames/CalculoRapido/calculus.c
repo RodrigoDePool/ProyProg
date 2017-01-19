@@ -63,6 +63,7 @@ int calculus (Interface *i)
 	secondTen = second/10;
 	
 	i_readFile (i, "Codigo/DATA/miniInst/calculus/map.txt", 0, 0, 1);
+	i_drawAll(i);
         sprintf (buff, "Codigo/DATA/miniInst/calculus/%d.txt", firstTen);
         i_readFile(i, buff, 12, 7, 1);
         sprintf (buff, "Codigo/DATA/miniInst/calculus/%d.txt", first - firstTen*10);
@@ -95,7 +96,15 @@ int calculus_game(Interface *i){
         return 1;
 }    
 
-
+int main()
+{
+	Interface *i;
+  	_term_init();
+  	i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);	
+	calculus_game(i);
+	i_free(i);
+  	_term_close();
+}
 
 
 
