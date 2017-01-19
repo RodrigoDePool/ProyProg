@@ -460,26 +460,30 @@ int Five2End_animation(Interface *i)
 	i_readFile(i, "../DATA/Dialogue/FiveToEnd/6.txt", 0, 0, 3);
 	_read_key();
 	i_cleanCommand(i);
-	i_readFile(i, "Maps/simone.map", 14, 23, 1);
+	i_readFile(i, "Maps/simone.map", 15, 23, 1);
 	i_readFile(i, "../DATA/Dialogue/FiveToEnd/7.txt", 0, 0, 3);
 	for (j = 22; j>=12; j--){
-		i_readFile(i, "Maps/simone.map", 14, j, 1);
+		i_readFile(i, "Maps/simone.map", 15, j, 1);
 		for (index = 0; index<9; index++){
-			i_writeCharMap(i, '@', 17, 112-count, 1);
-			if (count == 93) i_writeCharMap(i, ')', 17, 112-count+1, 1);
-			else i_writeCharMap(i, ' ', 17, 112-count+1, 1);
+			i_writeCharMap(i, '@', 18, 112-count, 1);
+			if (count == 93) i_writeCharMap(i, ')', 18, 112-count+1, 1);
+			else i_writeCharMap(i, ' ', 18, 112-count+1, 1);
 			count++;
 			usleep(50000);
 		}
 	}
-	i_writeCharMap(i, '@', 17, 112-count, 1);
-	i_writeCharMap(i, ' ', 17, 112-count+1, 1);
+	
+	
+	i_writeCharMap(i, '@', 18, 112-count, 1);
+	i_writeCharMap(i, ' ', 18, 112-count+1, 1);
 	usleep(50000);
-	i_writeCharMap(i, '!', 16, 11, 1);
+	i_writeCharMap(i, '!', 17, 11, 1);
 	usleep(150000);
-	i_writeCharMap(i, ' ', 16, 11, 1);
-	i_writeCharMap(i, ' ', 17, 112-count, 1);
-	i_writeCharMap(i, 'X', 17, 9, 1);
+	i_writeCharMap(i, ' ', 17, 11, 1);
+	i_writeCharMap(i, ' ', 18, 112-count, 1);
+	i_writeCharMap(i, 'X', 18, 9, 1);
+	
+	
 	for (j=8; j<=11; j++){
 		sprintf(buff, "../DATA/Dialogue/FiveToEnd/%d.txt", j);		
 		i_readFile(i, buff, 0, 0, 3);
