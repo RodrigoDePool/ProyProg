@@ -7,6 +7,7 @@
 #define BOARDPATH3 "./Codigo/DATA/miniInst/2048/board2048_3.txt"
 #define BOARDPATH4 "./Codigo/DATA/miniInst/2048/board2048_4.txt"
 #define INSTPATH "Codigo/DATA/miniInst/2048/instructions.txt"
+#define INFO_2048 "./Codigo/DATA/miniInst/2048/info.txt"
 
 int asprintf(char **strp, const char *fmt, ...);
 
@@ -246,6 +247,9 @@ int mini2048(Interface *in, int size, int max){
 	i_cleanMap(in);
 	i_readFile(in, INSTPATH , 1, 1, 2);
 	
+	i_readFile(in, INFO_2048, 5, 40, 1);
+    	_read_key();
+    	i_cleanMap(in);
 	
 	num = Numbers_ini(NUMBERSPATH);
 	if(!num) return -1;

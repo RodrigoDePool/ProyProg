@@ -7,6 +7,9 @@
 #define PATHLUCIA "./Codigo/DATA/miniInst/lucia/preguntas.txt"
 #define PATHPREGUNTAS "Codigo/DATA/miniInst/preguntas/preguntas.txt"
 #define INSTPATH "Codigo/DATA/miniInst/preguntas/instructions.txt"
+#define PREGUNTAS_INFO "./Codigo/DATA/miniInst/preguntas/info.txt"
+#define LUCIA_INFO "./Codigo/DATA/miniInst/lucia/info.txt"
+
 
 struct _Game{
 	char *intro;
@@ -394,8 +397,14 @@ int qa(Interface *in, int level){
 			
 	if(level == 1){
 		f = fopen(PATHLUCIA, "r");
+		i_readFile(in, PREGUNTAS_INFO, 10, 32, 1);
+    		_read_key();
+    		i_cleanMap(in);
 	}else{
 		f = fopen(PATHPREGUNTAS, "r");
+		i_readFile(in, LUCIA_INFO, 9, 18, 1);
+    		_read_key();
+    		i_cleanMap(in);
 	}
 	
 	if(f == NULL){
