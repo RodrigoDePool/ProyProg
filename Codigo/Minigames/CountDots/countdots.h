@@ -3,14 +3,14 @@
 #include "../../interface.h"
 #define ROWS             34
 #define COLS             113
-#define COUNT_INST       "DATA/miniInst/countDots/countInst"
-#define COUNT_INFO       "DATA/miniInst/info"
-#define SMALL_DOT        "DATA/miniInst/countDots/smallDot"
-#define MEDIUM_DOT       "DATA/miniInst/countDots/mediumDot"
-#define BIG_DOT          "DATA/miniInst/countDots/bigDot"
-#define FAIL             "DATA/miniInst/countDots/fail"
-#define CORRECT          "DATA/miniInst/countDots/Correct"
-#define ROUNDINFO        "DATA/miniInst/countDots/round"
+#define COUNT_INST       "Codigo/DATA/miniInst/countDots/countInst"
+#define COUNT_INFO       "Codigo/DATA/miniInst/countDots/info"
+#define SMALL_DOT        "Codigo/DATA/miniInst/countDots/smallDot"
+#define MEDIUM_DOT       "Codigo/DATA/miniInst/countDots/mediumDot"
+#define BIG_DOT          "Codigo/DATA/miniInst/countDots/bigDot"
+#define FAIL             "Codigo/DATA/miniInst/countDots/fail"
+#define CORRECT          "Codigo/DATA/miniInst/countDots/Correct"
+#define ROUNDINFO        "Codigo/DATA/miniInst/countDots/round"
 #define TIME_MSECONDS    100
 #define ROUNDS           5
 #define LIFES            2

@@ -14,12 +14,14 @@ int **matrix_rotateright(int **matrix, int size);
 /*Function that returns the matrix after doing an horizontal movement
   pressleft: dir = 1
   pressright: dir = -1*/
-int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won);
+int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won,
+									int max);
 
 /*Function that returns the matrix after doing a vertical movement
   pressup: dir = 1
   pressdown: dir = -1*/
-int **vmove(int** matrix, int dir, int size, int *score,int *finished, int *won);
+int **vmove(int** matrix, int dir, int size, int *score,int *finished, int *won,
+								 	int max);
 
 /*After a movement, this function prepares the matrix for the next movement
 (Checks if you have won/lost, and adds a new number to the matrix)*/
@@ -30,7 +32,13 @@ first version only available for SIZE FOUR */
 int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score);
 
 /*main function*/
-int mini2048(Interface *i);
+int mini2048(Interface *i, int size, int max);
+
+/*Small: size 3, max 32*/
+int mini2048_small(Interface *i);
+
+/*Big: mini2048 with size 4, max 2048*/
+int mini2048_big(Interface *i);
 
 
 

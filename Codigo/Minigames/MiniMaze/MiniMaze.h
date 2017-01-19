@@ -5,7 +5,7 @@
 #define QUIT              0
 #define MAZE_PATH         "Codigo/DATA/miniInst/maze/mazeInst"
 #define MAZE_CLUE_PATH    "Codigo/DATA/miniInst/maze/mazeClue"
-#define INFO              "Codigo/DATA/miniInst/info"
+#define INFO              "Codigo/DATA/miniInst/maze/info"
 
 /*
    Parameters:

@@ -1,17 +1,17 @@
 #ifndef MINIRPSLS
 #define MINIRPSLS
 #include "../../interface.h"
-#define INI_PATH           "DATA/miniInst/RPSLS/RPSLSini"
-#define SPOCK_PATH         "DATA/miniInst/RPSLS/SPOCK"
-#define LIZZARD_PATH       "DATA/miniInst/RPSLS/LIZZARD"
-#define SCISSORS_PATH      "DATA/miniInst/RPSLS/SCISSORS"
-#define ROCK_PATH          "DATA/miniInst/RPSLS/ROCK"
-#define PAPER_PATH         "DATA/miniInst/RPSLS/PAPER"
-#define RPSLS_INST_PATH    "DATA/miniInst/RPSLS/InstructionsRPSLS"
-#define TICK_PATH          "DATA/miniInst/RPSLS/TICK"
-#define CROSS_PATH         "DATA/miniInst/RPSLS/CROSS"
-#define ROUND_PATH         "DATA/miniInst/RPSLS/ROUNDS"
-#define INFO_RPSLS         "DATA/miniInst/info"
+#define INI_PATH           "Codigo/DATA/miniInst/RPSLS/RPSLSini"
+#define SPOCK_PATH         "Codigo/DATA/miniInst/RPSLS/SPOCK"
+#define LIZZARD_PATH       "Codigo/DATA/miniInst/RPSLS/LIZZARD"
+#define SCISSORS_PATH      "Codigo/DATA/miniInst/RPSLS/SCISSORS"
+#define ROCK_PATH          "Codigo/DATA/miniInst/RPSLS/ROCK"
+#define PAPER_PATH         "Codigo/DATA/miniInst/RPSLS/PAPER"
+#define RPSLS_INST_PATH    "Codigo/DATA/miniInst/RPSLS/InstructionsRPSLS"
+#define TICK_PATH          "Codigo/DATA/miniInst/RPSLS/TICK"
+#define CROSS_PATH         "Codigo/DATA/miniInst/RPSLS/CROSS"
+#define ROUND_PATH         "Codigo/DATA/miniInst/RPSLS/ROUNDS"
+#define INFO_RPSLS         "Codigo/DATA/miniInst/RPSLS/info"
 #define WAIT               5 /*sleep time in seconds between rounds*/
 
 /*

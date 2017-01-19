@@ -3,9 +3,10 @@
 #define NDEBUG
 #include <assert.h>
 #define NUMBERSPATH "./Codigo/DATA/miniInst/2048/numbers.txt"
-#define BOARDPATH "./Codigo/DATA/miniInst/2048/board2048.txt"
-#define LOSTPATH "./Codigo/DATA/miniInst/youlost.txt"
-#define WONPATH "./Codigo/DATA/miniInst/youwon.txt"
+#define BOARDPATH3 "./Codigo/DATA/miniInst/2048/board2048_3.txt"
+#define BOARDPATH4 "./Codigo/DATA/miniInst/2048/board2048_4.txt"
+#define INSTPATH "Codigo/DATA/miniInst/2048/instructions.txt"
+
 int asprintf(char **strp, const char *fmt, ...);
 
 struct _Numbers{
@@ -84,7 +85,7 @@ int **matrix_rotateright(int **matrix, int size){
 	return matrix;
 }
 
-int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won){
+int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won, int max){
 	assert (size > 0 && matrix !=NULL && score != NULL && (dir == 1 || dir == -1));
 	
 	int i, j, k, init, ch = 0;
@@ -123,7 +124,7 @@ int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won)
 					    	already been "twiced" in this movement 
 					    	(2240+lft = 4400, not 8000):we use the upd matrix */
 					    	matrix[j - dir][i] = 2 * matrix[j][i];
-					    	if(matrix[j - dir][i] == 32)
+					    	if(matrix[j - dir][i] == max)
 					    		*won = 1;
 					    	matrix[j][i] = 0;
 					    	upd[j - dir][i] = 1;
@@ -142,10 +143,10 @@ int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won)
 	
 }
 
-int **vmove(int** matrix, int dir, int size, int *score, int *finished, int*won){
+int **vmove(int** matrix, int dir, int size, int *score, int *finished, int*won, int max){
 	
 	matrix = matrix_rotateleft(matrix, size);
-	matrix = hmove(matrix, dir, size, score, finished, won);
+	matrix = hmove(matrix, dir, size, score, finished, won, max);
 	matrix = matrix_rotateright(matrix, size);
 	return matrix;
 	
@@ -212,10 +213,19 @@ int draw_matrix(Interface *i, int **matrix, Numbers *num, int size, int score){
 }
 
 
-int mini2048(Interface *in){
+int mini2048_small(Interface *in){
+	return mini2048(in, 3, 32);
+}
 
-	assert(in );
-	int i, j, rnd, score = 0, finished = 0, won = 0, size = 3;
+
+int mini2048_big(Interface *in){
+	return mini2048(in, 4, 2048);
+}
+
+int mini2048(Interface *in, int size, int max){
+
+	assert(in && size > 1 && max > 2);
+	int i, j, rnd, score = 0, finished = 0, won = 0;
 	Numbers *num;
 	char c;
 	int **matrix = (int **)malloc(size * sizeof(int *));
@@ -228,6 +238,13 @@ int mini2048(Interface *in){
 			return -1;
 		}
 	}
+	
+	/*Print instructions*/
+	i_cleanDisplay(in);
+	i_cleanCommand(in);
+	i_cleanMap(in);
+	i_readFile(in, INSTPATH , 1, 1, 2);
+	
 	
 	num = Numbers_ini(NUMBERSPATH);
 	if(!num) return -1;
@@ -242,14 +259,14 @@ int mini2048(Interface *in){
 	else rnd = 2;
 	i = rand() % size;
 	j = rand() % size;
-	matrix[j][i] = rnd; 
+	matrix[j][i] = rnd; 	
 	
-	i_cleanDisplay(in);
-	i_cleanCommand(in);
-	i_cleanMap(in);
+	if(size == 4){
+  		i_readFile(in, BOARDPATH4, 0, 0, 1);
+	}else if(size == 3){
+		i_readFile(in, BOARDPATH3, 0, 0, 1);
+	}
 	
-	
-  	i_readFile(in, BOARDPATH, 0, 0, 1);
 	draw_matrix(in, matrix, num, size, score);
 	i_drawStr(in, "Your score: ",  3, 2, 2);
 	
@@ -279,12 +296,8 @@ int mini2048(Interface *in){
 	/*finished game, won or not?*/
 	if(won == 1){
 		i_drawStr(in, "YOU WON!",  5, 4, 2);
-		sleep(2);
-		i_readFile(in, WONPATH , 0, 0, 1);
 	}else{
 		i_drawStr(in, "YOU LOST!", 5, 4, 2);
-		sleep(3);
-		i_readFile(in, LOSTPATH, 0, 0, 1);
 	}
 	sleep(2);
 	for(i = 0; i < size; i++)

@@ -247,7 +247,7 @@ Door *space_checkDoorPoint(Space *s, int x, int y)
     {
         if (doors(s)[i].x == x && doors(s)[i].y == y)
         {
-            return doors(s);
+            return(s->doors + i);
         }
     }
     return NULL;
@@ -338,7 +338,7 @@ Space * spacefromfile(FILE * f)
     ndoors = aux;
     for (i = 0; i < ndoors; i++)
     {
-        fscanf(f, "%d %d %d %d %d\n", &x, &y, &aux, &nx, &ny);
+        fscanf(f, "%d %d %d %d %d\n", &y, &x, &aux, &ny, &nx);
         if (space_setDoor(s, i, x, y, aux, nx, ny) == ERROR)
         {
             space_free(s);

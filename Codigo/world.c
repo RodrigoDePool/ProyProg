@@ -34,7 +34,7 @@ struct _World
     int       PlSpaceID;
     char      * path;
     Level     ** levels;
-    Minigame  ** minigame;
+    Minigame  * minigame;
     /*generally 1 = has finished the minigame with the same index;0 = has not finished the minigame but it can take any value except -1*/
     int * HasFinishedMinigame;
 };
@@ -52,32 +52,24 @@ char * fgetll(FILE * f)
 
 }
 
-Minigame ** minigamesIni()
+Minigame * minigamesIni()
 {
-    Minigame ** minigames = NULL;
+    Minigame * minigames = NULL;
     int      i;
-    minigames = (Minigame * *) malloc(sizeof(Minigame*) * numMinigames);
+    minigames = (Minigame *) malloc(sizeof(Minigame) * numMinigames);
 
-    minigames[0]  = NULL;
-    minigames[1]  = NULL;
-    minigames[2]  = NULL;
-    minigames[3]  = NULL;
-    minigames[4]  = NULL;
-    minigames[5]  = NULL;
-    minigames[6]  = NULL;
-    minigames[7]  = NULL;
-    minigames[8]  = NULL;
-    minigames[9]  = NULL;
-    minigames[10] = NULL;
-    minigames[11] = NULL;
-    minigames[12] = NULL;
-    minigames[13] = NULL;
-    minigames[14] = NULL;
-    minigames[15] = NULL;
-    minigames[16] = NULL;
-    minigames[17] = NULL;
-    minigames[18] = NULL;
-    minigames[19] = NULL;
+    minigames[0]  = &(easyMiniMaze);
+    minigames[1]  = &(easyMiniPadel);
+    minigames[2]  = &(mini2048_small);
+    minigames[3]  = &(miniRPSLS);
+    minigames[4]  = NULL;/*Calculo Rapido*/
+    minigames[5]  = &(easyCountDots);
+    minigames[6]  = &(snake);
+    minigames[7]  = &(hardCountDots);
+    minigames[8]  = &(questions);
+    minigames[9]  = &(hardMiniMaze);
+    minigames[10] = &(mini2048_big);
+    minigames[11] = &(hardMiniPadel);
 
     return minigames;
 }
@@ -123,7 +115,7 @@ Level ** levelsIni()
         free(buffer);
     }
 
-    levels[0]->initialAnimation = NULL;
+    
     levels[0]->finalAnimation   = NULL;
     levels[0]->PlIniRow         = -1;
     levels[0]->PlIniCol         = -1;
@@ -208,7 +200,7 @@ void world_free(World *w)
         free(w->levels[i]);
     }
     free(w->levels);
-
+    free(w->HasFinishedMinigame);
     free(w->minigame);
     free(w);
 
@@ -263,11 +255,11 @@ char * world_getPath(World * w)
     return(w->path);
 }
 
-Minigame * world_getMinigame(World * w, int ID)
+Minigame world_getMinigame(World * w, int ID)
 {
     if (!w || ID < 50 || ID - 50 > numMinigames - 1)
         return NULL;
-    return w->minigame[ID - 50];
+    return w->minigame[ID%50];
 }
 
 Space **world_getSpaces(World *w)
@@ -292,7 +284,7 @@ int world_getNumSpaces(World *w)
 int world_getPllevel(World * w)
 {
     if (!w)
-        return -1;
+        return -2;
     return w->Pllevel;
 }
 
