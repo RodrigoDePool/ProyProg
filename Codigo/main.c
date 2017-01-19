@@ -158,7 +158,7 @@ int main()
                             /*we get the space id*/
                             pspace = world_getPlSpaceID(w);
                             /*take the map and copy it*/
-                            map = map_copy(world_getSpaceMap(w, sid));
+                            map = map_copy(world_getSpaceMap(w, sid), 34, 113);
 
                             /*we play the minigame*/
                             minigame = world_getMinigame(w, sid);
