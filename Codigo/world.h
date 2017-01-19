@@ -4,9 +4,9 @@
 #include "types.h"
 #include "space.h"
 #include "interface.h"
-/*#include "Minigames/2048/2048.h" Añadir al makefile*/
+#include "Minigames/2048/2048.h"
 /*#include "Minigames/Calculo Rapido/" Añadir al makefile*/
-/*#include "Minigames/CountDots/countdots.h"*/
+#include "Minigames/CountDots/countdots.h"
 #include "Minigames/MiniMaze/MiniMaze.h"
 #include "Minigames/MiniPadel/miniPadel.h"
 #include "Minigames/MiniRPSLS/miniRPSLS.h"

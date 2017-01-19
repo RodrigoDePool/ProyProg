@@ -1,6 +1,6 @@
 all:  main clean
 
-main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o -lpthread #2048.o #game.o #MINIGAMES
+main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o -lpthread 2048.o #game.o #MINIGAMES
 	gcc -o main $^ #thread Library
 	
 mainPruebas: mainPruebas.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
@@ -24,8 +24,8 @@ main.o: Codigo/main.c
 mainPruebas.o: Codigo/mainPruebas.c
 	gcc -c $^
 
-#2048.o: Codigo/Minigames/2048/2048.c
-#	gcc -c $^
+2048.o: Codigo/Minigames/2048/2048.c
+	gcc -c $^
 	
 countdots.o: Codigo/Minigames/CountDots/countdots.c
 	gcc -c $^

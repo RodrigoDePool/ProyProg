@@ -60,15 +60,15 @@ Minigame * minigamesIni()
 
     minigames[0]  = &(easyMiniMaze);
     minigames[1]  = &(easyMiniPadel);
-    minigames[2]  = NULL; /*&(mini2048_small);*/
+    minigames[2]  = &(mini2048_small);
     minigames[3]  = &(miniRPSLS);
     minigames[4]  = NULL;/*Calculo Rapido*/
-    minigames[5]  = NULL;/*&(easyCountDots);*/
+    minigames[5]  = &(easyCountDots);
     minigames[6]  = &(snake);
-    minigames[7]  = NULL;/*&(hardCountDots);*/
+    minigames[7]  = &(hardCountDots);
     minigames[8]  = &(questions);
     minigames[9]  = &(hardMiniMaze);
-    minigames[10] = NULL; /*&(mini2048_big);*/
+    minigames[10] = &(mini2048_big);
     minigames[11] = &(hardMiniPadel);
 
     return minigames;
