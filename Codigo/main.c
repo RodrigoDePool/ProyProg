@@ -64,8 +64,6 @@ int main()
 
     i = world_getInterface(w);
 
-    /*SEE IF YOU ARE IN SPACE 0 AND EXECUTE TUTORIAL*/
-
     /*sets first maps*/
     prow   = world_getPlRow(w);
     pcol   = world_getPlCol(w);

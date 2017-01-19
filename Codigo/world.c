@@ -34,49 +34,42 @@ struct _World
     int       PlSpaceID;
     char      * path;
     Level     ** levels;
-    Minigame  ** minigame;
+    Minigame  * minigame;
     /*generally 1 = has finished the minigame with the same index;0 = has not finished the minigame but it can take any value except -1*/
-    int       * HasFinishedMinigame;
+    int * HasFinishedMinigame;
 };
 
 char * fgetll(FILE * f)
 {
     char * c;
-    c    = (char *) malloc(sizeof(char) * (MAXBUF + 1));
-    c[0] = '#';
-    while (c[0] == '#')
+    c=(char*)malloc(sizeof(char)*(MAXBUF+1));
+    c[0]='#';
+    while(c[0]=='#')
         fgets(c, MAXBUF, f);
-    if (c[strlen(c) - 1] == '\n')
-        c[strlen(c) - 1] = 0;
+    if(c[strlen(c)-1]=='\n')
+        c[strlen(c)-1]=0;
     return c;
+
 }
 
-Minigame ** minigamesIni()
+Minigame * minigamesIni()
 {
-    Minigame ** minigames = NULL;
+    Minigame * minigames = NULL;
     int      i;
-    minigames = (Minigame * *) malloc(sizeof(Minigame*) * numMinigames);
-/*
+    minigames = (Minigame *) malloc(sizeof(Minigame) * numMinigames);
+
     minigames[0]  = &(easyMiniMaze);
     minigames[1]  = &(easyMiniPadel);
-    minigames[2]  = &(mini2048_small);
+    minigames[2]  = NULL; /*&(mini2048_small);*/
     minigames[3]  = &(miniRPSLS);
     minigames[4]  = NULL;/*Calculo Rapido*/
-    minigames[5]  = NULL;
-    minigames[6]  = NULL;
-    minigames[7]  = NULL;
-    minigames[8]  = NULL;
-    minigames[9]  = NULL;
-    minigames[10] = NULL;
-    minigames[11] = NULL;
-    minigames[12] = NULL;
-    minigames[13] = NULL;
-    minigames[14] = NULL;
-    minigames[15] = NULL;
-    minigames[16] = NULL;
-    minigames[17] = NULL;
-    minigames[18] = NULL;
-    minigames[19] = NULL;
+    minigames[5]  = NULL;/*&(easyCountDots);*/
+    minigames[6]  = &(snake);
+    minigames[7]  = NULL;/*&(hardCountDots);*/
+    minigames[8]  = &(questions);
+    minigames[9]  = &(hardMiniMaze);
+    minigames[10] = NULL; /*&(mini2048_big);*/
+    minigames[11] = &(hardMiniPadel);
 
     return minigames;
 }
@@ -85,19 +78,17 @@ Level ** levelsIni()
 {
     Level ** levels;
     int   i;
-    FILE  *f;
-    char  * buffer;
+    FILE *f;
+    char * buffer;
 
-    f = fopen(SOLUTIONS_PATH, "r");
+    f=fopen(SOLUTIONS_PATH, "r");
 
-    if (!f)
-    {
+    if(!f){
         return NULL;
     }
 
     levels = (Level * *) malloc(sizeof(Level*) * numLevels);
-    if (!levels)
-    {
+    if(!levels){
         fclose(f);
         return NULL;
     }
@@ -106,12 +97,11 @@ Level ** levelsIni()
     {
         levels[i] = (Level *) malloc(sizeof(Level));
     }
-
-    for (i = 0; i < numLevels; i++)
+    
+    for(i=0;i<numLevels;i++)
     {
-        buffer = fgetll(f);
-        if (buffer == NULL)
-        {
+        buffer=fgetll(f);
+        if(buffer==NULL){
             fclose(f);
             for (i = 0; i < numLevels; i++)
             {
@@ -125,12 +115,12 @@ Level ** levelsIni()
         free(buffer);
     }
 
-    levels[0]->initialAnimation = NULL;
+    
     levels[0]->finalAnimation   = NULL;
     levels[0]->PlIniRow         = -1;
     levels[0]->PlIniCol         = -1;
     levels[0]->PlIniSpaceID     = -1;
-
+    
 
     fclose(f);
     return levels;
@@ -139,7 +129,7 @@ Level ** levelsIni()
 World *world_ini(char * path, Interface * i)
 {
     World *w;
-    int   j;
+    int j;
     w = (World *) malloc(sizeof(World));
     if (w == NULL)
         return NULL;
@@ -150,14 +140,12 @@ World *world_ini(char * path, Interface * i)
     w->numspaces  = 0;
     w->PlSpaceID  = -1;
     w->levels     = levelsIni();
-    if (!w->levels)
-    {
+    if(!w->levels){
         free(w);
         return NULL;
     }
-    w->minigame = minigamesIni();
-    if (!w->minigame)
-    {
+    w->minigame   = minigamesIni();
+    if(!w->minigame){
         for (j = 0; j < numLevels; j++)
         {
             free(w->levels[j]->solution);
@@ -166,17 +154,16 @@ World *world_ini(char * path, Interface * i)
         free(w);
         return NULL;
     }
-    w->Pllevel             = 0;
-    w->HasFinishedMinigame = (int *) malloc(sizeof(int) * numMinigames);
+    w->Pllevel    = 0;
+    w->HasFinishedMinigame=(int*)malloc(sizeof(int)*numMinigames);
     if (path == NULL)
         w->path = NULL;
     else
         w->path = (char *) malloc(sizeof(char) * (strlen(path) + 1));
-    if (!w->path)
-    {
-        world_free(w);
-        return NULL;
-    }
+        if(!w->path){
+            world_free(w);
+            return NULL;
+        }
     strcpy(w->path, path);
 
     w->i = i;
@@ -237,26 +224,23 @@ Interface * world_getInterface(World * w)
     return w->i;
 }
 
-Level * world_getLevel(World * w, int ID)
-{
-    if (!w || ID < 0 || ID > numLevels)
+Level * world_getLevel(World * w, int ID){
+    if(!w||ID<0||ID>numLevels)
         return NULL;
     return w->levels[ID];
 }
 
-int world_setMinigameFinished(World * w, int ID, int finished)
-{
-    if (!world_free || ID < 0 || ID % 50 > (numMinigames - 1))
+int world_setMinigameFinished(World * w, int ID, int finished){
+    if(!world_free||ID<0||ID%50>(numMinigames-1))
         return -1;
-    w->HasFinishedMinigame[ID % 50] = finished;
+    w->HasFinishedMinigame[ID%50]=finished;
     return 0;
 }
 
-int world_getMinigameFinished(World * w, int ID)
-{
-    if (!w || ID < 0 || ID % 50 > (numMinigames - 1))
+int world_getMinigameFinished(World * w, int ID){
+    if(!w||ID<0||ID%50>(numMinigames-1))
         return -1;
-    return w->HasFinishedMinigame[ID % 50];
+    return w->HasFinishedMinigame[ID%50];
 }
 
 void world_setPath(World * w, char * path)
@@ -271,11 +255,11 @@ char * world_getPath(World * w)
     return(w->path);
 }
 
-Minigame * world_getMinigame(World * w, int ID)
+Minigame world_getMinigame(World * w, int ID)
 {
     if (!w || ID < 50 || ID - 50 > numMinigames - 1)
         return NULL;
-    return w->minigame[ID - 50];
+    return w->minigame[ID%50];
 }
 
 Space **world_getSpaces(World *w)
@@ -300,7 +284,7 @@ int world_getNumSpaces(World *w)
 int world_getPllevel(World * w)
 {
     if (!w)
-        return -1;
+        return -2;
     return w->Pllevel;
 }
 
@@ -449,7 +433,7 @@ World *worldfromfile(char *file, Interface * i)
     if (f == NULL)
         return NULL;
 
-
+    
     /*PLAYER*/
     line = fgetll(f);
     sscanf(line, "%d %d %d", &(w->PlSpaceID), &(PlRow), &(PlCol));
@@ -457,7 +441,7 @@ World *worldfromfile(char *file, Interface * i)
     SpacePathsFile = fopen(SPACE_PATHS_FILE, "r");
     i_drawPl(w->i, PlRow, PlCol);
 
-
+    
     /*Space*/
     line = fgetll(f);
     sscanf(line, "%d", &(w->numspaces));
@@ -482,7 +466,7 @@ World *worldfromfile(char *file, Interface * i)
         line    = fgetll(f);
         SpaceID = atoi(line);
         free(line);
-        line = fgetll(SpacePathsFile);
+        line=  fgetll(SpacePathsFile);
 
         SpaceFile = fopen(line, "r");
         free(line);
@@ -527,8 +511,7 @@ World *worldfromfile(char *file, Interface * i)
 
     /*Finished Minigames*/
 
-    for (j = 0; j < numMinigames; j++)
-    {
+    for(j=0;j<numMinigames;j++){
         fscanf(f, "%d ", &(w->HasFinishedMinigame[j]));
     }
 
@@ -572,8 +555,7 @@ int world_saveToFile(World * w, char * path)
 
     /*Finished Minigames*/
 
-    for (i = 0; i < numMinigames; i++)
-    {
+    for(i=0;i<numMinigames;i++){
         fprintf(f, "%d ", w->HasFinishedMinigame[i]);
     }
 

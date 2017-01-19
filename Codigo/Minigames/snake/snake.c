@@ -157,14 +157,14 @@ void *snake_play(void *interface) /*This function will move the snake according 
 			    buff = key_read;
 			    aux = snake_move(s, i, buff);
 			    if (aux == -1){
-				snake_free(s);
-				flag_snakeResult = -1;
-				return NULL;
+					snake_free(s);
+					flag_snakeResult = -1;
+					return NULL;
 			    }
-			    else if (aux == -2)
-				snake_free(s);
-				flag_snakeResult = -2;
-				return NULL;
+			    else if (aux == -2){
+					snake_free(s);
+					flag_snakeResult = -2;
+					return NULL;
 			    }
 			    usleep(100000); /*soft delay between movements*/
 			}

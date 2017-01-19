@@ -4,29 +4,25 @@
 #include "types.h"
 #include "space.h"
 #include "interface.h"
-/*#include "/Minigames/2048/2048.h"*/
-/*#include "/Minigames/Calculo Rapido/"*/
-/*#include "/Minigames/MiniMaze/MiniMaze.h"
-   #include "/Minigames/MiniPadel/miniPadel.h"
-   #include "/Minigames/MiniRPSLS/miniRPSLS.h"
-   /*#include "/Minigames/preguntas"*/
-/*#include "/Minigames/snake/snake.h"*/
+/*#include "Minigames/2048/2048.h" Añadir al makefile*/
+/*#include "Minigames/Calculo Rapido/" Añadir al makefile*/
+/*#include "Minigames/CountDots/countdots.h"*/
+#include "Minigames/MiniMaze/MiniMaze.h"
+#include "Minigames/MiniPadel/miniPadel.h"
+#include "Minigames/MiniRPSLS/miniRPSLS.h"
+#include "Minigames/preguntas/qa.h"
+#include "Minigames/snake/snake.h"
+#include "Animations/animations.h"
 /*NOTE: if you change the next two defines you need to change their initialization functions in world.c*/
-#define numMinigames        20
+#define numMinigames        12
 #define numLevels           4
 #define SPACE_PATHS_FILE    "Codigo/DATA/world/SpacePaths"
-#define SOLUTIONS_PATH      "Codigo/DATA/world/Solutions"
+#define SOLUTIONS_PATH "Codigo/DATA/world/Solutions"
 
 /*The Spaces paths must be in a file with the SPACE_PATHS_FILE path*/
 
 typedef struct _World   World;
 
-/*Function: Initializes a World		      */
-/*Parameters: you can give the function a path and an interface if you want                */
-/*Returns: a World with the given data		      */
-/*NOTE IMPORTANT: you dont need to give the path and the interface now,
-        you can just type NULL, NULL and introduce them later*/
-/*Less important note: the path will be copied, you may free your string*/
 
 typedef int (*Minigame)(Interface * i);
 typedef int (*Animation)(Interface * i);
@@ -34,13 +30,19 @@ typedef int (*Animation)(Interface * i);
 typedef struct _Level
 {
     char      * solution;
-    Animation * initialAnimation;
     Animation * finalAnimation;
     /*Initial coords*/
     int       PlIniRow;
     int       PlIniCol;
     int       PlIniSpaceID;
 }Level;
+
+/*Function: Initializes a World         */
+/*Parameters: you can give the function a path and an interface if you want                */
+/*Returns: a World with the given data          */
+/*NOTE IMPORTANT: you dont need to give the path and the interface now,
+        you can just type NULL, NULL and introduce them later*/
+/*Less important note: the path will be copied, you may free your string*/
 
 
 World *world_ini(char * path, Interface * i);
@@ -53,36 +55,36 @@ void world_free(World *);
 
 /*Function: it sets an interface and frees the previous one if there was one
  *
- *******Parameters: world and interface (already initialized)
- *******Returns: -1 if something went wrong and 0 if everything went right
- *******Revision: 6 Jan 2017
+ ***Parameters: world and interface (already initialized)
+ ***Returns: -1 if something went wrong and 0 if everything went right
+ ***Revision: 6 Jan 2017
  */
 
 int world_setInterface(World * w, Interface * i);
 
 /*Function: it returns the interface ofthe world
  *
- *******Parameters: world
- *******Revision: 6 Jan 2017
+ ***Parameters: world
+ ***Revision: 6 Jan 2017
  */
 
 Interface * world_getInterface(World * w);
 
 /*Function: sets a path to store the world (but it does not store it)
  *
- *******Parameters: world and path
- *******Returns: nothing
- *******Revision: 6 Jan 2017
+ ***Parameters: world and path
+ ***Returns: nothing
+ ***Revision: 6 Jan 2017
  */
 
 void world_setPath(World * w, char * path);
 
 /*Function: tells you if you have finished a minigame (you have to tell the world when you finish a minigame)
  *
- *******Parameters: world and minigame ID (it can be < 50 or > 50)
- *******Returns: the value you have assigned or -1 if error
- *******(generally 0 if you ave not finished or 1 f you have finished a minigame)
- *******Revision: 18 Jan 2017
+ ***Parameters: world and minigame ID (it can be < 50 or > 50)
+ ***Returns: the value you have assigned or -1 if error 
+ ***(generally 0 if you ave not finished or 1 f you have finished a minigame)
+ ***Revision: 18 Jan 2017
  */
 
 int world_getMinigameFinished(World * w, int ID);
@@ -90,10 +92,10 @@ int world_getMinigameFinished(World * w, int ID);
 
 /*Function: you can tell the world if you have finished a minigame
  *
- *******Parameters: world and minigame ID (<50 or >50)
- *******Returns: -1 if err or the value you have assigned in any other case
- *******(generally 0 if you ave not finished or 1 f you have finished a minigame)
- *******Revision: 18 Jan 2017
+ ***Parameters: world and minigame ID (<50 or >50)
+ ***Returns: -1 if err or the value you have assigned in any other case
+ ***(generally 0 if you ave not finished or 1 f you have finished a minigame)
+ ***Revision: 18 Jan 2017
  */
 
 int world_setMinigameFinished(World * w, int ID, int finished);
@@ -249,7 +251,7 @@ int isItASpaceOrAMinigame(int ID);
    *Parameters: the world and the ID
    *Returs: NULL = Error ; anyithing else will be the minigame pointer
  */
-Minigame * world_getMinigame(World * w, int ID);
+Minigame world_getMinigame(World * w, int ID);
 
 /*
    *Function: gets a level given a level number (ID)
@@ -258,5 +260,19 @@ Minigame * world_getMinigame(World * w, int ID);
  */
 
 Level * world_getLevel(World * w, int ID);
+
+/*
+   *Function: gets the level in which the player is in
+   *Parameters: the world
+   *Returs: -2 = Error ; anyithing else will be the level
+ */
+int world_getPllevel(World * w);
+
+/*
+   *Function: changes the level in which the player is in
+   *Parameters: the world, and the level
+ */
+
+void world_setPllevel(World * w, int Pllevel);
 
 #endif

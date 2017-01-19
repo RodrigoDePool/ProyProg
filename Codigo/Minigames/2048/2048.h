@@ -14,7 +14,7 @@ int **matrix_rotateright(int **matrix, int size);
 /*Function that returns the matrix after doing an horizontal movement
   pressleft: dir = 1
   pressright: dir = -1*/
-int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won
+int **hmove(int** matrix, int dir, int size, int *score, int *finished, int*won,
 									int max);
 
 /*Function that returns the matrix after doing a vertical movement
