@@ -1,7 +1,7 @@
 all:  main clean
 
-main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o -lpthread 2048.o calculus.o #game.o #MINIGAMES
-	gcc -o main $^ #thread Library
+main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o  2048.o calculus.o #game.o #MINIGAMES
+	gcc -o main $^ -lpthread
 	
 mainPruebas: mainPruebas.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
 	gcc -o mainPruebas $^
