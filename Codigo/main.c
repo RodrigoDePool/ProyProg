@@ -12,6 +12,10 @@
 #define EXIT_POPUP        "Codigo/DATA/popups/exit"
 #define MINI_POPUP        "Codigo/DATA/popups/mini"
 #define FINISHED_POPUP    "Codigo/DATA/popups/finished"
+#define WIN_POPUP         "Codigo/DATA/miniInst/youwon"
+#define LOST_POPUP        "Codigo/DATA/miniInst/youlost"
+#define NEW_POPUP         "Codigo/DATA/popups/newobject"
+#define FAIL_POPUP        "Codigo/DATA/popups/failed"
 #define NDEBUG
 #include <assert.h>
 
@@ -35,10 +39,15 @@
 char YorN();
 
 
+
 /*
     given a map an its size it allocates new memory and copies it.
  */
 char **map_copy(char **map, int rows, int cols);
+/*
+    Frees the map
+ */
+void map_mainFree(char **map, int rows);
 
 int main()
 {
@@ -46,7 +55,7 @@ int main()
     Interface *i;
     Space     *s;
     Door      *d;
-    Minigame  *minigame;
+    Minigame  minigame;
     /*row , col and space the player is in*/
     int       prow, pcol, pspace;
     /*flag to see if the key press was a move*/
@@ -88,6 +97,12 @@ int main()
             /*Solve function*/
             /*if fail print fail message and thats it*/
             /*else animation and set WHOLE new space and stuff*/
+            /*TEST FOR LEVEL 0*/
+            world_setPlSpaceID(w, 7);
+            map = world_getSpaceMap(w, 7);
+            i_setMap(i, map);
+            i_drawPl(i, 23, 75);
+            /*END OF TEST*/
         }
         else if (c == HELP_KEY)
         {
@@ -151,12 +166,13 @@ int main()
                         /*ask if the player want to play the minigame*/
                         i_readFile_notMap(i, MINI_POPUP, 12, 40, 1);
                         c = YorN();
+                        i_drawAll(i);
                         if (c == 'y')
                         {
                             /*we get the space id*/
                             pspace = world_getPlSpaceID(w);
                             /*take the map and copy it*/
-                            map = map_copy(world_getSpaceMap(w, sid), 34, 113);
+                            map = map_copy(world_getSpaceMap(w, pspace), 34, 113);
 
                             /*we play the minigame*/
                             minigame = world_getMinigame(w, sid);
@@ -164,20 +180,33 @@ int main()
 
                             if (win == 1)
                             {
-                                /*WIN*/
+                                i_cleanMap(i);
+                                i_readFile(i, WIN_POPUP, 0, 0, 1);
+                                _read_key();
+                                i_cleanMap(i);
+                                i_readFile(i, NEW_POPUP, 12, 40, 1);
+                                _read_key();
+                                world_setMinigameFinished(w, sid, 1);
+                                aux = world_getNumObjects(w);
+                                aux++;
+                                world_setNumObjects(w, aux);
                             }
                             else
                             {
-                                /*LOST*/
+                                i_cleanMap(i);
+                                i_readFile(i, LOST_POPUP, 0, 0, 1);
+                                _read_key();
+                                i_cleanMap(i);
+                                i_readFile(i, FAIL_POPUP, 12, 40, 1);
+                                _read_key();
                             }
-                            /*minigame set up*/
-                            /*IF LOSE*/
-                            /*losing message*/
-                            /*maybe allow him to go play it again or going back*/
-                            /*IF WIN*/
-                            /*win message, inform of new piece of info in solve*/
-                            /*if they have all 3 of the minigame encourage to solve
-                               the riddle*/
+                            /*we reset the map*/
+                            i_setMap(i, map);
+                            /*we reset the player*/
+                            i_drawPl(i, prow, pcol);
+                            /*free the copy*/
+                            map_mainFree(map, 13);
+                            /*RESET THE MAP AND THE PANEL*/
 
                             /*resetting map .. idrawALl??*/
                         }
@@ -234,7 +263,16 @@ char **map_copy(char **map, int rows, int cols)
     return copy;
 }
 
-
+void map_mainFree(char **map, int rows)
+{
+    int i;
+    if (map == NULL)
+        return;
+    for (i = 0; i < rows; i++)
+        free(map[i]);
+    free(map);
+    return;
+}
 
 
 
