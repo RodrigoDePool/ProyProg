@@ -35,6 +35,10 @@ struct _Answer{
 /********* LOCAL FUNCTIONS DECLARATION ***********/
 /*************************************************/
 
+
+/*Copied from the cop*/
+char *unpack_answer(char *ans, char *object, char separator);
+
 /*Given a game struct, builds and writes the intro of a certain question
  "Imagine arroz asked you, "habicbuela?" what whoukd you answer?"
  Returns -1 if anything went wrong
@@ -238,6 +242,42 @@ int questions(Interface *in){
 /*************************************************/
 /****** LOCAL FUNCTIONS IMPLEMENTATION ***********/
 /*************************************************/
+
+char *unpack_answer(char *ans, char *object, char separator)
+{
+    assert(ans && object);
+    char *answer = NULL, *pc1, *pc2;
+    int  obj_len = strlen(object);
+    int  n_stars = 0;
+
+    /*Initializes answ with enough space*/
+    for (pc1 = ans; *pc1 != '\0'; pc1++)
+    {
+        if (*pc1 == separator)
+            n_stars++;
+    }
+    answer = (char *) malloc(strlen(ans) + ((n_stars * obj_len) + 1) * sizeof(char));
+    if (!answer)
+        return NULL;
+
+    /*Copy ans in answer replacing * with object*/
+    for (pc1 = ans, pc2 = answer; *pc1 != '\0'; pc1++)
+    {
+        if (*pc1 != separator)
+        {
+            *pc2 = *pc1;
+            pc2++;
+        }
+        else
+        {
+            for (int i = 0; i < obj_len; i++)
+                *pc2++ = object[i];
+            /*			pc2 += obj_len; */
+        }
+    }
+    *pc2 = '\0';
+    return answer;
+}
 
 
 int build_intro(Interface *in, Game* g, int i, int row, int col){

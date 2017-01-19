@@ -23,6 +23,9 @@ String *string_ini(char *path);
 /* Frees a given string and all its members*/
 void string_free(String *s);
 
+/*Returns the number of strings in a struct, or -1 in case of error*/
+int string_getNumber(String *s);
+
 /*Executes help if n = 0, save if n = 1, solve if n = 2
   
   Help: -1 when memory error, else 0 (even if you didnt have neough objects)

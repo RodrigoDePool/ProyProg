@@ -1,5 +1,5 @@
 #include "../../interface.h"
-#include "../../cop.h"
+/*#include "../../cop.h"*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -281,13 +281,13 @@ int mini2048(Interface *in, int size, int max){
 		}
 		/*call movement*/
 		if(c == EAST){
-			hmove(matrix, -1, size, &score, &finished, &won);
+			hmove(matrix, -1, size, &score, &finished, &won, max);
 		}else  if (c == WEST){
-			hmove(matrix, +1, size, &score, &finished, &won);
+			hmove(matrix, +1, size, &score, &finished, &won, max);
 		}else if (c == SOUTH){
-			vmove(matrix, +1, size, &score, &finished, &won);
+			vmove(matrix, +1, size, &score, &finished, &won, max);
 		}else if (c == NORTH){
-			vmove(matrix, -1, size, &score, &finished, &won);
+			vmove(matrix, -1, size, &score, &finished, &won, max);
 		}
 		/*draw things*/
 		draw_matrix(in, matrix, num, size, score);

@@ -20,11 +20,6 @@ struct _Strings{
 /**********************************************/
 /******   LOCAL FUNCTIONS DECLARATION   *******/
 /**********************************************/
-String *string_ini(char *path);
-
-
-
-
 /*Gives a clue to the space riddle if the player has all the space objects
   Else, tells the player that he cannot be helped
   Returns -1 if anything went wrong*/
@@ -43,49 +38,6 @@ int game_solve(World *w, String *s);
 /**********************************************/
 /*****   LOCAL FUNCTIONS IMPLEMENTATION   *****/
 /**********************************************/
-String *string_ini(char *path){
-	int nst, i, j;
-	FILE *f = fopen(STRPATH, "r");
-	if(f == NULL)
-		return NULL;
-	
-	String *s = (String *)malloc(sizeof(String));
-	if(st == NULL){
-		fclose(f);
-		return NULL;
-	}
-	fscanf(f, "%d\n", &(s->ns));
-	s->st =(char **)malloc(s->ns * sizeof(char *));
-	if(s->st == NULL){
-		string_free(s);
-		fclose(f);
-		return NULL;
-	}
-	for(i = 0;i < s->ns; i++){
-		fscanf(f, "%m[^#]#\n\n", (s->st)+i);
-		if( s->st[i] == NULL ){
-			string_free(s);
-			fclose(f);
-			return NULL;			
-		}
-	}
-	return s;
-}
-
-void string_free(String *s){
-	int i;
-	if(s){
-		if(s->st){
-			for(i = 0; i < s->ns; i++){
-				if(s->st[i])
-					free(s->st[i]);
-			}
-			free(s->st);
-		}
-		free(s);
-	}
-}
-
 
 int game_help(World *w, String *s){
 	assert(w && s);
@@ -166,8 +118,9 @@ int game_solve(World *w, String *s){
 	i_readFile_notMap(in, s->st[3], INIROW , INICOL , 3);
 			
 	/* Meto en solution la solucion del jugador... ¿habra que quitar el \n*/
+	pl_sol = NULL;
 	/*  Save in pl_sol*/
-	
+
 	
 	
 	
@@ -197,6 +150,53 @@ int game_solve(World *w, String *s){
 /****   PUBLUC FUNCTIONS IMPLEMENTATION   *****/
 /**********************************************/
 
+String *string_ini(char *path){
+	int nst, i, j;
+	FILE *f = fopen(STRPATH, "r");
+	if(f == NULL)
+		return NULL;
+	
+	String *s = (String *)malloc(sizeof(String));
+	if(st == NULL){
+		fclose(f);
+		return NULL;
+	}
+	fscanf(f, "%d\n", &(s->ns));
+	s->st =(char **)malloc(s->ns * sizeof(char *));
+	if(s->st == NULL){
+		string_free(s);
+		fclose(f);
+		return NULL;
+	}
+	for(i = 0;i < s->ns; i++){
+		fscanf(f, "%m[^#]#\n\n", (s->st)+i);
+		if( s->st[i] == NULL ){
+			string_free(s);
+			fclose(f);
+			return NULL;			
+		}
+	}
+	return s;
+}
+
+void string_free(String *s){
+	int i;
+	if(s){
+		if(s->st){
+			for(i = 0; i < s->ns; i++){
+				if(s->st[i])
+					free(s->st[i]);
+			}
+			free(s->st);
+		}
+		free(s);
+	}
+}
+
+int string_getNumber(String *s){
+	assert(s);
+	return s->nums;
+}
 
 int game_f(World *w, int n){
 	assert(w && n>-1 && n<3);
