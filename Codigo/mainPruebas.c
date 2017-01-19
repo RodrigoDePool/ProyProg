@@ -52,36 +52,37 @@ int main()
     int       sid, aux;
     char      c;
     char      **map;
-
+    _term_init();
+    i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
+    if (i == NULL)
+        return 0;
+    i_drawAll(i);
     /*Starting menu*/
     w = worldfromfile("Codigo/DATA/LOAD/default", i);
     if (w == NULL)
     {
         return 0;
     }
+    
+
+    /*SEE IF YOU ARE IN SPACE 0 AND EXECUTE TUTORIAL*/
+
+    /*sets first maps*/
     prow   = world_getPlRow(w);
     pcol   = world_getPlCol(w);
     pspace = world_getPlSpaceID(w);
     map    = world_getSpaceMap(w, pspace);
-    i      = world_getInterface(w);
     i_setMap(i, map);
     i_drawPl(i, prow, pcol);
 
     /*SET INFO IN PANEL*/
     /*set descriptions and objects(part of the riddle) in display*/
-    /*SEE IF YOU ARE IN SPACE 0 AND EXECUTE TUTORIAL*/
+
     /*main game loop*/
     while (1)
     {
-        fmove = 0;
-        c     = _read_key();
-        /*if its a move*/
-        if (c == SOUTH || c == NORTH || c == WEST || c == EAST)
-        {
-            fmove = 1; /*there was a movement*/
-            move(i, c);
-        }
-        else if (c == SAVE_KEY)
+        c = _read_key();
+        if (c == SAVE_KEY)
         {
             /*menu function of save*/
         }
@@ -109,52 +110,93 @@ int main()
             i_drawAll(i);
         }
         /*if there was a movement*/
-        if (fmove == 1)
+        else if (c == SOUTH || c == NORTH || c == WEST || c == EAST)
         {
+            /*we move the player*/
+            move(i, c);
             /*get new prow, pcol after movement*/
             prow = world_getPlRow(w);
             pcol = world_getPlCol(w);
-            s    = world_getSpace(w, pspace);
-            d    = space_checkDoorAPoint(s, pcol, prow);
+            /*we get the space id and check for a door*/
+            pspace = world_getPlSpaceID(w);
+            s      = world_getSpace(w, pspace);
+            d      = space_checkDoorAPoint(s, pcol, prow);
+
             if (d != NULL)
             {
-                i_readFile_notMap(i, DOOR_POPUP, 12, 40, 1);
-                c = YorN();
-                i_drawAll(i);
-                if (c == 'y')
-                {
-                    aux = isItASpaceOrAMinigame(sid);
-                    /*if its a space*/
-                    if (aux == 0)
-                    {
-                        sid  = d->neighbour;
-                        prow = d->ny;
-                        pcol = d->nx;
-                        map  = world_getSpaceMap(w, sid);
-                        i_setMap(i, map);
-                        i_drawPl(i, prow, pcol);
-                        world_setPlSpaceID(w, sid);
-                        /*are we missing any settingfor the space*/
-                        /*setting info display desc + keys*/
-                    }
-                    else if (aux == 1)
-                    {
-                        /*minigame set up*/
-                        /*IF LOSE*/
-                        /*losing message*/
-                        /*maybe allow him to go play it again or going back*/
-                        /*IF WIN*/
-                        /*win message, inform of new piece of info in solve*/
-                        /*if they have all 3 of the minigame encourage to solve
-                           the riddle*/
+                /*id of the door*/
+                sid = d->neighbour;
+                aux = isItASpaceOrAMinigame(sid);
 
-                        /*resetting map .. idrawALl??*/
+                /*if its a space*/
+                if (aux == 0)
+                {
+                    /*info of the door the player appears in*/
+                    prow = d->nx;
+                    pcol = d->ny;
+                    /*set the space we moved to*/
+                    world_setPlSpaceID(w, sid);
+                    /*take the map*/
+                    map = world_getSpaceMap(w, sid);
+                    /*set map and player in new position*/
+                    i_setMap(i, map);
+                    i_drawPl(i, prow, pcol);
+                    /*setting info display desc + keys*/
+                }
+                /*if its a minigame*/
+                else if (aux == 1)
+                {
+                    /*check if you have or you havent finished this game*/
+                    finished = world_getMinigameFinished(w, sid);
+                    /*if havent finished*/
+                    if (finished == 0)
+                    {
+                        /*ask if the player want to play the minigame*/
+                        i_readFile_notMap(i, MINI_POPUP, 12, 40, 1);
+                        c = YorN();
+                        if (c == 'y')
+                        {
+                            /*we get the space id*/
+                            pspace = world_getPlSpaceID(w);
+                            /*take the map and copy it*/
+                            map = map_copy(world_getSpaceMap(w, sid), 34, 113);
+
+                            /*we play the minigame*/
+                            minigame = world_getMinigame(w, sid);
+                            win      = (*minigame)(i);
+
+                            if (win == 1)
+                            {
+                                /*WIN*/
+                            }
+                            else
+                            {
+                                /*LOST*/
+                            }
+                            /*minigame set up*/
+                            /*IF LOSE*/
+                            /*losing message*/
+                            /*maybe allow him to go play it again or going back*/
+                            /*IF WIN*/
+                            /*win message, inform of new piece of info in solve*/
+                            /*if they have all 3 of the minigame encourage to solve
+                               the riddle*/
+
+                            /*resetting map .. idrawALl??*/
+                        }
+                    }
+                    else
+                    {
+                        i_readFile_notMap(i, FINISHED_POPUP, 12, 40, 1);
+                        _read_key();
+                        i_drawAll(i);
                     }
                 }
             }
         }
     }
 }
+
 
 
 
@@ -194,6 +236,9 @@ char **map_copy(char **map, int rows, int cols)
     }
     return copy;
 }
+
+
+
 
 
 
