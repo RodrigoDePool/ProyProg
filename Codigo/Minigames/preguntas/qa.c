@@ -2,6 +2,7 @@
 #define NDEBUG
 #include <assert.h>
 #include <time.h>
+#include <unistd.h>
 #include <pthread.h>
 #define PATHLUCIA "./Codigo/DATA/miniInst/lucia/preguntas.txt"
 #define PATHPREGUNTAS "Codigo/DATA/miniInst/preguntas/preguntas.txt"

@@ -2,6 +2,7 @@
 #include "2048.h"
 #define NDEBUG
 #include <assert.h>
+#include <unistd.h>
 #define NUMBERSPATH "./Codigo/DATA/miniInst/2048/numbers.txt"
 #define BOARDPATH3 "./Codigo/DATA/miniInst/2048/board2048_3.txt"
 #define BOARDPATH4 "./Codigo/DATA/miniInst/2048/board2048_4.txt"

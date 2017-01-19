@@ -21,7 +21,8 @@ Enter your solution to the riddle:#
 |    this level!                      |
 |                                     |
 |    Press any key and go ahead...    |
-+-------------------------------------+#
++-------------------------------------+
+#
 
 +-------------------------------------+
 |                                     |
@@ -31,7 +32,8 @@ Enter your solution to the riddle:#
 |    the answer to our riddle c:      |
 |                                     |
 |    (Press any key to continue :D)   |
-+-------------------------------------+#
++-------------------------------------+
+#
 
 +-------------------------------------+
 |                                     |
@@ -41,6 +43,7 @@ Enter your solution to the riddle:#
 |                                     |
 |    Press any key to continue :D-<-< |
 |                                     |
-+-------------------------------------+#
++-------------------------------------+
+#
 
 
