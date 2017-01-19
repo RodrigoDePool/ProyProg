@@ -16,6 +16,9 @@ int Four_animation_call2 (Interface *i);
 
 int Four_animation_call3 (Interface *i);
 
-int Five_animation_maze (Interface *i);
+int Four2Five_animation(Interface * i);
 
+int Five_animation_maze (Interface *i);
+/*
 int Five_animation_2048 (Interface *i);
+*/

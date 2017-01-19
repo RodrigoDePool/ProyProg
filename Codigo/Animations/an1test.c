@@ -33,7 +33,12 @@ int main(){
 
   Four_animation_call3 (i);
   sleep(1);
-
+  
+  Four2Five_animation (i);
+  sleep(1);
+  
+  Five_animation_maze(i);
+  sleep(1);
   i_free(i);
   _term_close();
   return 1;
