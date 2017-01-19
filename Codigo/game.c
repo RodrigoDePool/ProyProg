@@ -243,9 +243,6 @@ int game_drawDisplay(World *w)
        Description at row 14*/
     nlev = world_getPllevel(w);
     nobj = game_objInLevel(w);
-    FILE *f2 = fopen("pruebas.txt", "w");
-	fprintf(f2, "%d\n", nobj);
-	fclose(f2);
     if (nlev < -1 || nobj < 0)
     {
         string_free(s);
