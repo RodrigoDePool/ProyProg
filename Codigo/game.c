@@ -140,7 +140,7 @@ int game_solve(World *w, String *s)
     /*Read the solution and writes it in row = 1, col = 1*/
     _term_close();
     printf("%c[%d;%dH", 27, 1, 1); /*Moving the pointer*/
-    fscanf(stdin, "%ms\n", pl_sol);
+    fscanf(stdin, "%ms\n", &pl_sol);
     _term_init();
 
     /*Non se si la interfaz se borra, pongo idrawall por si acasp*/
@@ -251,7 +251,7 @@ int game_drawDisplay(World *w)
 	/*Print riddle*/
     for (i = 0; i < nobj; i++){
     	st = (3 * nlev)+(nobj - 1);
-    	string_drawLines(i, string_getString(s, st), 3*(i+1), 1, 1, '\n', '*');
+    	string_drawLines(in, string_getString(s, st), 3*(i+1), 1, 1, '\n', '*');
     }
 
 	/*Print descriptions*/
