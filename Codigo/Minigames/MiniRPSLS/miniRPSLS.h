@@ -17,7 +17,7 @@
 /*
    Returns 1 in case the player wins the minigame
    Returns 0 in case the player loses the minigame
-   Returns 2 in case the player ties
+   Returns 0 in case the player ties
    REturns -1 if error
  */
 int miniRPSLS(Interface *i);

@@ -218,5 +218,5 @@ int miniRPSLS(Interface *i)
     else if (enemy > points)
         return 0;
     else
-        return 2;
+        return 0;
 }
