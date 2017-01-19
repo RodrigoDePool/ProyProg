@@ -9,11 +9,11 @@ int main(){
  
   i_readFile(i, "../Maps/CorridorLeft.map", 0, 0, 1);
   i_drawAll(i);
-  
+  /*
   i_drawPl(i, 18, 11);
   One2Two_animation(i);
   sleep(1);
-
+  
   i_drawPl(i, 8, 81);
   Two2Three_animation(i);
   sleep(1);
@@ -36,6 +36,16 @@ int main(){
   
   Five_animation_maze(i);
   sleep(1);
+  
+  Five_animation_2048 (i);
+  sleep(1);
+  
+  Five_animation_pong (i);
+  sleep(1);*/
+  
+  Five2End_animation(i);
+  sleep(3);
+  
   i_free(i);
   _term_close();
   return 1;

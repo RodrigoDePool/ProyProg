@@ -41,15 +41,15 @@ int One2Two_animation(Interface *i)
 	i_writeCharMap(i, ' ', plrow, plcol, 1);
 	i_writeCharMap(i, 'X', plrow, plcol-2, 1);
 
-	for(j=2; j<=7; j++){
+	for(j=2; j<=8; j++){
 		sprintf(buff, "../DATA/Dialogue/OneToTwo/%d.txt", j);		
 		i_readFile(i, buff, 0, 0, 3);
 		_read_key();
 		i_cleanCommand(i);
-		if (j == 5) i_cleanMap(i);
-		if (j == 6){
+		if (j == 6) i_cleanMap(i);
+		if (j == 7){
+			i_cleanMap(i);
 			i_readFile(i, "Maps/BedRoom1.map", 0, 0, 1);
-			i_drawAll(i);
 		}
 	}
 	return 0;
@@ -60,15 +60,17 @@ int Two2Three_animation(Interface *i)
 {
 	int j;
 	char buff[50];	
-
+	i_cleanMap(i);
+	i_readFile(i, "Maps/BedRoom1-1.map", 0, 0, 1);
 	for (j=1; j<=16; j++){
 		sprintf (buff, "Frames/TwoToThree/BedRoom1-%d.map", j);
-		usleep(10000);
+		usleep(20000);
 		i_readFile(i, buff, 0, 62, 1);
 	}
 	
 	usleep(2000);
-	i_readFile(i, "Frames/TwoToThree/BedRoom1-1.map", 0, 62, 1);
+	i_cleanMap(i);
+	i_readFile(i, "Maps/BedRoom1-1.map", 0, 0, 1);
 	
 	for (j=1; j<=9; j++){
 		sprintf (buff, "../DATA/Dialogue/TwoToThree/%d.txt", j);
@@ -93,14 +95,14 @@ int Three2Four_animation (Interface *i)
 		lucycol++;
 		i_writeCharMap(i, 'L', lucyrow, lucycol, 1);
 		i_writeCharMap(i, ' ', lucyrow, lucycol-1, 1);
-		usleep(100000);
+		usleep(10000);
 	}
 
 	while(lucyrow != plrow){
 		lucyrow++;
 		i_writeCharMap(i, 'L', lucyrow, lucycol, 1);
 		i_writeCharMap(i, ' ', lucyrow-1, lucycol, 1);
-		usleep(200000);
+		usleep(20000);
 	}
 
 	if (lucycol > plcol) eq = -1;
@@ -110,7 +112,7 @@ int Three2Four_animation (Interface *i)
 		lucycol += eq;
 		i_writeCharMap(i, 'L', lucyrow, lucycol, 1);
 		i_writeCharMap(i, ' ', lucyrow, lucycol-eq, 1);
-		usleep(100000);
+		usleep(10000);
 	}
 	
 	for (index=0; index < 34; index ++){
@@ -131,8 +133,8 @@ int Three2Four_animation (Interface *i)
 		_read_key();
 		i_cleanCommand(i);
 		if (j == 2){
+			i_cleanMap(i);
 			i_readFile(i, "Maps/BedRoom3.map", 0, 0, 1);
-			i_drawAll(i);
 			usleep(1000);
 			for (index=0; index<=3; index++) {
 				i_writeCharMap(i, '!', 26, 20, 1);
@@ -271,8 +273,8 @@ int Four2Five_animation (Interface *i)
 		i_cleanCommand(i);
 		if (j == 2) i_cleanMap(i);
 		if (j == 3){
+			i_cleanMap(i);
 			i_readFile(i, "Maps/Entrance.map", 0, 0, 1);
-			i_drawAll(i);
                         for (index = 1; index<13; index++){
                         	i_writeCharMap(i, '^', index, 51, 1);
                         	if (index!=1)
@@ -289,33 +291,75 @@ int Five_animation_maze (Interface *i)
 	int j, index;
 	i_cleanMap(i);
 	i_readFile(i, "Maps/BedRoom4.map", 0, 0, 1);
-	for (j=20; j<66; j++){
+	i_writeCharMap(i, '^', 1, 20, 1);
+	for (j=21; j<66; j++){
 		i_writeCharMap(i, '^', 1, j, 1);
-                if(j!=20)
-			i_writeCharMap(i, ' ', 1, j-1, 1);
-		usleep(100000);
-		j++;	
+		i_writeCharMap(i, ' ', 1, j-1, 1);
+		usleep(50000);	
 	}
 	
 	for (j=2; j<26; j++){
 		i_writeCharMap(i, '^', j, 65, 1);
 		i_writeCharMap(i, ' ', j-1, 65, 1);
-		usleep(100000);
-		j++;		
+		usleep(100000);		
 	}
 	
 	for (j=64; j>6; j--){
 		i_writeCharMap(i, '^', 25, j, 1);
 		i_writeCharMap(i, ' ', 25, j+1, 1);
-		usleep(100000);
-		j++;		
+		usleep(50000);		
 	}
 	
 	for (j=26; j < 32; j++){
 		i_writeCharMap(i, '^', j, 7, 1);
 		i_writeCharMap(i, ' ', j-1, 7, 1);
+		usleep(100000);		
+	}
+	
+	i_readFile(i,"../DATA/Dialogue/FourToFive/7.txt", 0, 0, 3);
+	_read_key();
+	i_cleanCommand(i);
+	
+	for (index=0; index < 34; index ++){
+		for (j=0; j<114; j+=2)
+			i_writeCharMap(i, '#', index, j, 1);
+		for (j=1; j<115; j+=2)
+			i_writeCharMap(i, '#', 33-index, j, 1);
+		usleep(30000);
+	}
+	return 0;
+}
+
+int Five_animation_2048 (Interface *i)
+{
+	int j, index;
+	i_cleanMap(i);
+	i_readFile(i, "Maps/Bathroom2.map", 0, 0, 1);
+	i_writeCharMap(i, '^', 18, 52, 1);
+	for (j = 19; j<25; j++){
+		i_writeCharMap(i, '^', j, 52, 1);
+		i_writeCharMap(i, ' ', j-1, 52, 1);
 		usleep(100000);
-		j++;		
+	}
+	
+	for (j = 53; j>12; j--){
+		i_writeCharMap(i, '^', 24, j, 1);
+		if (j == 29 || j == 28 || j== 27) i_writeCharMap(i, '_', 24, j+1, 1);
+		else i_writeCharMap(i, ' ', 24, j+1, 1);
+		usleep(100000);
+	}
+	
+	for (j = 23; j>19; j--){
+		i_writeCharMap(i, '^', j, 13, 1);
+		i_writeCharMap(i, ' ', j+1, 13, 1);
+		usleep(100000);
+	}
+	
+	
+	for (j = 12; j>1; j--){
+		i_writeCharMap(i, '^', 20, j, 1);
+		i_writeCharMap(i, ' ', 20, j+1, 1);
+		usleep(100000);
 	}
 	
 	i_readFile(i,"../DATA/Dialogue/FourToFive/8.txt", 0, 0, 3);
@@ -329,39 +373,131 @@ int Five_animation_maze (Interface *i)
 			i_writeCharMap(i, '#', 33-index, j, 1);
 		usleep(30000);
 	}
+	
 	return 0;
 }
-/*
-int Five_animation_2048 (Interface *i)
+
+int Five_animation_pong(Interface *i)
 {
-	int j;
-	i_writeCharMap(i, '^', 18, 52, 1);
-	for (j = 19; j<25; j++){
-		i_writeCharMap(i, '^', j, 52, 1);
-		i_writeCharMap(i, ' ', j-1, 52, 1);
+	int j, index;
+	i_cleanMap(i);
+	i_readFile(i, "Maps/Bathroom2-1.map", 0, 0, 1);
+	i_writeCharMap(i, '^', 10, 69, 1);
+	
+	for (j=70; j<97; j++){
+		i_writeCharMap(i, '^', 10, j, 1);
+		i_writeCharMap(i, ' ', 10, j-1, 1);
 		usleep(100000);
-		j++;
 	}
 	
-	for (j = 53; j>14; j++){
-		i_writeCharMap(i, '^', 24, j, 1);
-		if (j == 29 || j == 28 || j== 27) i_writeCharMap(i, '_', 24, j+1, 1);
-		else i_writeCharMap(i, ' ', 24, j+1, 1);
+	for (j=11; j<19; j++){
+		i_writeCharMap(i, '^', j,  96, 1);
+		i_writeCharMap(i, ' ', j-1, 96, 1);
 		usleep(100000);
-		j++;
 	}
-
-
+	
+	i_readFile(i,"../DATA/Dialogue/FourToFive/9.txt", 0, 0, 3);
+	_read_key();
+	i_cleanCommand(i);
+	
+	for (index=0; index < 34; index ++){
+		for (j=0; j<114; j+=2)
+			i_writeCharMap(i, '#', index, j, 1);
+		for (j=1; j<115; j+=2)
+			i_writeCharMap(i, '#', 33-index, j, 1);
+		usleep(30000);
+	}
+	
 	return 0;
 }
-*/
-
-
-
-
-
-
-
+	
+int Five2End_animation(Interface *i)
+{
+	int j, index, count = 0;
+	char buff[50];
+	
+	for (index=0; index < 34; index ++){
+		for (j=0; j<114; j+=2)
+			i_writeCharMap(i, '#', index, j, 1);
+		for (j=1; j<115; j+=2)
+			i_writeCharMap(i, '#', 33-index, j, 1);
+		usleep(30000);
+	}
+	
+	i_cleanMap(i);
+	i_readFile(i, "Maps/Hall.map", 0, 0, 1);
+	
+	for (j = 1; j<=4; j++){
+		sprintf(buff, "../DATA/Dialogue/FiveToEnd/%d.txt", j);		
+		i_readFile(i, buff, 0, 0, 3);
+		_read_key();
+		i_cleanCommand(i);
+	}
+	
+	for (j=19; j<35; j++){
+		i_writeCharMap(i, '^', j,  48, 1);
+		if (j == 27) i_writeCharMap(i, '!', j-1, 48, 1);
+		else if (j == 29) i_writeCharMap(i, 'e', j-1, 48, 1);
+		else if (j == 30) i_writeCharMap(i, 'r', j-1, 48, 1);
+		else if (j == 31) i_writeCharMap(i, 'a', j-1, 48, 1);
+		else i_writeCharMap(i, ' ', j-1, 48, 1);
+		usleep(100000);
+	}
+	
+	for (index=0; index < 34; index ++){
+		for (j=0; j<114; j+=2)
+			i_writeCharMap(i, '#', index, j, 1);
+		for (j=1; j<115; j+=2)
+			i_writeCharMap(i, '#', 33-index, j, 1);
+		usleep(30000);
+	}
+	
+	i_cleanMap(i);
+	i_readFile(i, "../DATA/Dialogue/FiveToEnd/5.txt", 0, 0, 3);
+	_read_key();
+	i_cleanCommand(i);
+	i_readFile(i, "Maps/CorridorLeft-1.map", 0, 0, 1);
+	i_readFile(i, "../DATA/Dialogue/FiveToEnd/6.txt", 0, 0, 3);
+	_read_key();
+	i_cleanCommand(i);
+	i_readFile(i, "Maps/simone.map", 14, 23, 1);
+	i_readFile(i, "../DATA/Dialogue/FiveToEnd/7.txt", 0, 0, 3);
+	for (j = 22; j>=12; j--){
+		i_readFile(i, "Maps/simone.map", 14, j, 1);
+		for (index = 0; index<9; index++){
+			i_writeCharMap(i, '@', 17, 112-count, 1);
+			if (count == 93) i_writeCharMap(i, ')', 17, 112-count+1, 1);
+			else i_writeCharMap(i, ' ', 17, 112-count+1, 1);
+			count++;
+			usleep(50000);
+		}
+	}
+	i_writeCharMap(i, '@', 17, 112-count, 1);
+	i_writeCharMap(i, ' ', 17, 112-count+1, 1);
+	usleep(50000);
+	i_writeCharMap(i, '!', 16, 11, 1);
+	usleep(150000);
+	i_writeCharMap(i, ' ', 16, 11, 1);
+	i_writeCharMap(i, ' ', 17, 112-count, 1);
+	i_writeCharMap(i, 'X', 17, 9, 1);
+	for (j=8; j<=11; j++){
+		sprintf(buff, "../DATA/Dialogue/FiveToEnd/%d.txt", j);		
+		i_readFile(i, buff, 0, 0, 3);
+		_read_key();
+		i_cleanCommand(i);
+	}
+	
+	for (index=0; index < 34; index ++){
+		for (j=0; j<114; j+=2)
+			i_writeCharMap(i, '#', index, j, 1);
+		for (j=1; j<115; j+=2)
+			i_writeCharMap(i, '#', 33-index, j, 1);
+		usleep(100000);
+	}
+		
+		
+	return 0;
+}
 
 
 

@@ -1,4 +1,3 @@
-Simone: here we are! Remember this? Of course you do.Your biggest fear, my dear. 
-The monster in the closet from which your blanket won’t protect you. 
-Help yourself to find the courage to face it! Get out of your bed and go for it!
-
+Simone: On each chapter you'll have to solve a riddle to continue through your life.
+You'll gather clues playing (and winning) minigames. Press 'x' when you are ready
+to solve it, or 'h' to get some help.
