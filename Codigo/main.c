@@ -99,9 +99,9 @@ int main()
             /*else animation and set WHOLE new space and stuff*/
             /*TEST FOR LEVEL 0*/
             world_setPlSpaceID(w, 7);
-            map = world_getSpaceMap(w, sid);
+            map = world_getSpaceMap(w, 7);
             i_setMap(i, map);
-            i_drawPl(i, 1, 18);
+            i_drawPl(i, 23, 75);
             /*END OF TEST*/
         }
         else if (c == HELP_KEY)
@@ -166,6 +166,7 @@ int main()
                         /*ask if the player want to play the minigame*/
                         i_readFile_notMap(i, MINI_POPUP, 12, 40, 1);
                         c = YorN();
+                        i_drawAll(i);
                         if (c == 'y')
                         {
                             /*we get the space id*/
