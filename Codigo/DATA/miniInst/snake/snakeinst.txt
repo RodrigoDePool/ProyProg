@@ -1,0 +1,10 @@
+Can you grow your snake?
+
+You have to get you 
+snake to size 22 to 
+win. Eat points to 
+grow size. If you 
+crash with yourself
+or with wall you lose.
+
+Use the arrows to move.

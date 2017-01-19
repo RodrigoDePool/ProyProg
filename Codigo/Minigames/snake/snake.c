@@ -214,10 +214,12 @@ int snake(Interface *i)
 	flag_snakeResult = 0;
 	key_read = NORTH;
 	i_cleanMap(i);
-	i_readFile(i, "Codigo/DATA/miniInst/snake/map.txt", 9, 32, 1); /*48x15*/
-	i_drawAll(i);
 	i_cleanDisplay(i);
 	i_cleanCommand(i);
+	i_readFile(i, "Codigo/DATA/miniInst/snake/snakeinst.txt", 0, 0, 2);
+	i_readFile(i, "Codigo/DATA/miniInst/snake/snakeinfo.txt", 9, 36, 1);
+	_read_key();
+	i_readFile(i, "Codigo/DATA/miniInst/snake/map.txt", 9, 32, 1); /*48x15*/
 	pthread_t juego[3];
 	pthread_create(&(juego[0]), NULL, snake_play, (void*) i); /*The function that will move the snake*/
 	pthread_create(&(juego[1]), NULL, read_keys, NULL); /*The function that will move the snake*/
