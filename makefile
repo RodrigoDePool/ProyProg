@@ -1,10 +1,9 @@
 all:  main clean
 
-main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o -lpthread 2048.o calculus.o #game.o #MINIGAMES
-	gcc -o main $^ #thread Library
+main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o  2048.o calculus.o game.o string.o
+	gcc -o main $^ -lpthread
 	
-mainPruebas: mainPruebas.o world.o space.o interface.o rectangles.o menu.o #game.o #MINIGAMES
-	gcc -o mainPruebas $^
+
 
 world.o: Codigo/world.c Codigo/world.h
 	gcc -c -g Codigo/world.c
@@ -55,9 +54,11 @@ animations.o: Codigo/Animations/animations.c
 menu.o: Codigo/menu.c Codigo/menu.h
 	gcc -c Codigo/menu.c
 
-#game.o: Codigo/game.c Codigo/game.h
-#	gcc -c Codigo/game.c
+game.o: Codigo/game.c Codigo/game.h
+	gcc -c Codigo/game.c
 
+string.o: Codigo/string.c Codigo/string.h
+	gcc -c Codigo/string.c
 
 clean:
 	rm -f *.o 

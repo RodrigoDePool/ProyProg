@@ -4,7 +4,7 @@
 #define READ_TIME_FAST 3500000
 #define READ_TIME_SLOW 7000000
 
-void One2Two_animation(Interface *i)
+int One2Two_animation(Interface *i)
 {
 	int  myscol = 112, mysrow = 19, plrow = i_wherePlayerBeRow(i), plcol = i_wherePlayerBeCol(i), j;
 	char buff[50];
@@ -52,11 +52,11 @@ void One2Two_animation(Interface *i)
 			i_drawAll(i);
 		}
 	}
-
+	return 0;
 }
 
 
-void Two2Three_animation(Interface *i)
+int Two2Three_animation(Interface *i)
 {
 	int j;
 	char buff[50];	
@@ -83,9 +83,10 @@ void Two2Three_animation(Interface *i)
 			i_drawAll(i);
 		}
 	}
+	return 0;
 }
 	
-void Three2Four_animation (Interface *i)
+int Three2Four_animation (Interface *i)
 {
 	int  lucyrow=1, lucycol=21, plrow = i_wherePlayerBeRow(i), plcol = i_wherePlayerBeCol(i), j, index, eq;
 	char buff[50];
@@ -154,9 +155,10 @@ void Three2Four_animation (Interface *i)
 			}
 		}
 	}
+	return 0;
 }
 
-void Four_animation_call1 (Interface *i)
+int Four_animation_call1 (Interface *i)
 {
 	int j;
 	i_readFile(i,"../DATA/Dialogue/ThreeToFour/2.txt", 0, 0, 3);
@@ -181,9 +183,10 @@ void Four_animation_call1 (Interface *i)
 	i_readFile(i,"../DATA/Dialogue/ThreeToFour/4.txt", 0, 0, 3);
 	_read_key();
 	i_cleanCommand(i);
+	return 0;
 }
 
-void Four_animation_call2 (Interface *i)
+int Four_animation_call2 (Interface *i)
 {
 	int j;
 	i_readFile(i,"../DATA/Dialogue/ThreeToFour/2.txt", 0, 0, 3);
@@ -208,9 +211,10 @@ void Four_animation_call2 (Interface *i)
 	i_readFile(i,"../DATA/Dialogue/ThreeToFour/5.txt", 0, 0, 3);
 	_read_key();
 	i_cleanCommand(i);
+	return 0;
 }
 
-void Four_animation_call3 (Interface *i)
+int Four_animation_call3 (Interface *i)
 {
 	int j;
 	i_readFile(i,"../DATA/Dialogue/ThreeToFour/2.txt", 0, 0, 3);
@@ -235,9 +239,10 @@ void Four_animation_call3 (Interface *i)
 	i_readFile(i,"../DATA/Dialogue/ThreeToFour/6.txt", 0, 0, 3);
 	_read_key();
 	i_cleanCommand(i);
+	return 0;
 }
 
-void Four2Five_animation (Interface *i)
+int Four2Five_animation (Interface *i)
 {
 	int j, index;
 	char buff[50];
@@ -279,19 +284,20 @@ void Four2Five_animation (Interface *i)
 			}
 		}
 	}
+	return 0;
 }
 
-void Five_animation_maze (Interface *i)
+int Five_animation_maze (Interface *i)
 {
 	int j, index;
 	i_cleanMap(i);
 	i_readFile(i, "Maps/BedRoom4.map", 0, 0, 1);
 	for (j=20; j<66; j++){
 		i_writeCharMap(i, '^', 1, j, 1);
-                (if j!=20)
+                if(j!=20)
 			i_writeCharMap(i, ' ', 1, j-1, 1);
 		usleep(100000);
-		j++		
+		j++;	
 	}
 	
 	for (j=2; j<26; j++){
@@ -305,7 +311,7 @@ void Five_animation_maze (Interface *i)
 		i_writeCharMap(i, '^', 25, j, 1);
 		i_writeCharMap(i, ' ', 25, j+1, 1);
 		usleep(100000);
-		j++		
+		j++;		
 	}
 	
 	for (j=26; j < 32; j++){
@@ -326,9 +332,10 @@ void Five_animation_maze (Interface *i)
 			i_writeCharMap(i, '#', 33-index, j, 1);
 		usleep(30000);
 	}
+	return 0;
 }
 
-void Five_animation_2048 (Interface *i)
+int Five_animation_2048 (Interface *i)
 {
 	int j;
 	i_writeCharMap(i, '^', 18, 52, 1);
@@ -341,11 +348,15 @@ void Five_animation_2048 (Interface *i)
 	
 	for (j = 53; j>14; j++){
 		i_writeCharMap(i, '^', 24, j, 1);
-		if (j = 29 || j = 28 || j= 27) i_writeCharMap(i, '_', 24, j+1, 1);
+		if (j == 29 || j == 28 || j== 27) i_writeCharMap(i, '_', 24, j+1, 1);
 		else i_writeCharMap(i, ' ', 24, j+1, 1);
 		usleep(100000);
 		j++;
 	}
+
+
+	return 0;
+}
 
 
 
