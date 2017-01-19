@@ -5,8 +5,6 @@
 #include <pthread.h>
 #define PATHLUCIA "./Codigo/DATA/miniInst/lucia/preguntas.txt"
 #define PATHPREGUNTAS "Codigo/DATA/miniInst/preguntas/preguntas.txt"
-#define LOSTPATH "Codigo/DATA/miniInst/youlost.txt"
-#define WONPATH "Codigo/DATA/miniInst/youwon.txt"
 #define INSTPATH "Codigo/DATA/miniInst/preguntas/instructions.txt"
 
 struct _Game{
@@ -282,9 +280,7 @@ int answer_check(Interface *in, Game *g, Question *q, int row, int col, char cho
 				return 1;
 			}
 			i_drawStr(in, g->incorrect, row + 1, col, 1);
-			sleep(1);
-			i_readFile(in, LOSTPATH , 0, 0, 1);
-			sleep(2);		
+			sleep(1);	
 			return 0;
 		}
 	}
@@ -330,9 +326,7 @@ int last_answer(Interface *in, Game *g, int i, int *row, int col){
 	/*If a key was pressed, the game has been lost. Else, won*/
 	if(c != 0){
 		i_drawStr(in, g->incorrect, ++(*row), col, 1);
-		sleep(1);
-		i_readFile(in, LOSTPATH , 0, 0, 1);
-		sleep(2);					
+		sleep(1);				
 		return 0;
 	}
 	
@@ -429,8 +423,6 @@ int qa(Interface *in, int level){
 	/*If the game hasnt returned yet, its because all the answers were correct:
 	return 1*/
 	i_drawStr(in, g->won, row+2, col, 1);
-	sleep(2);
-	i_readFile(in, WONPATH , 0, 0, 1);
 	sleep(2);
 	i_cleanDisplay(in);
 	i_cleanMap(in);
