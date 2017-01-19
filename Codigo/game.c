@@ -9,14 +9,6 @@
 #define POPUPROW 12
 #define POPUPCOL 40
 
-struct _Strings{
-	int nums;
-	char **st;	
-}
-
-
-
-
 /**********************************************/
 /******   LOCAL FUNCTIONS DECLARATION   *******/
 /**********************************************/
@@ -49,7 +41,7 @@ int game_help(World *w, String *s){
 	
 	if( (world_getNumObjects(w)%3 != 0) or (world_getNumObjects(w) == 0) ){
 		/*Not enough objects for the clue*/
-		i_drawStr(in, s->st[0], INIROW , INICOL , 3);
+		string_drawLines(i, string_getString(s, 0), INIROW , INICOL , 3, '\n', '*');
 		c = _read_key();
 
 	}else{
@@ -82,12 +74,12 @@ int game_save(World *w, String* s){
 	
 	if(world_saveToFile(w, NULL) == -1){
 		/*Fail to save string*/
-		i_drawStr(in, s->st[1], INIROW , INICOL , 3);
+		string_drawLines(i, string_getString(s, 1), INIROW , INICOL , 3, '\n', '*');
 		c = _read_key();
 		return -1;
 	}else{
 		/*Successfully saved*/
-		i_drawStr(in, s->st[2], INIROW , INICOL , 3);
+		string_drawLines(i, string_getString(s, 2), INIROW , INICOL , 3, '\n', '*');
 		c = _read_key();
 		return 0;
 	}
@@ -108,21 +100,23 @@ int game_solve(World *w, String *s){
 	nlev = world_getPllevel(w);
 	if(nlev < 0) return -1;
 	if(world_getNumObjects(w) != (3 + (3*nlev)) ){
-		i_readFile_notMap(in, s->st[6], POPUPROW , POPUPCOL , 1);
+		string_drawLines(i, string_getString(s, 6), POPUPROW , POPUPCOL , 1, '\n', '*');
 		c = _read_key();
 		i_drawAll(in);
 		return 0;
 	}
 		
 	/*"Enter the solution" string*/
-	i_readFile_notMap(in, s->st[3], INIROW , INICOL , 3);
+	string_drawLines(i, string_getString(s, 3), INIROW , INICOL , 3, '\n', '*');
 			
-	/* Meto en solution la solucion del jugador... ¿habra que quitar el \n*/
-	pl_sol = NULL;
-	/*  Save in pl_sol*/
-
+	/*Read the solution and writes it in row = 1, col = 1*/
+	_term_close();
+	printf("%c[%d;%dH", 27, 1, 1); /*Moving the pointer*/
+	fscanf(stdin, "%ms\n", pl_sol);
+	_term_init();       
 	
-	
+	/*Non se si la interfaz se borra, pongo idrawall por si acasp*/
+	i_drawAll(in);
 	
 	/*Get the pointer associated to that level number*/
 	l = world_getLevel(w, nlev);
@@ -130,13 +124,13 @@ int game_solve(World *w, String *s){
 	
 	if( strcmp(pl_sol, l->solution) == 0 ){
 		/*You passed level string*/
-		i_readFile_notMap(in, s->st[4], POPUPROW , POPUPCOL , 1);
+		string_drawLines(i, string_getString(s, 4), POPUPROW , POPUPCOL , 1, '\n', '*');
 		c = _read_key();
 		i_drawAll(in);
 		return 1;
 	}else{
 		/*Youre wrong string*/
-		i_readFile_notMap(in, s->st[5], POPUPROW , POPUPCOL , 1);
+		i_readFile_notMap(in, string_getString(s, 5), POPUPROW , POPUPCOL , 1);
 		c = _read_key();
 		i_drawAll(in);
 		return 0;
@@ -149,54 +143,6 @@ int game_solve(World *w, String *s){
 /**********************************************/
 /****   PUBLUC FUNCTIONS IMPLEMENTATION   *****/
 /**********************************************/
-
-String *string_ini(char *path){
-	int nst, i, j;
-	FILE *f = fopen(STRPATH, "r");
-	if(f == NULL)
-		return NULL;
-	
-	String *s = (String *)malloc(sizeof(String));
-	if(st == NULL){
-		fclose(f);
-		return NULL;
-	}
-	fscanf(f, "%d\n", &(s->ns));
-	s->st =(char **)malloc(s->ns * sizeof(char *));
-	if(s->st == NULL){
-		string_free(s);
-		fclose(f);
-		return NULL;
-	}
-	for(i = 0;i < s->ns; i++){
-		fscanf(f, "%m[^#]#\n\n", (s->st)+i);
-		if( s->st[i] == NULL ){
-			string_free(s);
-			fclose(f);
-			return NULL;			
-		}
-	}
-	return s;
-}
-
-void string_free(String *s){
-	int i;
-	if(s){
-		if(s->st){
-			for(i = 0; i < s->ns; i++){
-				if(s->st[i])
-					free(s->st[i]);
-			}
-			free(s->st);
-		}
-		free(s);
-	}
-}
-
-int string_getNumber(String *s){
-	assert(s);
-	return s->nums;
-}
 
 int game_f(World *w, int n){
 	assert(w && n>-1 && n<3);

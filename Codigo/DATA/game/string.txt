@@ -1,17 +1,17 @@
 7
 I'm sorry, you need to pass the three minigames if you want a clue!!
 Te joes tramposo :D
-Press any key to continue#
+Press any key to continue*#
 
 Our stupid game couldnt save your stupid game.
 Sorry not sorry
-Press any key to continue#
+Press any key to continue*#
 
 Everything successfully saved, our game is
 wonderful!! :DDDD
-Press any key to continue#
+Press any key to continue*#
 
-Enter your solution to the riddle:#
+Enter your solution to the riddle:*#
 
 +-------------------------------------+
 |                                     |
@@ -22,7 +22,7 @@ Enter your solution to the riddle:#
 |                                     |
 |    Press any key and go ahead...    |
 +-------------------------------------+
-#
+*#
 
 +-------------------------------------+
 |                                     |
@@ -33,7 +33,7 @@ Enter your solution to the riddle:#
 |                                     |
 |    (Press any key to continue :D)   |
 +-------------------------------------+
-#
+*#
 
 +-------------------------------------+
 |                                     |
@@ -44,6 +44,6 @@ Enter your solution to the riddle:#
 |    Press any key to continue :D-<-< |
 |                                     |
 +-------------------------------------+
-#
+*#
 
 
