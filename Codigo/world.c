@@ -120,7 +120,7 @@ Level ** levelsIni()
     levels[3]->finalAnimation   = NULL; /*&(Five2Six_animation)*/
     levels[3]->PlIniRow         = 13;
     levels[3]->PlIniCol         = 51;
-    levels[3]->PlIniSpaceID     = 16;
+    levels[3]->PlIniSpaceID     = 10;
     
 
     fclose(f);
