@@ -19,6 +19,6 @@ int game_objInLevel(World* w);
 
 /* Riddle starts at row 3, 6, 9 
    Description at row 14*/
-/* Returns 0 or -1 in case of error*/
+/* Returns 0, or -1 in case of error*/
 	
 int game_drawDisplay(World *w);

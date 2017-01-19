@@ -2,6 +2,8 @@
 #define NDEBUG
 #include <assert.h>
 #include "game.h"
+
+#define RIDDLEPATH "./Codigo/DATA/game/riddles.txt"
 #define STRPATH "./Codigo/DATA/game/string.txt"
 #define CLUEPATH "./Codigo/DATA/game/clue.txt"
 #define DISPLAYPATH "./Codigo/DATA/game/display.txt"
@@ -180,13 +182,18 @@ int game_objInLevel(World *w){
 
 int game_drawDisplay(World *w){
 	assert(w);
+	String *s
 	Interface *in = world_getInterface(w);	
 	if(!in) return -1;
 	
 	i_cleanDisplay(in);
 	i_readFile(in, DISPLAYPATH, 0, 0);
 	
-	/* Riddle starts at row 3, 
+	s = string_ini(RIDDLEPATH);
+	if(s == NULL || ){
+		return -1;
+	}
+	/* Riddle starts at row 3, 6, 9 
 	   Description at row 14*/
 	
 	
@@ -195,6 +202,7 @@ int game_drawDisplay(World *w){
 	
 	
 	
-	
+	free(s);
+	return 0;
 }
 

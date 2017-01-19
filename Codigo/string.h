@@ -7,8 +7,6 @@ typedef struct _String String;
 
 /*Initializes and returns String struct from a file like this (# is the separator):
 
-  RIGHT NOW IT INITIALIZES IT FROM A MACRO: STRPATH
-
  3 --nstrings
  I'm sorry, you need to have the three parts if you wanna have a clue!#
  
@@ -36,5 +34,16 @@ char * string_getString(String *s, int i);
   where sep = $ and finish = @,
   draws three strings in (in, bdc) starting at (row, col), each one a row lower
   than the other. Returns the row where the user should start writing again
+ 
+ IF USING WITH STRING_INI, BE CAREFUL: YOUR FILE SHOULD BE LIKE THIS
+	 Hello, my name is $
+	 stupid dictador and $
+	 im stupid :D $@#
+ IF YOU WANT TO PRINT:
+ 	Hello, my name is
+	stupid dictador and
+	im stupid :D
+ 
+ 
  */
 int string_drawLines(Interface *in, char *s, int row, int col, int bdc, char sep, char finish);

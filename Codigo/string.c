@@ -16,7 +16,7 @@ struct _String{
 
 String *string_ini(char *path){
 	int i;
-	FILE *f = fopen(STRPATH, "r");
+	FILE *f = fopen(path, "r");
 	if(f == NULL)
 		return NULL;
 	
