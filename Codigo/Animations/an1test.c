@@ -9,7 +9,7 @@ int main(){
  
   i_readFile(i, "../Maps/CorridorLeft.map", 0, 0, 1);
   i_drawAll(i);
-  /*
+  
   i_drawPl(i, 18, 11);
   One2Two_animation(i);
   sleep(1);
@@ -41,7 +41,7 @@ int main(){
   sleep(1);
   
   Five_animation_pong (i);
-  sleep(1);*/
+  sleep(1);
   
   Five2End_animation(i);
   sleep(3);
