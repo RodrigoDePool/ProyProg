@@ -222,6 +222,7 @@ int game_drawDisplay(World *w)
     assert(w);
     String    *s;
     int       sid, nlev, nobj, st, i;
+    char *sdesc, *ldesc;
     Interface *in = world_getInterface(w);
     if (!in)
         return -1;
@@ -253,12 +254,27 @@ int game_drawDisplay(World *w)
     for (i = 0; i < nobj; i++)
     {
         st = (3 * nlev) + i;
-        string_drawLines(in, string_getString(s, st), 3 * (i + 1), 1, 2, '\n', '*');
+        string_drawLines(in, string_getString(s, st), 3 * i + 4, 1, 2, '\n', '*');
     }
 
     /*Print descriptions*/
-    world_getPlSpaceID(w);
-
+    sid = world_getPlSpaceID(w);
+	sdesc = space_getSDesc(world_getSpace(w, sid));
+	if(sdesc == NULL){
+		string_free(s);
+		return -1;
+	}
+	
+	i_drawStr(in, sdesc, 16, 1, 2);
+	free(sdesc);
+	ldesc = space_getLDesc(world_getSpace(w, sid));
+	if(ldesc == NULL){
+		string_free(s);
+		return -1;
+	}	
+	i_drawStr(in, ldesc, 17, 1, 2);
+	free(ldesc);
+	
     string_free(s);
     return 0;
 }
