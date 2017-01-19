@@ -1,0 +1,36 @@
+       Parts of the         
+          RIDDLE:            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+     SPACE DESCRIPTION:     
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+       COMMANDS:            
+                            
+Press 's' to save           
+                            
+Press 'h' for some help     
+                            
+Press 'x' for solving       
+                            
+Press 'q' to quit game      
+                            
+Arrows are for moving       
