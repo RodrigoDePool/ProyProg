@@ -5,15 +5,15 @@
 #include "space.h"
 #include "world.h"
 #include "menu.h"
-#define SAVE_KEY      's'
-#define SOLVE_KEY     'x'
-#define HELP_KEY      'h'
-#define EXIT_KEY      'q'
-#define EXIT_POPUP    "Codigo/DATA/popups/exit"
-#define DOOR_POPUP    "Codigo/DATA/popups/door"
+#define SAVE_KEY          's'
+#define SOLVE_KEY         'x'
+#define HELP_KEY          'h'
+#define EXIT_KEY          'q'
+#define EXIT_POPUP        "Codigo/DATA/popups/exit"
+#define MINI_POPUP        "Codigo/DATA/popups/mini"
+#define FINISHED_POPUP    "Codigo/DATA/popups/finished"
 #define NDEBUG
 #include <assert.h>
-
 /*
    main Game file
 
@@ -45,13 +45,14 @@ int main()
     Interface *i;
     Space     *s;
     Door      *d;
+    Minigame  *minigame;
     /*row , col and space the player is in*/
     int       prow, pcol, pspace;
     /*flag to see if the key press was a move*/
-    int       fmove;
-    int       sid, aux;
+    int       sid, aux, finished, win;
     char      c;
     char      **map;
+    
     _term_init();
     i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);
     if (i == NULL)
