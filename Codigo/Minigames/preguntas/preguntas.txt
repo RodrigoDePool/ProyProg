@@ -3,28 +3,52 @@ Correct answer!
 Incorrect answer!
 I couldnt find any answer matching your char choice, try againI couldnt find any answer matching your char choice, try again
 All your answers were correct: you won!
+5
+Someone
+Who is more likely to have a pile of dead corpses hidden under his bed? 
 4
-Lucia
-¿Estoy guapa?
-3
-a 1 Si, como siempre.
-b 0 Más fea que nunca.
-c 0 y a ti q te importa?
-Lucia
-¿Ere hilipolla?
-2
-a 0 No
-b 1 Andre y aleho zi
+a 1 Simon.
+b 0 Simone.
+c 0 Juan.
+d 0 Nuria.
+Someone
+Who said to the teacher 'lactancia' when he met 'inductancia'?
+4
+a 0 Aleho.
+b 1 Riki.
+c 0 Adri.
+d 0 Victor.
 Andres
-Espejito, quién es el más bello de este reino?
+Mirror, mirror on the wall, who is the fairest of them all?
 3
-a 1 YO
-b 1 Mi reflejo
-c 0 Mis compix de clase jesjes
-Andres
-Espejito, quién es el más bello de este reino?
-3
-a 1 YO
-b 1 Mi reflejo
-c 0 Mis compix de clase jesjes
-
+a 0 DEFINATELY NOT YOU
+b 0 SHUT UP AND KISS ME
+c 1 Mis compix de clase jesjes
+Someone
+Who drank and smoked weeed the day before the PPROG exam?
+11
+a 1 Marta
+b 1 Blanca Abella
+c 1 Mis compix de clase jesjes
+d 1 Blanca Martin
+e 1 Rodrigo Dead Pool
+f 1 Yujian
+g 1 Luis
+h 1 Aleho
+i 1 Jose Pedro
+j 0 Alfonso
+k 0 Victor
+Someone
+Who drank and smoked weeed the day before the PPROG exam?
+11
+a 1 Marta
+b 1 Blanca Abella
+c 1 Mis compix de clase jesjes
+d 1 Blanca Martin
+e 1 Rodrigo Dead Pool
+f 1 Yujian
+g 1 Luis
+h 1 Aleho
+i 1 Jose Pedro
+j 0 Alfonso
+k 0 Victor
