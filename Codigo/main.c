@@ -111,26 +111,26 @@ int main()
             /* if you won set level*/
 
             /*TEST FOR LEVEL 0*/
-            world_setPlSpaceID(w, 7);
-            world_setPllevel(w, 0);
-            map = world_getSpaceMap(w, 7);
-            i_setMap(i, map);
-            i_drawPl(i, 23, 75);
-            /*END OF TEST*/
+            /*world_setPlSpaceID(w, 7);
+               world_setPllevel(w, 0);
+               map = world_getSpaceMap(w, 7);
+               i_setMap(i, map);
+               i_drawPl(i, 23, 75);
+               /*END OF TEST*/
             /*TEST FOR LEVEL1*/
             /*world_setPlSpaceID(w, 8);
-               world_setPllevel(w,1);
+               world_setPllevel(w, 1);
                map = world_getSpaceMap(w, 8);
                i_setMap(i, map);
                i_drawPl(i, 2, 84);
                /*END OF TEST*/
             /*TEST FOR LEVEL 2*/
-            /*world_setPlSpaceID(w, 9);
-               world_setPllevel(w,2);
-               map = world_getSpaceMap(w, 9);
-               i_setMap(i, map);
-               i_drawPl(i, 2, 79);
-               /*END OF TEST*/
+            world_setPlSpaceID(w, 9);
+            world_setPllevel(w, 2);
+            map = world_getSpaceMap(w, 9);
+            i_setMap(i, map);
+            i_drawPl(i, 2, 79);
+            /*END OF TEST*/
         }
         else if (c == HELP_KEY)
         {
