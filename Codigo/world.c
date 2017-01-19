@@ -208,7 +208,7 @@ void world_free(World *w)
         free(w->levels[i]);
     }
     free(w->levels);
-
+    free(w->HasFinishedMinigame);
     free(w->minigame);
     free(w);
 
