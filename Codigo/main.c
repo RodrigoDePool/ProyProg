@@ -98,10 +98,15 @@ int main()
             /*if fail print fail message and thats it*/
             /*else animation and set WHOLE new space and stuff*/
             /*TEST FOR LEVEL 0*/
-            world_setPlSpaceID(w, 7);
-            map = world_getSpaceMap(w, 7);
+            /*world_setPlSpaceID(w, 7);
+               map = world_getSpaceMap(w, 7);
+               i_setMap(i, map);
+               i_drawPl(i, 23, 75);
+               /*END OF TEST*/
+            /*TEST FOR LEVEL1*/
+            map = world_getSpaceMap(w, 8);
             i_setMap(i, map);
-            i_drawPl(i, 23, 75);
+            i_drawPl(i, 2, 84);
             /*END OF TEST*/
         }
         else if (c == HELP_KEY)
@@ -206,7 +211,7 @@ int main()
                             i_drawPl(i, prow, pcol);
                             /*free the copy*/
                             map_mainFree(map, 13);
-                            /*RESET THE MAP AND THE PANEL*/
+                            /*RESET  THE PANEL*/
 
                             /*resetting map .. idrawALl??*/
                         }
