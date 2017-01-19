@@ -1,11 +1,9 @@
 1	Modulo string util, funciona?
-2	Instrucciones de tus juegos waps
 6	Como se hace lo de meter la solucion del jugador? Debo preocuparme por
 	el \n al final de la respuesta? (se guarda, o no?)
 7	HAMBURGUESAAA
 
 string
-instrucciones
 game
 	save pillar respuesta
 Hamburguesa
