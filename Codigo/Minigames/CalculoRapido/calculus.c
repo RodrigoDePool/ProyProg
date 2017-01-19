@@ -81,17 +81,23 @@ int calculus (Interface *i)
                 if (flag_result == 0) return 0;
                 usleep(300000);
         }
+        pthread_cancel(cal);
         return 0;              
 }
 
 int calculus_game(Interface *i){
-        int j;
+        int j,res;
         for (j=0; j<3; j++){
-                if (calculus(i) == 0) {
+                res = calculus(i);
+                if (res == 0){
                     i_drawStrMap(i, "You lost", 1, 1, 3);
+                    sleep(3);
+                    i_cleanCommand(i);
                     return 0;
                 }
                 else i_drawStrMap(i, "Correct!", 1, 1, 3);
+                sleep(3);
+                i_cleanCommand(i);
         }
         return 1;
 }    

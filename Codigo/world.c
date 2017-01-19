@@ -116,25 +116,25 @@ Level ** levelsIni()
     }
 
     
-    levels[0]->finalAnimation   = NULL;/* &(One2Two_animation);*/
-    levels[0]->PlIniRow         = 87;
-    levels[0]->PlIniCol         = 23;
+    levels[0]->finalAnimation   = NULL;/*&(One2Two_animation);*/
+    levels[0]->PlIniRow         = 23;
+    levels[0]->PlIniCol         = 75;
     levels[0]->PlIniSpaceID     = 7;
 
-    levels[1]->finalAnimation   = NULL;
-    levels[1]->PlIniRow         = -1;
-    levels[1]->PlIniCol         = -1;
+    levels[1]->finalAnimation   = NULL; /*&(Two2Three_animation)*/
+    levels[1]->PlIniRow         = 16;
+    levels[1]->PlIniCol         = 18;
     levels[1]->PlIniSpaceID     = 8;
 
-    levels[2]->finalAnimation   = NULL;
-    levels[2]->PlIniRow         = -1;
-    levels[2]->PlIniCol         = -1;
+    levels[2]->finalAnimation   = NULL; /*&(Three_animation_LucyFight)*/
+    levels[2]->PlIniRow         = 4;
+    levels[2]->PlIniCol         = 33;
     levels[2]->PlIniSpaceID     = 9;
 
-    levels[3]->finalAnimation   = NULL;
+    levels[3]->finalAnimation   = NULL; /*&(Three2Four_animation)*/
     levels[3]->PlIniRow         = -1;
     levels[3]->PlIniCol         = -1;
-    levels[3]->PlIniSpaceID     = -1;
+    levels[3]->PlIniSpaceID     = 16;
     
 
     fclose(f);
