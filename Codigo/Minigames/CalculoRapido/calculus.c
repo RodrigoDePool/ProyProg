@@ -105,6 +105,7 @@ int calculus_game(Interface *i){
         i_cleanMap(i);
         i_readFile(i, "Codigo/DATA/miniInst/calculus/calcinfo.txt", 9, 18, 1);
         i_readFile(i, "Codigo/DATA/miniInst/calculus/calcinst.txt", 0, 0, 2);
+        _read_key();
         for (j=0; j<3; j++){
                 res = calculus(i);
                 if (res == 0){
