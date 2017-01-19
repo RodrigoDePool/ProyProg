@@ -19,9 +19,6 @@ int main(){
   sleep(1);
   
   i_drawPl(i, 27, 43);
-  Three_animation_LucyFight(i);
-  sleep(1);
-  
   Three2Four_animation(i);
   sleep(1);
 

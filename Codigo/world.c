@@ -117,9 +117,9 @@ Level ** levelsIni()
     levels[2]->PlIniCol         = 33;
     levels[2]->PlIniSpaceID     = 9;
 
-    levels[3]->finalAnimation   = NULL; /*&(Three2Four_animation)*/
-    levels[3]->PlIniRow         = -1;
-    levels[3]->PlIniCol         = -1;
+    levels[3]->finalAnimation   = NULL; /*&(Five2Six_animation)*/
+    levels[3]->PlIniRow         = 13;
+    levels[3]->PlIniCol         = 51;
     levels[3]->PlIniSpaceID     = 16;
     
 
