@@ -1,0 +1,15 @@
+You will be asked a few
+questions.
+Each question has some
+possible answers , each one
+with an associated key (a,
+b, c...) that will be shown
+to you.
+
+To answer to a question,
+just press the associated
+key.
+
+To win the minigame, you
+have to guess the correct 
+answer to every question.

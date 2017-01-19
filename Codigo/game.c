@@ -2,18 +2,48 @@
 #define NDEBUG
 #include <assert.h>
 #include "game.h"
-#define STRPATH
-#define CLUEPATH 
-#define INIROW 1
-#define INICOL 2
-#define SLEEPTIME 2
+#define STRPATH "./Codigo/DATA/game/string.txt"
+#define CLUEPATH "./Codigo/DATA/game/clue.txt"
+#define INIROW 0
+#define INICOL 1 
+#define POPUPROW 12
+#define POPUPCOL 40
 
 struct _Strings{
 	int nums;
 	char **st;	
 }
 
-String *string_ini(){
+
+
+
+/**********************************************/
+/******   LOCAL FUNCTIONS DECLARATION   *******/
+/**********************************************/
+String *string_ini(char *path);
+
+
+
+
+/*Gives a clue to the space riddle if the player has all the space objects
+  Else, tells the player that he cannot be helped
+  Returns -1 if anything went wrong*/
+
+int game_help(World *w, String *s);
+
+/*Saves the game and shows message
+  Returns -1 if something went wrong, else 0*/
+int game_save(World *w, String* s);
+
+/*Lets the player solve the riddle if he has enough objects
+  Returns 1 if correct answer, 0 if wrong answer, or -1 if anything went wrong*/
+int game_solve(World *w, String *s);
+
+
+/**********************************************/
+/*****   LOCAL FUNCTIONS IMPLEMENTATION   *****/
+/**********************************************/
+String *string_ini(char *path){
 	int nst, i, j;
 	FILE *f = fopen(STRPATH, "r");
 	if(f == NULL)
@@ -32,7 +62,7 @@ String *string_ini(){
 		return NULL;
 	}
 	for(i = 0;i < s->ns; i++){
-		fscanf(f, "%m[^|]|\n", (s->st)+i);
+		fscanf(f, "%m[^#]#\n\n", (s->st)+i);
 		if( s->st[i] == NULL ){
 			string_free(s);
 			fclose(f);
@@ -57,9 +87,6 @@ void string_free(String *s){
 }
 
 
-/*Gives a clue to the space riddle if the player has all the space objects
-  Else, tells the player that he cannot be helped
-  Returns -1 if anything went wrong*/
 int game_help(World *w, String *s){
 	assert(w && s);
 	FILE *f = NULL;
@@ -95,8 +122,7 @@ int game_help(World *w, String *s){
 	return 0;
 }
 
-/*Saves the game and shows message
-  Returns -1 if something went wrong, else 0*/
+
 int game_save(World *w, String* s){
 	assert(w && s);
 	Interface *in = world_getInterface(w);
@@ -118,8 +144,6 @@ int game_save(World *w, String* s){
 
 
 
-/*Lets the player solve the riddle if he has enough objects
-  Returns 0, or -1 if anything went wrong*/
 int game_solve(World *w, String *s){
 	assert(w && s);
 	Interface *in = world_getInterface(w);	
@@ -132,13 +156,14 @@ int game_solve(World *w, String *s){
 	nlev = world_getPllevel(w);
 	if(nlev < 0) return -1;
 	if(world_getNumObjects(w) != (3 + (3*nlev)) ){
-		i_drawStr(in, s->st[6], INIROW , INICOL , 3);
+		i_readFile_notMap(in, s->st[6], POPUPROW , POPUPCOL , 1);
 		c = _read_key();
+		i_drawAll(in);
 		return 0;
 	}
 		
 	/*"Enter the solution" string*/
-	i_drawStr(in, s->st[3], INIROW , INICOL , 3);
+	i_readFile_notMap(in, s->st[3], INIROW , INICOL , 3);
 			
 	/* Meto en solution la solucion del jugador... ¿habra que quitar el \n*/
 	/*  Save in pl_sol*/
@@ -152,16 +177,25 @@ int game_solve(World *w, String *s){
 	
 	if( strcmp(pl_sol, l->solution) == 0 ){
 		/*You passed level string*/
-		i_drawStr(in, s->st[4], INIROW , INICOL , 3);
+		i_readFile_notMap(in, s->st[4], POPUPROW , POPUPCOL , 1);
 		c = _read_key();
-		return 0;
+		i_drawAll(in);
+		return 1;
 	}else{
 		/*Youre wrong string*/
-		i_drawStr(in, s->st[5], INIROW , INICOL , 3);
+		i_readFile_notMap(in, s->st[5], POPUPROW , POPUPCOL , 1);
 		c = _read_key();
+		i_drawAll(in);
 		return 0;
 	}	
 }
+
+
+
+
+/**********************************************/
+/****   PUBLUC FUNCTIONS IMPLEMENTATION   *****/
+/**********************************************/
 
 
 int game_f(World *w, int n){
@@ -188,5 +222,12 @@ int game_f(World *w, int n){
 	}
 }
 
-
+int game_objInLevel(World *w){
+	assert(w);
+	
+	int nobj = world_getNumObjects(w);
+	if(nobj >= 0)
+		return nobj%3;
+	return -1;
+}
 

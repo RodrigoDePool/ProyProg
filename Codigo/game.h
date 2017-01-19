@@ -5,17 +5,32 @@
 
 
 typedef struct _Strings Strings;
-/* Strings file structure
- 3 #nstrings
- I'm sorry, you need to have the three parts if you wanna have a clue!|
- Everything was successfuly saved.|
- Enter the solution to the riddle|
 
+/*Initializes and returns String struct from a file like this (# is the separator):
+
+  RIGHT NOW IT INITIALIZES IT FROM A MACRO: STRPATH
+
+ 3 --nstrings
+ I'm sorry, you need to have the three parts if you wanna have a clue!#
+ 
+ Everything was successfuly saved.#
+ 
+ Enter the solution to the riddle#
+ 
 */
+String *string_ini(char *path);
 
-/*PENSEMOS FUNCIONES*/
+/* Frees a given string and all its members*/
+void string_free(String *s);
 
 /*Executes help if n = 0, save if n = 1, solve if n = 2
-  Returns -1 in case of error (memory error, couldnt be saved...)
-  or 0 if nothing went wrong*/
+  
+  Help: -1 when memory error, else 0 (even if you didnt have neough objects)
+  Save: -1 if couldnt save, else 0
+  Solve: 1 if won, -1 when error, 0 if wrong/ not enough objects
+  */
 int game_f(World *w, int n);
+
+/*Given a world, returns how many minigames have been passed in the current level
+  Returns -1 in case of error*/
+int game_objInLevel(World* w);
