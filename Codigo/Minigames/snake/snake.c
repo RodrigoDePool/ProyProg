@@ -214,7 +214,7 @@ int snake(Interface *i)
 	flag_snakeResult = 0;
 	key_read = NORTH;
 	i_cleanMap(i);
-	i_readFile(i, "map.txt", 9, 32, 1); /*48x15*/
+	i_readFile(i, "Codigo/DATA/miniInst/snake/map.txt", 9, 32, 1); /*48x15*/
 	i_drawAll(i);
 	i_cleanDisplay(i);
 	i_cleanCommand(i);
