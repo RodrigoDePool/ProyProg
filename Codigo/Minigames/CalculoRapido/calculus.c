@@ -103,12 +103,12 @@ int calculus_game(Interface *i){
                 res = calculus(i);
                 if (res == 0){
                     i_drawStrMap(i, "You lost", 1, 1, 3);
-                    sleep(3);
+                    sleep(2);
                     i_cleanCommand(i);
                     return 0;
                 }
                 else i_drawStrMap(i, "Correct!", 1, 1, 3);
-                sleep(3);
+                sleep(2);
                 i_cleanCommand(i);
         }
         return 1;
