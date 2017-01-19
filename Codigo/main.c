@@ -131,8 +131,8 @@ int main()
                 if (aux == 0)
                 {
                     /*info of the door the player appears in*/
-                    prow = d->nx;
-                    pcol = d->ny;
+                    pcol = d->nx;
+                    prow = d->ny;
                     /*set the space we moved to*/
                     world_setPlSpaceID(w, sid);
                     /*take the map*/
