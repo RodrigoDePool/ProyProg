@@ -41,6 +41,7 @@ int game_help(World *w, String *s){
 	char *clue, c = 0;
 	Interface *in = world_getInterface(w);
 	if(!in) return -1;
+	if(nlev<0) return -1;
 	
 	if( (world_getNumObjects(w)%3 != 0) || (world_getNumObjects(w) == 0) ){
 		/*Not enough objects for the clue*/
@@ -103,7 +104,7 @@ int game_solve(World *w, String *s){
 	
 	/*Check if the player has enough objects*/
 	nlev = world_getPllevel(w);
-	if(nlev < 0) return -1;
+	if(nlev < -1) return -1;
 	if(world_getNumObjects(w) < (3 + (3*nlev)) ){
 		string_drawLines(i, string_getString(s, 6), POPUPROW , POPUPCOL , 1, '\n', '*');
 		c = _read_key();
@@ -185,7 +186,7 @@ int game_objInLevel(World *w){
 int game_drawDisplay(World *w){
 	assert(w);
 	String *s;
-	int nlev, nobj, st;
+	int nlev, nobj, st, i;
 	Interface *in = world_getInterface(w);	
 	if(!in) return -1;
 	
@@ -211,7 +212,9 @@ int game_drawDisplay(World *w){
 	}
 	
 	st = (3 * nlev);
-	
+	for(i = 0; i < nobj; i++){
+		
+	}
 	
 	
 	
