@@ -6,30 +6,42 @@
 #include <pthread.h>
 #include <string.h>
 
-int flag_result = -1;
+typedef struct resStruct {
+    int *flag_result;
+    int *resAtt;
+} resStruct;
 
-void *calc (void *res){
+resStruct *resStruct_ini(){
+    resStruct *foo = (resStruct*) malloc(sizeof(resStruct));
+    return foo;
+}
+
+void *calc (void *res)
+{
         int i, ret;
-        char result[3], buf;        
-        sprintf(result, "%d", *((int*)res));
+        char result[3], buf; 
+        resStruct *foo = (resStruct*) res;       
+        sprintf(result, "%d", *(foo->resAtt));
         for (i = 0; i<strlen(result); i++){
                 buf = _read_key();
                 if (buf != result [i]) {
-                      flag_result = 0;
+                      *(foo->flag_result) = 0;
                       return NULL;
                 }
         }
-        flag_result = 1;
+        *(foo->flag_result) = 1;
         return NULL;
 }
 
 int calculus (Interface *i)
 {       
-	int first, firstTen, second, secondTen, decider, res, j;
-        pthread_t cal;
+	int first, firstTen, second, secondTen, decider, res, j, flag = -1;
+    pthread_t cal;
 	char operator;
-        char buff[50];
-        i_cleanMap(i);
+    char buff[50];
+    i_cleanMap(i);
+    resStruct *foo = resStruct_ini();
+    foo->flag_result = &flag;
 	srand(time(NULL));
 	first = rand()%20 + 1;
 	decider = rand()%3;
@@ -58,7 +70,7 @@ int calculus (Interface *i)
                 second = rand()%25 +1;
                 res = first + second;
         }
-
+    foo->resAtt = &res;
 	firstTen = first/10;
 	secondTen = second/10;
 	
@@ -75,10 +87,10 @@ int calculus (Interface *i)
         sprintf (buff, "Codigo/DATA/miniInst/calculus/%d.txt", second - secondTen*10);
         i_readFile(i, buff, 12, 67, 1);
         
-        pthread_create(&cal, NULL, calc, (void*) &res);
+        pthread_create(&cal, NULL, calc, (void*) foo);
         for (j = 0; j<10; j++){
-                if (flag_result == 1) return 1;
-                if (flag_result == 0) return 0;
+                if (*(foo->flag_result) == 1) return 1;
+                if (*(foo->flag_result) == 0) return 0;
                 usleep(300000);
         }
         pthread_cancel(cal);
@@ -100,20 +112,7 @@ int calculus_game(Interface *i){
                 i_cleanCommand(i);
         }
         return 1;
-}    
-
-int main()
-{
-	Interface *i;
-  	_term_init();
-  	i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 40, 37, 40, 37, 40, 37);	
-	calculus_game(i);
-	i_free(i);
-  	_term_close();
 }
-
-
-
 
 
 
