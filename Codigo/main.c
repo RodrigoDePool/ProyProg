@@ -50,7 +50,7 @@ int main()
     /*row , col and space the player is in*/
     int       prow, pcol, pspace;
     /*flag to see if the key press was a move*/
-    int       sid, aux, finished;
+    int       sid, aux, finished, win;
     char      c;
     char      **map;
 
@@ -155,7 +155,23 @@ int main()
                         c = YorN();
                         if (c == 'y')
                         {
+                            /*we get the space id*/
+                            pspace = world_getPlSpaceID(w);
+                            /*take the map and copy it*/
+                            map = map_copy(world_getSpaceMap(w, sid));
+
+                            /*we play the minigame*/
                             minigame = world_getMinigame(w, sid);
+                            win      = (*minigame)(i);
+
+                            if (win == 1)
+                            {
+                                /*WIN*/
+                            }
+                            else
+                            {
+                                /*LOST*/
+                            }
                             /*minigame set up*/
                             /*IF LOSE*/
                             /*losing message*/
@@ -179,7 +195,7 @@ int main()
         }
     }
 }
-}
+
 
 
 
@@ -198,7 +214,7 @@ char YorN()
 char **map_copy(char **map, int rows, int cols)
 {
     char **copy;
-    int i, j;
+    int  i, j;
     assert(map != NULL);
     copy = (char * *) malloc(sizeof(char *) * rows);
     if (copy == NULL)
