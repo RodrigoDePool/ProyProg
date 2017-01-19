@@ -104,10 +104,16 @@ int main()
                i_drawPl(i, 23, 75);
                /*END OF TEST*/
             /*TEST FOR LEVEL1*/
-            world_setPlSpaceID(w, 8);
-            map = world_getSpaceMap(w, 8);
+            /*world_setPlSpaceID(w, 8);
+               map = world_getSpaceMap(w, 8);
+               i_setMap(i, map);
+               i_drawPl(i, 2, 84);
+               /*END OF TEST*/
+            /*TEST FOR LEVEL 2*/
+            world_setPlSpaceID(w, 9);
+            map = world_getSpaceMap(w, 9);
             i_setMap(i, map);
-            i_drawPl(i, 2, 84);
+            i_drawPl(i, 2, 79);
             /*END OF TEST*/
         }
         else if (c == HELP_KEY)

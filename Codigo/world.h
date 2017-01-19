@@ -5,7 +5,7 @@
 #include "space.h"
 #include "interface.h"
 #include "Minigames/2048/2048.h"
-/*#include "Minigames/Calculo Rapido/" Añadir al makefile*/
+#include "Minigames/CalculoRapido/calculus.h"
 #include "Minigames/CountDots/countdots.h"
 #include "Minigames/MiniMaze/MiniMaze.h"
 #include "Minigames/MiniPadel/miniPadel.h"
@@ -30,7 +30,7 @@ typedef int (*Animation)(Interface * i);
 typedef struct _Level
 {
     char      * solution;
-    Animation * finalAnimation;
+    Animation finalAnimation;
     /*Initial coords*/
     int       PlIniRow;
     int       PlIniCol;
