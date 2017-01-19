@@ -1,0 +1,12 @@
+Try to solve the
+operations as fast
+as possible.
+
+Random operations
+will appear and 
+you have to type the
+result before time
+ends.
+
+You have to solve 3
+to get the clue.
