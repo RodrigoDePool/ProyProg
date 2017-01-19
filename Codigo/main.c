@@ -119,12 +119,12 @@ int main()
             /*set panel*/
 
             /*TEST FOR LEVEL 0*/
-            world_setPlSpaceID(w, 7);
-            world_setPllevel(w, 0);
-            map = world_getSpaceMap(w, 7);
-            i_setMap(i, map);
-            i_drawPl(i, 23, 75);
-            /*END OF TEST*/
+            /*world_setPlSpaceID(w, 7);
+               world_setPllevel(w, 0);
+               map = world_getSpaceMap(w, 7);
+               i_setMap(i, map);
+               i_drawPl(i, 23, 75);
+               /*END OF TEST*/
             /*TEST FOR LEVEL1*/
             /*world_setPlSpaceID(w, 8);
                world_setPllevel(w, 1);
@@ -140,12 +140,12 @@ int main()
                i_drawPl(i, 2, 79);
                /*END OF TEST*/
             /*TEST FOR LEVEL 3*/
-            /*world_setPlSpaceID(w, 10);
-               world_setPllevel(w, 3);
-               map = world_getSpaceMap(w, 10);
-               i_setMap(i, map);
-               i_drawPl(i, 20, 20);
-               /*END OF LEVEL*/
+            world_setPlSpaceID(w, 10);
+            world_setPllevel(w, 3);
+            map = world_getSpaceMap(w, 10);
+            i_setMap(i, map);
+            i_drawPl(i, 20, 20);
+            /*END OF LEVEL*/
         }
         else if (c == HELP_KEY)
         {
