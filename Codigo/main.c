@@ -139,45 +139,9 @@ int main()
                 map = world_getSpaceMap(w, l->PlIniSpaceID);
                 i_setMap(i, map);
                 i_drawPl(i, l->PlIniRow, l->PlIniCol);
+                /*set the panel*/
+                game_drawDisplay(w);
             }
-            /*if fail print fail message and thats it*/
-            /*else animation and set WHOLE new space and panel*/
-            /* if you won set level*/
-            /*set panel*/
-
-
-
-            /*TEST FOR LEVEL 0*/
-            /*world_setPlSpaceID(w, 7);
-               world_setPllevel(w, 0);
-               map = world_getSpaceMap(w, 7);
-               i_setMap(i, map);
-               i_drawPl(i, 23, 75);
-               /*END OF TEST*/
-            /*TEST FOR LEVEL1*/
-            /*world_setNumObjects(w, 3);
-               world_setPlSpaceID(w, 8);
-               world_setPllevel(w, 1);
-               map = world_getSpaceMap(w, 8);
-               i_setMap(i, map);
-               i_drawPl(i, 2, 84);
-               /*END OF TEST*/
-            /*TEST FOR LEVEL 2*/
-            /*world_setPlSpaceID(w, 9);
-               world_setNumObjects(w, 6);
-               world_setPllevel(w, 2);
-               map = world_getSpaceMap(w, 9);
-               i_setMap(i, map);
-               i_drawPl(i, 2, 79);
-               /*END OF TEST*/
-            /*TEST FOR LEVEL 3*/
-            /*world_setPlSpaceID(w, 10);
-               world_setNumObjects(w, 9);
-               world_setPllevel(w, 3);
-               map = world_getSpaceMap(w, 10);
-               i_setMap(i, map);
-               i_drawPl(i, 20, 20);
-               /*END OF LEVEL*/
         }
         else if (c == HELP_KEY)
         {
