@@ -51,6 +51,7 @@ int game_help(World *w, String *s)
         /*Not enough objects for the clue*/
         string_drawLines(in, string_getString(s, 0), INIROW, INICOL, 3, '\n', '*');
         c = _read_key();
+        i_cleanCommand(in);
     }
     else
     {
@@ -73,12 +74,12 @@ int game_help(World *w, String *s)
             else
             {
                 i_drawStr(in, clue, INIROW, INICOL, 3);
+                free(clue);
             }
         }
         fclose(f);
     }
 
-    free(clue);
     return 0;
 }
 
