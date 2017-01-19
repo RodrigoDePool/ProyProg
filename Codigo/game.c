@@ -186,8 +186,8 @@ int game_drawDisplay(World *w){
 	i_cleanDisplay(in);
 	i_readFile(in, DISPLAYPATH, 0, 0);
 	
-	/* Riddle starts at row 2, 
-	   Description at row 16*/
+	/* Riddle starts at row 3, 
+	   Description at row 14*/
 	
 	
 	
