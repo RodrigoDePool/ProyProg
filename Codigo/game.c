@@ -4,6 +4,7 @@
 #include "game.h"
 #define STRPATH "./Codigo/DATA/game/string.txt"
 #define CLUEPATH "./Codigo/DATA/game/clue.txt"
+#define DISPLAYPATH "./Codigo/DATA/game/display.txt"
 #define INIROW 0
 #define INICOL 1 
 #define POPUPROW 12
@@ -141,7 +142,7 @@ int game_solve(World *w, String *s){
 
 
 /**********************************************/
-/****   PUBLUC FUNCTIONS IMPLEMENTATION   *****/
+/****   PUBLIC FUNCTIONS IMPLEMENTATION   *****/
 /**********************************************/
 
 int game_f(World *w, int n){
@@ -175,5 +176,25 @@ int game_objInLevel(World *w){
 	if(nobj >= 0)
 		return nobj%3;
 	return -1;
+}
+
+int game_drawDisplay(World *w){
+	assert(w);
+	Interface *in = world_getInterface(w);	
+	if(!in) return -1;
+	
+	i_cleanDisplay(in);
+	i_readFile(in, DISPLAYPATH, 0, 0);
+	
+	/* Riddle starts at row 2, 
+	   Description at row 16*/
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
