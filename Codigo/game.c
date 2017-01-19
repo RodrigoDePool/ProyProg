@@ -183,6 +183,7 @@ int game_objInLevel(World *w){
 int game_drawDisplay(World *w){
 	assert(w);
 	String *s
+	int nlev, nobj;
 	Interface *in = world_getInterface(w);	
 	if(!in) return -1;
 	
@@ -190,19 +191,29 @@ int game_drawDisplay(World *w){
 	i_readFile(in, DISPLAYPATH, 0, 0);
 	
 	s = string_ini(RIDDLEPATH);
-	if(s == NULL || ){
+	if(s == NULL || string_getNumber(s) != 12){
 		return -1;
 	}
+	
+	/*With the level, what riddle to use,
+	  with the number ob objects, the number of parts to show*/
+	  
+	  
 	/* Riddle starts at row 3, 6, 9 
 	   Description at row 14*/
+	nlev = world_getPllevel(w);
+	nobj = game_objInLevel(w);
+	if(nlev < 0 || nobj > 0){
+		string_free(s);
+		return -1;
+	}
+
 	
 	
 	
 	
 	
-	
-	
-	free(s);
+	string_free(s);
 	return 0;
 }
 
