@@ -1,9 +1,10 @@
 all:  main clean
 
-main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o  2048.o calculus.o game.o string.o
+main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o  2048.o calculus.o game.o string.o tutorial.o
 	gcc -o main $^ -lpthread
 	
-
+tutorial.o: Codigo/tutorial.c Codigo/tutorial.h
+	gcc -c Codigo/tutorial.c
 
 world.o: Codigo/world.c Codigo/world.h
 	gcc -c -g Codigo/world.c

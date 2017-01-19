@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "interface.h"
+#include "tutorial.h"
 #include "space.h"
 #include "world.h"
 #include "menu.h"
@@ -85,13 +86,12 @@ int main()
     /*If we are in level 0 we run the tutorial*/
     if (world_getPllevel(w) == -1)
     {
-        /*int to check if you passed the game*/
-        /*tutorial(w);*/
-        /*if you failed close game*/
-        /*else continue the main*/
+        /*if quit*/
+        if (tutorial(w) == 0)
+            return 0;
     }
 
-    /*sets first maps*/
+    /*sets the map you are in*/
     prow   = world_getPlRow(w);
     pcol   = world_getPlCol(w);
     pspace = world_getPlSpaceID(w);
