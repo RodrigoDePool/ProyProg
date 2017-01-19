@@ -1,5 +1,5 @@
        Parts of the         
-          RIDDLE:            
+          RIDDLE:           
                             
                             
                             
@@ -23,12 +23,12 @@
                             
        COMMANDS:            
                             
-Press 's' to save           
+ Press 's' to save           
                             
-Press 'h' for some help     
+ Press 'h' for some help     
                             
-Press 'x' for solving       
+ Press 'x' for solving       
                             
-Press 'q' to quit game      
+ Press 'q' to quit game      
                             
-Arrows are for moving       
+ Arrows are for moving       
