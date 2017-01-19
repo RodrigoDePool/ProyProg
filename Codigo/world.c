@@ -10,20 +10,6 @@
 
 
 
-/*
-    remmember that you know if a player has an object by its atribute in
-    object struct
-    TO BE ADD :
-    POINTER TO INTERFACE
-    THE ID OF THE SPACE THE PLAYER IS IN
-    a path in which the game that is being played is to be saved
-
-    array de strings donde el primero sea el puntero que apunta al primer
-    riddle el segundo al segundo riddle
-    y un int que tenga el numero de riddles que has hecho
-    funcion que chequee los objetos requeridos
-
- */
 struct _World
 {
     Space     **spaces;
