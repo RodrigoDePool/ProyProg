@@ -5,6 +5,7 @@
 #include "space.h"
 #include "world.h"
 #include "menu.h"
+#include "game.h"
 #define SAVE_KEY          's'
 #define SOLVE_KEY         'x'
 #define HELP_KEY          'h'
@@ -107,21 +108,25 @@ int main()
             /*Solve function*/
             /*if fail print fail message and thats it*/
             /*else animation and set WHOLE new space and panel*/
+            /* if you won set level*/
 
             /*TEST FOR LEVEL 0*/
-            /*world_setPlSpaceID(w, 7);
-               map = world_getSpaceMap(w, 7);
-               i_setMap(i, map);
-               i_drawPl(i, 23, 75);
-               /*END OF TEST*/
-            /*TEST FOR LEVEL1*/
-            world_setPlSpaceID(w, 8);
-            map = world_getSpaceMap(w, 8);
+            world_setPlSpaceID(w, 7);
+            world_setPllevel(w, 0);
+            map = world_getSpaceMap(w, 7);
             i_setMap(i, map);
-            i_drawPl(i, 2, 84);
+            i_drawPl(i, 23, 75);
             /*END OF TEST*/
+            /*TEST FOR LEVEL1*/
+            /*world_setPlSpaceID(w, 8);
+               world_setPllevel(w,1);
+               map = world_getSpaceMap(w, 8);
+               i_setMap(i, map);
+               i_drawPl(i, 2, 84);
+               /*END OF TEST*/
             /*TEST FOR LEVEL 2*/
             /*world_setPlSpaceID(w, 9);
+               world_setPllevel(w,2);
                map = world_getSpaceMap(w, 9);
                i_setMap(i, map);
                i_drawPl(i, 2, 79);
@@ -129,7 +134,7 @@ int main()
         }
         else if (c == HELP_KEY)
         {
-            /*print help message*/
+            game_f(w, 0);
         }
         else if (c == EXIT_KEY)
         {
