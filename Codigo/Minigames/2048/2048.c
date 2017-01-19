@@ -296,9 +296,9 @@ int mini2048(Interface *in, int size, int max){
 	}
 	/*finished game, won or not?*/
 	if(won == 1){
-		i_drawStr(in, "YOU WON!",  5, 4, 2);
+		i_drawStr(in, "YOU WON!",  34, 4, 2);
 	}else{
-		i_drawStr(in, "YOU LOST!", 5, 4, 2);
+		i_drawStr(in, "YOU LOST!", 34, 4, 2);
 	}
 	sleep(2);
 	for(i = 0; i < size; i++)

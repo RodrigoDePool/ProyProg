@@ -15,3 +15,10 @@ int game_f(World *w, int n);
 /*Given a world, returns how many minigames have been passed in the current level
   Returns -1 in case of error*/
 int game_objInLevel(World* w);
+
+
+/* Riddle starts at row 2, 
+   Description at row 16*/
+/* Returns 0 or -1 in case of error*/
+	
+int game_drawDisplay(World *w);
