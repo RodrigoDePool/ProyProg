@@ -18,21 +18,21 @@ int One2Two_animation(Interface *i)
 		myscol--;
 		i_writeCharMap(i, '?', mysrow, myscol, 1);
 		i_writeCharMap(i, ' ', mysrow, myscol+1, 1);
-		usleep(100000);
+		usleep(20000);
 	}
 
 	while(mysrow != plrow){
 		mysrow--;
 		i_writeCharMap(i, '?', mysrow, myscol, 1);
 		i_writeCharMap(i, ' ', mysrow+1, myscol, 1);
-		usleep(100000);
+		usleep(20000);
 	}
 
 	while(myscol != plcol+1){
 		myscol--;
 		i_writeCharMap(i, '?', mysrow, myscol, 1);
 		i_writeCharMap(i, ' ', mysrow, myscol+1, 1);
-		usleep(100000);
+		usleep(20000);
 	}
 
 	i_writeCharMap(i, '!', plrow-1, plcol, 1);
@@ -64,13 +64,11 @@ int Two2Three_animation(Interface *i)
 	for (j=1; j<=16; j++){
 		sprintf (buff, "Frames/TwoToThree/BedRoom1-%d.map", j);
 		usleep(10000);
-		i_cleanMap(i);
-		i_readFile(i, buff, 0, 0, 1);
-		i_drawAll(i);
+		i_readFile(i, buff, 0, 62, 1);
 	}
 	
 	usleep(2000);
-	i_readFile(i, "Frames/TwoToThree/BedRoom1-1.map", 0, 0, 1);
+	i_readFile(i, "Frames/TwoToThree/BedRoom1-1.map", 0, 62, 1);
 	
 	for (j=1; j<=9; j++){
 		sprintf (buff, "../DATA/Dialogue/TwoToThree/%d.txt", j);
@@ -80,7 +78,6 @@ int Two2Three_animation(Interface *i)
 		if (j == 2) i_cleanMap(i);
 		if (j == 4){
 			i_readFile(i, "Maps/BedRoom2.map", 0, 0, 1);
-			i_drawAll(i);
 		}
 	}
 	return 0;
