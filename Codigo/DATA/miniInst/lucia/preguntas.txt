@@ -19,15 +19,6 @@ c 0 Not telling ya.
 Lucia
 OSTRAS T VOY A SOLTAR UNA HOTIA (I'm going to tap you)
 7
-a 0 You would also die from the shock wave, you shouldn't.
-b 0 Yo I'm made out of rock yo.
-c 0 Oh no please.
-d 0 Oh no please don't KILL ME.
-e 0 YES PLEASE GO AHEAD.
-f 0 I LOVE YOU
-g 0 I love SOMEONE ELSE
-h 0 I would rather you were a DOG
-i 0 I love ALL ANIMALS
-j 0 I DONT love all animals
-k 0 I love ALL animals  except YOU
-l 0 YOU are NOT an animal, I did NOT say that
+a 0 I DONT love all animals
+b 0 I love ALL animals  except YOU
+c 0 YOU are NOT an animal, I did NOT say that
