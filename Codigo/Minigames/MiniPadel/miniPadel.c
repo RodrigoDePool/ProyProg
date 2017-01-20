@@ -1,6 +1,7 @@
 #include "miniPadel.h"
 #include <time.h>
 #include <pthread.h>
+#include "../../Animations/animations.h"
 #include <unistd.h>
 #define MILISECONDS    40 /*speed of the ball*/
 #define FTIME          45
@@ -512,7 +513,13 @@ int easyMiniPadel(Interface *i)
 
 int hardMiniPadel(Interface *i)
 {
-    return miniPadel(i, 1);
+    int n;
+    n = miniPadel(i, 1);
+    if (n == 1)
+    {
+        Five_animation_pong(i);
+    }
+    return n;
 }
 
 
