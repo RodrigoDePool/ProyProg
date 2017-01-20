@@ -1,7 +1,7 @@
-all:  main clean
+all:  A4chapterRequiem clean
 
-main: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o  2048.o calculus.o game.o string.o tutorial.o
-	gcc -o main $^ -lpthread
+A4chapterRequiem: main.o world.o space.o interface.o rectangles.o menu.o animations.o  countdots.o MiniMaze.o miniPadel.o miniRPSLS.o qa.o snake.o  2048.o calculus.o game.o string.o tutorial.o
+	gcc -o A4chapterRequiem $^ -lpthread
 	
 tutorial.o: Codigo/tutorial.c Codigo/tutorial.h
 	gcc -c Codigo/tutorial.c
