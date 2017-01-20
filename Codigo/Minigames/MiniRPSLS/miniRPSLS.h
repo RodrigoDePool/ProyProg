@@ -12,7 +12,7 @@
 #define CROSS_PATH         "Codigo/DATA/miniInst/RPSLS/CROSS"
 #define ROUND_PATH         "Codigo/DATA/miniInst/RPSLS/ROUNDS"
 #define INFO_RPSLS         "Codigo/DATA/miniInst/RPSLS/info"
-#define WAIT               5 /*sleep time in seconds between rounds*/
+#define WAIT               2 /*sleep time in seconds between rounds*/
 
 /*
    Returns 1 in case the player wins the minigame
