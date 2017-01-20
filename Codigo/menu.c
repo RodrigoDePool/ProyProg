@@ -20,7 +20,7 @@ int mainMenu(Interface *i)
         return -1;
     /*Graphical interface*/
     i_readFile(i, MENU_BASE, 1, 18, 1);
-    i_readFile(i, MENU_INST, 9, 2, 2);
+    i_readFile(i, MENU_INST, 0, 0, 2);
     /*Initialize the arrow to first option*/
     xpos = 47;
     ypos = 14;
@@ -96,7 +96,7 @@ int create_menu(Interface *i, char *path)
     i_cleanDisplay(i);
     i_cleanCommand(i);
     i_readFile(i, MENU_CREATE, 1, 18, 1);
-    i_readFile(i, CREATE_INST, 9, 1, 2);
+    i_readFile(i, CREATE_INST, 0, 0, 2);
     i_drawStrMap(i, string, 1, 1, 3);
 
     /*We make the terminal capable of reading a string again and move the
@@ -176,7 +176,7 @@ int load_menu(Interface *i, char *path)
         i_cleanCommand(i);
         /*we can reuse same menu logo from create*/
         i_readFile(i, MENU_CREATE, 1, 18, 1);
-        i_readFile(i, LOAD_INST, 9, 1, 2);
+        i_readFile(i, LOAD_INST, 0, 0, 2);
 
         /*We print the first 4 options in the index*/
         for (j = 0; j < 4 && fgets(string[j], 50, f) != NULL; j++)
