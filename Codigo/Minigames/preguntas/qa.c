@@ -10,7 +10,7 @@
 #define INSTPATH          "Codigo/DATA/miniInst/preguntas/instructions.txt"
 #define PREGUNTAS_INFO    "./Codigo/DATA/miniInst/preguntas/info.txt"
 #define LUCIA_INFO        "./Codigo/DATA/miniInst/lucia/info.txt"
-#define LUCIA_ASCII "./Codigo/DATA/miniInst/lucia/lucia_ascii"
+#define LUCIA_ASCII       "./Codigo/DATA/miniInst/lucia/lucia_ascii"
 
 struct _Game
 {
@@ -51,7 +51,7 @@ char *unpack_answer(char *ans, char *object, char separator);
    "Imagine arroz asked you, "habicbuela?" what whoukd you answer?"
    Returns -1 if anything went wrong
  */
-int build_intro(Interface *in, Game* g, int i, int row, int col);
+int build_intro(Interface *in, Game* g, int i, int row, int col, int level);
 
 /*Checks if the choice made for the question q is ok or not.
    Writes a message on the board saying it, in (row, col) NOT MAP COORDS
@@ -65,7 +65,7 @@ void * last_answer_check(void *c);
 
 /*This executes (writes and checks) the last question (i-esima)
    Returns -1 in case of error, 1 if the player didnt answer for 15 secs, else 0*/
-int last_answer(Interface *in, Game *g, int i, int *row, int col);
+int last_answer(Interface *in, Game *g, int i, int *row, int col, int level);
 
 /*Executes the Lucia game if level = 2; else the normal one
    If level is not going to be 2, the .txt containing n questions must have "n+1"
@@ -326,7 +326,7 @@ char *unpack_answer(char *ans, char *object, char separator)
 }
 
 
-int build_intro(Interface *in, Game* g, int i, int row, int col)
+int build_intro(Interface *in, Game* g, int i, int row, int col, int level)
 {
     char *intro, *buff, size;
     /*Build intro using a cop function*/
@@ -348,7 +348,10 @@ int build_intro(Interface *in, Game* g, int i, int row, int col)
     intro[strlen(buff) + 2] = '\0';
     /*Clean board to erase previous question*/
     i_cleanMap(in);
-	 i_readFile(in, LUCIA_ASCII, 17, 1, 1);
+    if (level == 1)
+    {
+        i_readFile(in, LUCIA_ASCII, 17, 1, 1);
+    }
     /*Ask question and check the answer*/
     i_drawStr(in, intro, row, col, 1);
     free(intro);
@@ -388,7 +391,7 @@ void * last_answer_check(void *c)
     return NULL;
 }
 
-int last_answer(Interface *in, Game *g, int i, int *row, int col)
+int last_answer(Interface *in, Game *g, int i, int *row, int col, int level)
 {
     int       j;
     char      c = 0;
@@ -396,7 +399,7 @@ int last_answer(Interface *in, Game *g, int i, int *row, int col)
     pthread_t pth;
     *row = 5;
 
-    if (build_intro(in, g, i, *row, col) == -1)
+    if (build_intro(in, g, i, *row, col, level) == -1)
     {
         return -1;
     }
@@ -478,7 +481,7 @@ int qa(Interface *in, int level)
         row = 5;
         col = 10;
 
-        if (build_intro(in, g, i, row, col) == -1)
+        if (build_intro(in, g, i, row, col, level) == -1)
         {
             game_free(g);
             i_cleanDisplay(in);
@@ -523,7 +526,7 @@ int qa(Interface *in, int level)
        al normal ademas se le pasaria en nquestions una mas de las q realmente
        quiisieras, y añadirias un una pregunta inutil*/
     if (level == 1)
-        result = last_answer(in, g, i, &row, col);
+        result = last_answer(in, g, i, &row, col, level);
 
     if (result != 1)
     {
