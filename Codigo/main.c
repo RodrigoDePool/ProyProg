@@ -8,9 +8,13 @@
 #include "menu.h"
 #include "game.h"
 #define SAVE_KEY          's'
+#define MSAVE_KEY         'S'
 #define SOLVE_KEY         'x'
+#define MSOLVE_KEY        'X'
 #define HELP_KEY          'h'
+#define MHELP_KEY         'H'
 #define EXIT_KEY          'q'
+#define MEXIT_KEY         'Q'
 #define EXIT_POPUP        "Codigo/DATA/popups/exit"
 #define MINI_POPUP        "Codigo/DATA/popups/mini"
 #define FINISHED_POPUP    "Codigo/DATA/popups/finished"
@@ -107,11 +111,11 @@ int main()
     while (1)
     {
         c = _read_key();
-        if (c == SAVE_KEY)
+        if (c == SAVE_KEY || c == MSAVE_KEY)
         {
             game_f(w, 1);
         }
-        else if (c == SOLVE_KEY)
+        else if (c == SOLVE_KEY || c == MSOLVE_KEY)
         {
             /*Solve function*/
             aux = game_f(w, 2);
@@ -147,15 +151,15 @@ int main()
             }
             game_drawDisplay(w);
         }
-        else if (c == HELP_KEY)
+        else if (c == HELP_KEY || c == MHELP_KEY)
         {
             game_f(w, 0);
         }
-        else if (c == EXIT_KEY)
+        else if (c == EXIT_KEY || c == MEXIT_KEY)
         {
             i_readFile_notMap(i, EXIT_POPUP, 12, 40, 1);
             c = YorN();
-            if (c == 'y')
+            if (c == 'y' || c == 'Y')
             {
                 world_free(w);
                 _term_close();
@@ -209,7 +213,7 @@ int main()
                         i_readFile_notMap(i, MINI_POPUP, 12, 40, 1);
                         c = YorN();
                         i_drawAll(i);
-                        if (c == 'y')
+                        if (c == 'y' || c == 'Y')
                         {
                             /*we get the space id*/
                             pspace = world_getPlSpaceID(w);
@@ -281,7 +285,7 @@ char YorN()
     do
     {
         c = _read_key();
-    } while (c != 'y' && c != 'n');
+    } while (c != 'y' && c != 'n' && c != 'Y' && c != 'N');
     return c;
 }
 
