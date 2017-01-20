@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "MiniMaze.h"
+#include "../../Animations/animations.h"
 
 /*MAZE GEN FUNCTIONS*/
 
@@ -371,7 +372,13 @@ int easyMiniMaze(Interface *i)
 
 int hardMiniMaze(Interface *i)
 {
-    return miniMaze(i, 1);
+    int n;
+    n = miniMaze(i, 1);
+    if (n == 1)
+    {
+        Five_animation_maze(i);
+    }
+    return n;
 }
 
 
