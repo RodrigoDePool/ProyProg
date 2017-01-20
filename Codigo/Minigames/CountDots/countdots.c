@@ -1,6 +1,7 @@
 #include "countdots.h"
 #include <time.h>
 #include <unistd.h>
+#include "../../Animations/animations.h"
 #define CENTERX    30
 #define CENTERY    5
 /*
@@ -247,6 +248,12 @@ int easyCountDots(Interface *i)
 
 int hardCountDots(Interface *i)
 {
-    return countDots(i, 1);
+    int n;
+    n = countDots(i, 1);
+    if (n == 1)
+    {
+        Four_animation_call1(i);
+    }
+    return n;
 }
 
