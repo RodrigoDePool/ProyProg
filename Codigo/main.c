@@ -109,7 +109,7 @@ int main()
         c = _read_key();
         if (c == SAVE_KEY)
         {
-            /*menu function of save*/
+            game_f(w, 1);
         }
         else if (c == SOLVE_KEY)
         {
