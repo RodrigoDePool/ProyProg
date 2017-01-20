@@ -123,7 +123,12 @@ int main()
                 if (aux == 3)
                 {
                     /*LAST ANIMATION*/
-                    /*FREES AND RETURNS*/
+                    Five2End_animation(i);
+                    /*end of game*/
+                    world_free(w);
+                    _term_close();
+                    i_free(i);
+                    return 0;
                 }
                 /*we set the final animation of the space*/
                 l = world_getLevel(w, aux);
@@ -139,9 +144,8 @@ int main()
                 map = world_getSpaceMap(w, l->PlIniSpaceID);
                 i_setMap(i, map);
                 i_drawPl(i, l->PlIniRow, l->PlIniCol);
-                /*set the panel*/
-                game_drawDisplay(w);
             }
+            game_drawDisplay(w);
         }
         else if (c == HELP_KEY)
         {
