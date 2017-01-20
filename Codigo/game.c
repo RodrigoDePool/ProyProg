@@ -73,7 +73,7 @@ int game_help(World *w, String *s)
             }
             else
             {
-                i_drawStr(in, clue, INIROW, INICOL, 3);
+                i_drawStrMap(in, clue, INIROW, INICOL, 3);
                 free(clue);
             }
         }
@@ -117,7 +117,7 @@ int game_solve(World *w, String *s)
     Interface *i = world_getInterface(w);
     if (!i)
         return -1;
-    char  *pl_sol, *lev_sol;
+    char  pl_sol[20], *lev_sol;
     char  c;
     int   nlev;
     Level *l;
@@ -139,8 +139,8 @@ int game_solve(World *w, String *s)
 
     /*Read the solution and writes it in row = 1, col = 1*/
     _term_close();
-    printf("%c[%d;%dH", 27, 40, 3); /*Moving the pointer*/
-    fscanf(stdin, "%ms\n", &pl_sol);
+    printf("%c[%d;%dH", 27, 39, 3); /*Moving the pointer*/
+    fscanf(stdin, "%s", pl_sol);
     _term_init();
 
     /*Non se si la interfaz se borra, pongo idrawall por si acasp*/
