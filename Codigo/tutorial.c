@@ -55,6 +55,7 @@ int tutorial(World *w)
     i_cleanCommand(i);
     i_readFile(i, "Codigo/DATA/Dialogue/TutorialDialogue/3", 0, 0, 3);
 
+    i_readFile(i, "Codigo/DATA/Dialogue/tutorialDisplay", 1, 1, 2);
     /*This flag will controll that you move 4 spaces*/
     flag1 = 0;
 
