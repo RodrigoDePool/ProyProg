@@ -156,13 +156,15 @@ int game_solve(World *w, String *s)
         /*You passed level string*/
         string_drawLines(i, string_getString(s, 4), POPUPROW, POPUPCOL, 1, '\n', '*');
         c = _read_key();
+        c = _read_key();
         i_drawAll(i);
         return 1;
     }
     else
     {
         /*Youre wrong string*/
-        i_readFile_notMap(i, string_getString(s, 5), POPUPROW, POPUPCOL, 1);
+        string_drawLines(i, string_getString(s, 5), POPUPROW, POPUPCOL, 1, '\n', '*');
+        c = _read_key();
         c = _read_key();
         i_drawAll(i);
         return 0;
