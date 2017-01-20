@@ -513,13 +513,8 @@ int easyMiniPadel(Interface *i)
 
 int hardMiniPadel(Interface *i)
 {
-    int n;
-    n = miniPadel(i, 1);
-    if (n == 1)
-    {
-        Five_animation_pong(i);
-    }
-    return n;
+    Five_animation_pong(i);
+    return miniPadel(i, 1);
 }
 
 

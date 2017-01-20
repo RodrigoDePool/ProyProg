@@ -372,13 +372,8 @@ int easyMiniMaze(Interface *i)
 
 int hardMiniMaze(Interface *i)
 {
-    int n;
-    n = miniMaze(i, 1);
-    if (n == 1)
-    {
-        Five_animation_maze(i);
-    }
-    return n;
+    Five_animation_maze(i);
+    return miniMaze(i, 1);
 }
 
 

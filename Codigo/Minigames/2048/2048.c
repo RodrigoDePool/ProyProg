@@ -264,13 +264,8 @@ int mini2048_small(Interface *in)
 
 int mini2048_big(Interface *in)
 {
-    int n;
-    n = mini2048(in, 4, 2048);
-    if (n == 1)
-    {
-        Five_animation_2048(in);
-    }
-    return n;
+    Five_animation_2048(in);
+    return mini2048(in, 4, 2048);
 }
 
 int mini2048(Interface *in, int size, int max)
