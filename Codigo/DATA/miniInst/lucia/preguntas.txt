@@ -17,7 +17,7 @@ a 1 Yes totally, I'm so sorry.
 b 0 It's ma life yo.
 c 0 Not telling ya.
 Lucia
-OSTRAS T VOY A SOLTAR UNA HOTIA (I'm going to gently tap you)
+OSTRAS T VOY A SOLTAR UNA HOTIA (I'm going to tap you)
 7
 a 0 You would also die from the shock wave, you shouldn't.
 b 0 Yo I'm made out of rock yo.
