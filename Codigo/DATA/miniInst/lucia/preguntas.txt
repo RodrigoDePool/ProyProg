@@ -18,7 +18,7 @@ b 0 It's ma life yo.
 c 0 Not telling ya.
 Lucia
 OSTRAS T VOY A SOLTAR UNA HOTIA (I'm going to tap you)
-7
+3
 a 0 I DONT love all animals
 b 0 I love ALL animals  except YOU
 c 0 YOU are NOT an animal, I did NOT say that
