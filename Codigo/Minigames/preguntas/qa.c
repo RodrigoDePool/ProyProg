@@ -10,7 +10,7 @@
 #define INSTPATH          "Codigo/DATA/miniInst/preguntas/instructions.txt"
 #define PREGUNTAS_INFO    "./Codigo/DATA/miniInst/preguntas/info.txt"
 #define LUCIA_INFO        "./Codigo/DATA/miniInst/lucia/info.txt"
-
+#define LUCIA_ASCII "./Codigo/DATA/miniInst/lucia/lucia_ascii"
 
 struct _Game
 {
@@ -348,7 +348,7 @@ int build_intro(Interface *in, Game* g, int i, int row, int col)
     intro[strlen(buff) + 2] = '\0';
     /*Clean board to erase previous question*/
     i_cleanMap(in);
-
+	 i_readFile(in, LUCIA_ASCII, 17, 1, 1);
     /*Ask question and check the answer*/
     i_drawStr(in, intro, row, col, 1);
     free(intro);
