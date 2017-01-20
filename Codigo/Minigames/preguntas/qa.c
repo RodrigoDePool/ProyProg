@@ -397,12 +397,12 @@ int qa(Interface *in, int level){
 			
 	if(level == 1){
 		f = fopen(PATHLUCIA, "r");
-		i_readFile(in, PREGUNTAS_INFO, 10, 32, 1);
+		i_readFile(in, LUCIA_INFO, 10, 32, 1);
     		_read_key();
     		i_cleanMap(in);
 	}else{
 		f = fopen(PATHPREGUNTAS, "r");
-		i_readFile(in, LUCIA_INFO, 9, 18, 1);
+		i_readFile(in, PREGUNTAS_INFO, 9, 18, 1);
     		_read_key();
     		i_cleanMap(in);
 	}

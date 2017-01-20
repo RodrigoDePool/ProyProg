@@ -6,7 +6,7 @@
 #define RIDDLEPATH     "./Codigo/DATA/game/riddles.txt"
 #define STRPATH        "./Codigo/DATA/game/string.txt"
 #define CLUEPATH       "./Codigo/DATA/game/clue.txt"
-#define DISPLAYPATH    "./Codigo/DATA/game/display.txt"
+#define DISPLAYPATH    "./Codigo/DATA/game/display_2.txt"
 #define INIROW         1
 #define INICOL         1
 #define POPUPROW       12
@@ -269,7 +269,7 @@ int game_drawDisplay(World *w)
         return -1;
     }
 
-    i_drawStr(in, sdesc, 16, 1, 2);
+    i_drawStr(in, sdesc, 15, 1, 2);
     free(sdesc);
     ldesc = space_getLDesc(world_getSpace(w, sid));
     if (ldesc == NULL)
@@ -277,7 +277,7 @@ int game_drawDisplay(World *w)
         string_free(s);
         return -1;
     }
-    i_drawStr(in, ldesc, 17, 1, 2);
+    i_drawStr(in, ldesc, 16, 1, 2);
     free(ldesc);
 
     string_free(s);
