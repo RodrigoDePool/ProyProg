@@ -233,7 +233,7 @@ World *menu()
 
     /*Initialize the interface*/
     _term_init();
-    i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 48, 36, 48, 36, 48, 36);
+    i = i_create(MAXCOLS - 30, MAXROWS - 6, 30, 6, '@', 49, 36, 49, 36, 49, 36);
     if (i == NULL)
         return NULL;
     i_drawAll(i);

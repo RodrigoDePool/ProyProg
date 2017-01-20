@@ -4,7 +4,7 @@
 #include "../../Animations/animations.h"
 #include <unistd.h>
 #define MILISECONDS    40 /*speed of the ball*/
-#define FTIME          45
+#define FTIME          35
 
 /*
     Ball structure, the coords used in this structure are map coords

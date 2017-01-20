@@ -4,14 +4,14 @@ Incorrect answer!
 I couldnt find any answer matching your char choice, try again
 All your answers were correct: you won!
 5
-Someone
+someone
 Who would hide dead corpses hidden under his bed? 
 4
 a 1 Simon.
 b 0 Simone.
 c 0 Juan.
 d 0 Nuria.
-Someone
+someone
 Who said to the teacher 'lactancia' when he meant 'inductancia'?
 4
 a 0 Aleho.
@@ -19,12 +19,12 @@ b 1 Riki.
 c 0 Adri.
 d 0 Victor.
 Andres
-Mirror, mirror on the wall, who is the fairest of them all?
+Mirror,mirror on the wall,who is the fairest of them all?
 3
 a 0 DEFINATELY NOT YOU
 b 0 SHUT UP AND KISS ME
 c 1 Mis compix de clase jesjes
-Someone
+someone
 Who drank and smoked weeed the day before the PPROG exam?
 11
 a 1 Marta
@@ -38,7 +38,7 @@ h 1 Aleho
 i 1 Jose Pedro
 j 0 Alfonso
 k 0 Victor
-Someone
+someone
 Who drank and smoked weeed the day before the PPROG exam?
 11
 a 1 Marta
