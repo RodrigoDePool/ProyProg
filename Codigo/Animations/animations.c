@@ -1,8 +1,7 @@
 #include "animations.h"
 #include "../interface.h"
 #include <unistd.h>
-#define READ_TIME_FAST    3500000
-#define READ_TIME_SLOW    7000000
+#include "../Minigames/preguntas/qa.h"
 
 int One2Two_animation(Interface *i)
 {
@@ -141,7 +140,11 @@ int Three2Four_animation(Interface *i)
     usleep(500000);
     i_cleanMap(i);
 
-    /*AQUI IRIA EL MINIGAME*/
+     while (lucia (i) != 1){
+        i_cleanMap(i);
+        i_readFile(i, "Codigo/DATA/popups/hit", 13, 39, 1);
+        _read_key();
+    }
 
     for (j = 1; j <= 3; j++)
     {
