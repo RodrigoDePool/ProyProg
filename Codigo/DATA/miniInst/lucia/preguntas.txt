@@ -5,19 +5,29 @@ I couldnt find any answer matching your char choice, try again
 All your answers were correct: you won!
 3
 Lucia
-¿Estoy guapa?
+POR Q NO ME ABRIA LA PUÑETERA PUERTA?! 
 3
-a 1 Si, como siempre.
-b 0 Más fea que nunca.
-c 0 y a ti q te importa?
+a 0 I was taking a sh**.
+b 1 I was mad at you.
+c 0 Why did you want to enter ANYWAYS?! HUH?!.
 Lucia
-¿Ere hilipolla?
-2
-a 0 No
-b 1 Andre y aleho zi
-Andres
-Espejito, quién es el más bello de este reino?
+PERO A VE CORAZON ILLO EHTA HIRIPOIA O Q (What's wrong?)
 3
-a 1 YO
-b 1 Mi reflejo
-c 0 Mis compix de clase jesjes
+a 1 Yes totally, I'm so sorry.
+b 0 It's ma life yo.
+c 0 Not telling ya.
+Lucia
+OSTRAS T VOY A SOLTAR UNA HOTIA (I'm going to gently tap you)
+7
+a 0 You would also die from the shock wave, you shouldn't.
+b 0 Yo I'm made out of rock yo.
+c 0 Oh no please.
+d 0 Oh no please don't KILL ME.
+e 0 YES PLEASE GO AHEAD.
+f 0 I LOVE YOU
+g 0 I love SOMEONE ELSE
+h 0 I would rather you were a DOG
+i 0 I love ALL ANIMALS
+j 0 I DONT love all animals
+k 0 I love ALL animals  except YOU
+l 0 YOU are NOT an animal, I did NOT say that

@@ -5,14 +5,14 @@ I couldnt find any answer matching your char choice, try again
 All your answers were correct: you won!
 5
 Someone
-Who is more likely to have a pile of dead corpses hidden under his bed? 
+Who would hide dead corpses hidden under his bed? 
 4
 a 1 Simon.
 b 0 Simone.
 c 0 Juan.
 d 0 Nuria.
 Someone
-Who said to the teacher 'lactancia' when he met 'inductancia'?
+Who said to the teacher 'lactancia' when he meant 'inductancia'?
 4
 a 0 Aleho.
 b 1 Riki.
