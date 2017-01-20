@@ -49,8 +49,13 @@ int One2Two_animation(Interface *i)
         i_readFile(i, buff, 0, 0, 3);
         _read_key();
         i_cleanCommand(i);
-        if (j == 6)
+        if (j == 6){
             i_cleanMap(i);
+            usleep(100000);
+            i_readFile(i, "Codigo/DATA/IniCredits", 0, 25, 1);
+            usleep(1500000);
+            i_cleanMap(i);
+        }
         if (j == 7)
         {
             i_cleanMap(i);

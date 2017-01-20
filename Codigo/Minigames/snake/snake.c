@@ -153,31 +153,30 @@ void *snake_play(void *interface) /*This function will move the snake according 
     }
     while (1)
     {
-        if (key_read == 'q' || key_read == 'Q')
+        if (key_read == 'q')
         {
             snake_free(s);
             flag_snakeResult = -1;
             return NULL;
         }
 
-        if (key_read == WEST || key_read == EAST || key_read == NORTH || key_read == SOUTH)
+        if (key_read == WEST || key_read == EAST || key_read == NORTH || key_read == SOUTH) buff = key_read;
+  
+        aux  = snake_move(s, i, buff);
+        if (aux == -1)
         {
-            buff = key_read;
-            aux  = snake_move(s, i, buff);
-            if (aux == -1)
-            {
-                snake_free(s);
-                flag_snakeResult = -1;
-                return NULL;
-            }
-            else if (aux == -2)
-            {
-                snake_free(s);
-                flag_snakeResult = -2;
-                return NULL;
-            }
-            usleep(100000);               /*soft delay between movements*/
+            snake_free(s);
+            flag_snakeResult = -1;
+            return NULL;
         }
+        else if (aux == -2)
+        {
+            snake_free(s);
+            flag_snakeResult = -2;
+            return NULL;
+        }
+        usleep(100000);               /*soft delay between movements*/
+        
         if (s->tamanio == SNAKE_MAX_SIZE) /*The player wins when his snake reaches a size of 15 dots*/
         {
             snake_free(s);
@@ -193,8 +192,10 @@ void *snake_play(void *interface) /*This function will move the snake according 
 
 void *read_keys() /*This function will read the keys pressed by the player*/
 {
-    while (flag_snakeResult == 0)
+    while (flag_snakeResult == 0){
         key_read = _read_key();
+
+    }
     return NULL;
 }
 
@@ -239,10 +240,10 @@ int snake1(Interface *i)
     pthread_create(&(juego[0]), NULL, snake_play, (void *) i);     /*The function that will move the snake*/
     pthread_create(&(juego[1]), NULL, read_keys, NULL);            /*The function that will move the snake*/
     pthread_create(&(juego[2]), NULL, snake_points, (void *) i);   /*The function that will place the points*/
+    
 
-    while (flag_snakeResult == 0)
-        ;
-
+    while (flag_snakeResult == 0);
+    pthread_cancel(juego[1]);
     if (flag_snakeResult == 1)
         return WIN;
     else if (flag_snakeResult == 0)
