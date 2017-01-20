@@ -187,6 +187,9 @@ int Three2Four_animation(Interface *i)
 int Four_animation_call1(Interface *i)
 {
     int j;
+    i_cleanMap(i);
+    i_readFile(i, "Codigo/Animations/Maps/BedRoom3.map", 0, 0, 1);
+    usleep(1000);
     i_readFile(i, "Codigo/DATA/Dialogue/ThreeToFour/2.txt", 0, 0, 3);
     for (j = 0; j < 3; j++)
     {
@@ -216,6 +219,9 @@ int Four_animation_call1(Interface *i)
 int Four_animation_call2(Interface *i)
 {
     int j;
+    i_cleanMap(i);
+    i_readFile(i, "Codigo/Animations/Maps/BedRoom3.map", 0, 0, 1);
+    usleep(1000);
     i_readFile(i, "Codigo/DATA/Dialogue/ThreeToFour/2.txt", 0, 0, 3);
     for (j = 0; j < 3; j++)
     {
@@ -245,6 +251,9 @@ int Four_animation_call2(Interface *i)
 int Four_animation_call3(Interface *i)
 {
     int j;
+    i_cleanMap(i);
+    i_readFile(i, "Codigo/Animations/Maps/BedRoom3.map", 0, 0, 1);
+    usleep(1000);
     i_readFile(i, "Codigo/DATA/Dialogue/ThreeToFour/2.txt", 0, 0, 3);
     for (j = 0; j < 3; j++)
     {
